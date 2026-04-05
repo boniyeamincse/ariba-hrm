@@ -86,14 +86,14 @@ This audit reflects the actual repository implementation state after local commi
 > Weeks 4–5 | P0 Critical
 
 ### 1.1 Backend — Auth
-- [ ] T038 — Create `AuthController`: login, logout, refresh token, me
-- [ ] T039 — Implement OTP-based 2FA: generate secret, verify OTP, enable/disable per user
-- [ ] T040 — Implement brute-force lockout: max 5 failed attempts → 15-min lockout
-- [ ] T041 — Implement password policy: min 8 chars, complexity, expiry, history (last 5)
-- [ ] T042 — Implement session management: list active sessions, revoke specific session, revoke all
-- [ ] T043 — Create `AuditLogMiddleware`: log every API request with user, IP, method, route, payload diff
-- [ ] T044 — Seed all roles: Super Admin, Hospital Admin, Doctor, Nurse, Receptionist, Pharmacist, Lab Tech, Accountant, Patient
-- [ ] T045 — Seed all permissions matrix (e.g., `patient.create`, `billing.view`, `prescription.create`, etc.)
+- [x] T038 — Create `AuthController`: login, logout, refresh token, me
+- [x] T039 — Implement OTP-based 2FA: generate secret, verify OTP, enable/disable per user
+- [x] T040 — Implement brute-force lockout: max 5 failed attempts → 15-min lockout
+- [x] T041 — Implement password policy: min 8 chars, complexity, expiry, history (last 5)
+- [x] T042 — Implement session management: list active sessions, revoke specific session, revoke all
+- [x] T043 — Create `AuditLogMiddleware`: log every API request with user, IP, method, route, payload diff
+- [x] T044 — Seed all roles: Super Admin, Hospital Admin, Doctor, Nurse, Receptionist, Pharmacist, Lab Tech, Accountant, Patient
+- [x] T045 — Seed all permissions matrix (e.g., `patient.create`, `billing.view`, `prescription.create`, etc.)
 
 ### 1.2 Backend — Staff Management
 - [ ] T046 — Create `StaffController`: CRUD staff accounts, assign role, assign department
@@ -366,7 +366,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase | Tasks | Done | Progress |
 |---|---|---|---|
 | Phase 0 — Foundation | 37 | 12 | 32% |
-| Phase 1 — Auth & RBAC | 16 | 0 | 0% |
+| Phase 1 — Auth & RBAC | 16 | 8 | 50% |
 | Phase 2 — Patient | 13 | 0 | 0% |
 | Phase 3 — OPD | 18 | 0 | 0% |
 | Phase 4 — IPD | 18 | 0 | 0% |
@@ -379,7 +379,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 11 — SaaS Admin | 9 | 0 | 0% |
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
-| **TOTAL** | **210** | **12** | **6%** |
+| **TOTAL** | **210** | **20** | **10%** |
 
 ---
 

@@ -36,6 +36,13 @@ Route::prefix('auth')->group(function (): void {
 Route::middleware(['auth:sanctum'])->prefix('auth')->group(function (): void {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/sessions', [AuthController::class, 'sessions']);
+    Route::delete('/sessions', [AuthController::class, 'revokeAllSessions']);
+    Route::delete('/sessions/{tokenId}', [AuthController::class, 'revokeSession']);
+    Route::post('/2fa/setup', [AuthController::class, 'setupTwoFactor']);
+    Route::post('/2fa/enable', [AuthController::class, 'enableTwoFactor']);
+    Route::delete('/2fa', [AuthController::class, 'disableTwoFactor']);
 });
 
 Route::middleware(['tenant'])->group(function (): void {

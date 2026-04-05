@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -29,6 +30,14 @@ class User extends Authenticatable
         'two_factor_enabled',
         'two_factor_code',
         'two_factor_expires_at',
+        'two_factor_secret',
+        'two_factor_confirmed_at',
+        'two_factor_challenge_token',
+        'two_factor_challenge_expires_at',
+        'failed_login_attempts',
+        'lockout_until',
+        'password_changed_at',
+        'password_expires_at',
     ];
 
     /**
@@ -40,6 +49,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'two_factor_code',
+        'two_factor_secret',
+        'two_factor_challenge_token',
     ];
 
     /**
@@ -54,6 +65,11 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_enabled' => 'boolean',
             'two_factor_expires_at' => 'datetime',
+            'two_factor_confirmed_at' => 'datetime',
+            'two_factor_challenge_expires_at' => 'datetime',
+            'lockout_until' => 'datetime',
+            'password_changed_at' => 'datetime',
+            'password_expires_at' => 'datetime',
         ];
     }
 
@@ -65,6 +81,11 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function passwordHistories(): HasMany
+    {
+        return $this->hasMany(PasswordHistory::class);
     }
 
     public function hasPermission(string $permission): bool
