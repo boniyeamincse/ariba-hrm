@@ -1,0 +1,60 @@
+<svg width="1200" height="820" viewBox="0 0 1200 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#0B3A55"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#E0F2FE" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#CCFBF1" stop-opacity="0.85"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1200" height="820" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#02111D" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="820" rx="38" fill="url(#bg)"/>
+  <circle cx="212" cy="152" r="132" fill="#38BDF8" fill-opacity="0.18"/>
+  <circle cx="1040" cy="660" r="148" fill="#2DD4BF" fill-opacity="0.16"/>
+
+  <g filter="url(#shadow)">
+    <rect x="115" y="120" width="970" height="580" rx="28" fill="white" fill-opacity="0.96"/>
+  </g>
+
+  <rect x="115" y="120" width="970" height="72" rx="28" fill="#F8FAFC"/>
+  <circle cx="164" cy="156" r="9" fill="#22D3EE"/>
+  <circle cx="194" cy="156" r="9" fill="#2DD4BF"/>
+  <circle cx="224" cy="156" r="9" fill="#60A5FA"/>
+
+  <rect x="155" y="230" width="220" height="430" rx="18" fill="#F8FAFC"/>
+  <rect x="185" y="270" width="160" height="14" rx="7" fill="#0EA5E9" fill-opacity="0.28"/>
+  <rect x="185" y="304" width="120" height="10" rx="5" fill="#94A3B8" fill-opacity="0.45"/>
+  <rect x="185" y="346" width="160" height="14" rx="7" fill="#0EA5E9" fill-opacity="0.22"/>
+  <rect x="185" y="380" width="102" height="10" rx="5" fill="#94A3B8" fill-opacity="0.42"/>
+  <rect x="185" y="422" width="160" height="14" rx="7" fill="#0EA5E9" fill-opacity="0.2"/>
+  <rect x="185" y="456" width="135" height="10" rx="5" fill="#94A3B8" fill-opacity="0.38"/>
+
+  <rect x="405" y="230" width="640" height="198" rx="18" fill="url(#card)"/>
+  <text x="440" y="278" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">Ariba Hospital Operations</text>
+  <rect x="440" y="300" width="170" height="52" rx="12" fill="white"/>
+  <text x="458" y="322" fill="#334155" font-family="Segoe UI, Arial, sans-serif" font-size="12">Patients Today</text>
+  <text x="458" y="345" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">1,284</text>
+
+  <rect x="630" y="300" width="170" height="52" rx="12" fill="white"/>
+  <text x="648" y="322" fill="#334155" font-family="Segoe UI, Arial, sans-serif" font-size="12">Bed Occupancy</text>
+  <text x="648" y="345" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">82%</text>
+
+  <rect x="820" y="300" width="170" height="52" rx="12" fill="white"/>
+  <text x="838" y="322" fill="#334155" font-family="Segoe UI, Arial, sans-serif" font-size="12">Lab TAT Avg</text>
+  <text x="838" y="345" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">31m</text>
+
+  <rect x="405" y="452" width="305" height="208" rx="18" fill="#F8FAFC"/>
+  <text x="438" y="494" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Patient Flow</text>
+  <rect x="438" y="516" width="238" height="12" rx="6" fill="#0EA5E9" fill-opacity="0.22"/>
+  <rect x="438" y="546" width="196" height="12" rx="6" fill="#14B8A6" fill-opacity="0.22"/>
+  <rect x="438" y="576" width="228" height="12" rx="6" fill="#38BDF8" fill-opacity="0.22"/>
+
+  <rect x="740" y="452" width="305" height="208" rx="18" fill="#F8FAFC"/>
+  <text x="773" y="494" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Revenue Snapshot</text>
+  <path d="M776 604C814 564 846 610 880 586C910 565 940 520 982 548" stroke="#0EA5E9" stroke-width="8" stroke-linecap="round"/>
+  <path d="M776 628C820 596 860 632 900 610C930 593 958 565 990 582" stroke="#14B8A6" stroke-width="8" stroke-linecap="round"/>
+</svg>

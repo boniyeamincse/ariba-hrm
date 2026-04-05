@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import { NavLink } from 'react-router-dom'
+import heroVisual from '../../assets/hms-hero-visual.svg'
+import featurePreview from '../../assets/hms-feature-preview.svg'
 
 const featureCards = [
   'OPD & IPD Workflows',
@@ -34,6 +36,21 @@ export function HomePage() {
                 Explore Features
               </NavLink>
             </div>
+
+            <div className="mt-8 grid max-w-md grid-cols-3 gap-3 text-left">
+              <div className="rounded-xl border border-white/15 bg-white/10 p-3 backdrop-blur">
+                <p className="text-xs text-slate-300">Hospitals</p>
+                <p className="text-lg font-semibold">42+</p>
+              </div>
+              <div className="rounded-xl border border-white/15 bg-white/10 p-3 backdrop-blur">
+                <p className="text-xs text-slate-300">Daily Visits</p>
+                <p className="text-lg font-semibold">12k</p>
+              </div>
+              <div className="rounded-xl border border-white/15 bg-white/10 p-3 backdrop-blur">
+                <p className="text-xs text-slate-300">Uptime</p>
+                <p className="text-lg font-semibold">99.98%</p>
+              </div>
+            </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -61,6 +78,14 @@ export function HomePage() {
             </div>
           </motion.div>
         </div>
+
+        <div className="relative mx-auto mt-12 w-full max-w-6xl">
+          <img
+            src={heroVisual}
+            alt="Ariba hospital management dashboard interface"
+            className="w-full rounded-3xl border border-white/10 shadow-2xl"
+          />
+        </div>
       </section>
 
       <section className="mx-auto w-full max-w-6xl px-5 py-16">
@@ -79,6 +104,14 @@ export function HomePage() {
               <p className="mt-2 text-sm text-slate-600">Production-grade modules for fast, accurate, and auditable care delivery.</p>
             </motion.article>
           ))}
+        </div>
+
+        <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+          <img
+            src={featurePreview}
+            alt="Hospital modules and workflow overview"
+            className="w-full rounded-2xl border border-slate-100"
+          />
         </div>
       </section>
 
