@@ -38,13 +38,13 @@
 - [x] Add discharge process with billing clearance integration
 
 ## Phase 4 - Advanced Modules (P1/P2)
-- [ ] Build appointment scheduling with slot management
-- [ ] Add telemedicine appointment support
-- [ ] Build insurance and TPA claim workflows
-- [ ] Implement inventory and procurement module
-- [ ] Implement HR and payroll module
-- [ ] Add blood bank workflows
-- [ ] Add mortuary management workflows
+- [x] Build appointment scheduling with slot management
+- [x] Add telemedicine appointment support
+- [x] Build insurance and TPA claim workflows
+- [x] Implement inventory and procurement module
+- [x] Implement HR and payroll module
+- [x] Add blood bank workflows
+- [x] Add mortuary management workflows
 
 ## Phase 5 - Security, Quality, and Compliance
 - [ ] Enforce API rate limits, validation, and authorization policies
