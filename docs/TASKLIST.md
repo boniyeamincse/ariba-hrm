@@ -34,13 +34,13 @@ This audit reflects the actual repository implementation state after local commi
 > Weeks 1–3 | Prerequisites for all other phases
 
 ### 0.1 Project Setup
-- [ ] T001 — Initialize Laravel 12 project (`medcore-hms-api`)
-- [ ] T002 — Initialize React 19 + TypeScript + Vite project (`medcore-hms-web`)
-- [ ] T003 — Configure `docker-compose.yml` (nginx, app, mysql, redis, meilisearch, soketi, horizon)
-- [ ] T004 — Write `Makefile` with shortcuts: `make dev`, `make migrate`, `make seed`, `make test`
-- [ ] T005 — Setup GitHub repository with branch strategy (`main`, `develop`, `feature/*`, `hotfix/*`)
-- [ ] T006 — Configure `.env.example` for both API and frontend projects
-- [ ] T007 — Setup EditorConfig, PHP-CS-Fixer, ESLint, Prettier configs
+- [x] T001 — Initialize Laravel 12 project (`medcore-hms-api`)
+- [x] T002 — Initialize React 19 + TypeScript + Vite project (`medcore-hms-web`)
+- [x] T003 — Configure `docker-compose.yml` (nginx, app, mysql, redis, meilisearch, soketi, horizon)
+- [x] T004 — Write `Makefile` with shortcuts: `make dev`, `make migrate`, `make seed`, `make test`
+- [x] T005 — Setup GitHub repository with branch strategy (`main`, `develop`, `feature/*`, `hotfix/*`)
+- [x] T006 — Configure `.env.example` for both API and frontend projects
+- [x] T007 — Setup EditorConfig, PHP-CS-Fixer, ESLint, Prettier configs
 
 ### 0.2 CI/CD Pipeline
 - [ ] T008 — Create GitHub Actions workflow: lint + Pest PHP tests on every PR
