@@ -22,12 +22,12 @@ export function LoginPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-      <p className="mt-1 text-sm text-slate-300">Login to your Ariba HRM workspace.</p>
+      <p className="mt-1 text-sm text-slate-300">Login to your Ariba HMS workspace.</p>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 grid gap-4">
-        <input {...register('email', { required: true })} className="rounded-lg border border-white/20 bg-white/5 px-3 py-2" placeholder="you@company.com" />
-        <input {...register('password', { required: true })} type="password" className="rounded-lg border border-white/20 bg-white/5 px-3 py-2" placeholder="Password" />
-        <button type="submit" className="rounded-lg bg-indigo-500 px-4 py-2 font-semibold text-white hover:bg-indigo-400">
-          Login
+        <input {...register('email', { required: true })} className="rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white outline-none focus:border-emerald-500/50" placeholder="you@hospital.com" />
+        <input {...register('password', { required: true })} type="password" className="rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white outline-none focus:border-emerald-500/50" placeholder="Password" />
+        <button type="submit" className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-white transition-all hover:scale-[1.02] hover:bg-emerald-400">
+          Login to System
         </button>
       </form>
       <div className="mt-4 flex justify-between text-xs text-slate-300">
