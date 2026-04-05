@@ -52,11 +52,9 @@ return new class extends Migration
         $permissionIds = DB::table('permissions')->pluck('id')->all();
 
         foreach ($permissionIds as $permissionId) {
-            DB::table('permission_role')->insert([
+            DB::table('permission_role')->insertOrIgnore([
                 'permission_id' => $permissionId,
                 'role_id' => $superAdminRoleId,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
         }
     }

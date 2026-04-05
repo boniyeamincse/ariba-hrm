@@ -9,7 +9,7 @@ services:
       MYSQL_PASSWORD: hms
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -44,7 +44,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
       - ./backend:/var/www/html
 
@@ -57,7 +57,7 @@ services:
     depends_on:
       - backend
     environment:
-      VITE_API_URL: http://localhost:8000/api
+      VITE_API_URL: http://localhost:8001/api
     ports:
       - "5173:5173"
     volumes:
