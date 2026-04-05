@@ -2,22 +2,22 @@ import { PageShell } from '../../components/ui/PageShell'
 
 const faqs = [
   {
-    question: 'Can I use Ariba HRM for multiple companies?',
-    answer: 'Yes. The SaaS architecture supports multi-tenant workspaces with strict isolation.',
+    question: 'Can Ariba HMS support multiple hospitals under one group?',
+    answer: 'Yes. The platform supports multi-tenant setups with strict data isolation and central governance.',
   },
   {
-    question: 'Do you support role-based access?',
-    answer: 'Yes. HR Admin, Manager, Employee, and custom role policies are supported.',
+    question: 'Do you support role-based access for clinical teams?',
+    answer: 'Yes. Super Admin, Hospital Admin, Doctor, Nurse, Pharmacist, Lab Tech, and custom roles are supported.',
   },
   {
-    question: 'Is payroll configurable for local compliance?',
-    answer: 'Yes. Components, deductions, and policy rules are configurable per workspace.',
+    question: 'Is patient and billing data audit-ready?',
+    answer: 'Yes. Every critical action can be traced with audit logs to support compliance and reviews.',
   },
 ]
 
 export function FAQPage() {
   return (
-    <PageShell title="Frequently Asked Questions" subtitle="Answers to common setup and product questions.">
+    <PageShell title="Frequently Asked Questions" subtitle="Common questions from hospital teams and implementation leads.">
       <div className="grid gap-4">
         {faqs.map((item) => (
           <article key={item.question} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
