@@ -19,14 +19,14 @@
 - [x] Build super admin panel shell for tenant management
 
 ## Phase 2 - Clinical Foundation (P0)
-- [ ] Build patient registration and UHID generation
-- [ ] Build patient demographics, history, and visit timeline views
-- [ ] Implement OPD queue and consultation workflow
-- [ ] Implement e-prescription flow with printable output
-- [ ] Implement lab and radiology order creation from consultation
-- [ ] Implement IPD admission and bed allocation
-- [ ] Implement ward rounds, nursing notes, and medication administration record
-- [ ] Implement emergency triage registration and priority handling
+- [x] Build patient registration and UHID generation
+- [x] Build patient demographics, history, and visit timeline views
+- [x] Implement OPD queue and consultation workflow
+- [x] Implement e-prescription flow with printable output
+- [x] Implement lab and radiology order creation from consultation
+- [x] Implement IPD admission and bed allocation
+- [x] Implement ward rounds, nursing notes, and medication administration record
+- [x] Implement emergency triage registration and priority handling
 
 ## Phase 3 - Operations and Revenue (P0/P1)
 - [ ] Build pharmacy drug master and batch inventory

@@ -59,6 +59,10 @@
     backdrop-filter: blur(2px);
   }
 
+  .card-wide {
+    grid-column: 1 / -1;
+  }
+
   .card h2 {
     margin-top: 0;
     font-size: 1rem;
@@ -125,8 +129,39 @@
     color: #1834a0;
   }
 
+  .inline-form {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+
+  .clinical-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .clinical-grid h3 {
+    margin-top: 0;
+    margin-bottom: 0.55rem;
+    font-size: 0.95rem;
+  }
+
+  .compact li {
+    gap: 0.15rem;
+    padding: 0.45rem;
+  }
+
   @media (max-width: 920px) {
     .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .inline-form {
+      grid-template-columns: 1fr;
+    }
+
+    .clinical-grid {
       grid-template-columns: 1fr;
     }
   }
