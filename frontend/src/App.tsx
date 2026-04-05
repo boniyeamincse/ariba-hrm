@@ -1,210 +1,160 @@
-import { type FormEvent, useMemo, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 
-type TenantDraft = {
-  name: string
-  subdomain: string
-  database_name: string
-}
+const navItems = [
+  { label: 'Overview', active: true },
+  { label: 'Tenants', active: false },
+  { label: 'Revenue', active: false },
+  { label: 'Operations', active: false },
+  { label: 'Support', active: false },
+  { label: 'Settings', active: false },
+]
 
-type PatientCard = {
-  uhid: string
-  name: string
-  gender: string
-  bloodGroup: string
-  timeline: string[]
-}
+const metrics = [
+  { title: 'Active Tenants', value: '42', delta: '+8.2% this month' },
+  { title: 'MRR', value: '$118,400', delta: '+5.7% this month' },
+  { title: 'Uptime', value: '99.98%', delta: 'No incidents in last 7 days' },
+  { title: 'Open Tickets', value: '14', delta: '-23% this week' },
+]
+
+const activities = [
+  {
+    title: 'New tenant onboarded',
+    description: 'Dhaka Care Hospital completed setup and first login.',
+    time: '5m ago',
+  },
+  {
+    title: 'Subscription upgraded',
+    description: 'City Medica moved from Growth to Scale plan.',
+    time: '27m ago',
+  },
+  {
+    title: 'Billing alert resolved',
+    description: 'Failed payment retried successfully for tenant #HMS-113.',
+    time: '1h ago',
+  },
+  {
+    title: 'Support ticket escalated',
+    description: 'Pharmacy print issue escalated to Platform team.',
+    time: '2h ago',
+  },
+]
 
 function App() {
-  const [tenant, setTenant] = useState<TenantDraft>({
-    name: '',
-    subdomain: '',
-    database_name: '',
-  })
-  const [queue, setQueue] = useState<TenantDraft[]>([])
-  const [patients, setPatients] = useState<PatientCard[]>([
-    {
-      uhid: 'UHID-20260405-000101',
-      name: 'Amina Rahman',
-      gender: 'Female',
-      bloodGroup: 'B+',
-      timeline: ['OPD Consultation - 2026-04-01', 'Lab Order (CBC) - 2026-04-01'],
-    },
-    {
-      uhid: 'UHID-20260405-000102',
-      name: 'Imran Hossain',
-      gender: 'Male',
-      bloodGroup: 'O+',
-      timeline: ['Emergency Triage (Orange) - 2026-04-03', 'IPD Admission - 2026-04-03'],
-    },
-  ])
-
-  const canAdd = useMemo(() => {
-    return tenant.name.trim() && tenant.subdomain.trim() && tenant.database_name.trim()
-  }, [tenant])
-
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    if (!canAdd) {
-      return
-    }
-
-    setQueue((current) => [...current, tenant])
-    setTenant({ name: '', subdomain: '', database_name: '' })
-  }
-
-  const [newPatientName, setNewPatientName] = useState('')
-
-  const registerPatient = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!newPatientName.trim()) {
-      return
-    }
-
-    const sequence = String(patients.length + 103).padStart(6, '0')
-    const uhid = `UHID-20260405-${sequence}`
-
-    setPatients((current) => [
-      {
-        uhid,
-        name: newPatientName,
-        gender: 'Unknown',
-        bloodGroup: 'N/A',
-        timeline: ['Patient registration completed'],
-      },
-      ...current,
-    ])
-    setNewPatientName('')
-  }
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
-    <main className="layout">
-      <header className="hero">
-        <p className="kicker">MedCore HMS</p>
-        <h1>Super Admin Console</h1>
-        <p className="subtitle">
-          Phase 1 shell for tenant onboarding, access governance, and platform operations.
-        </p>
-      </header>
-
-      <section className="grid">
-        <article className="card">
-          <h2>Tenant Onboarding Queue</h2>
-          <form onSubmit={onSubmit} className="form">
-            <label>
-              Tenant Name
-              <input
-                value={tenant.name}
-                onChange={(event) => setTenant((state) => ({ ...state, name: event.target.value }))}
-                placeholder="City Hospital"
-              />
-            </label>
-            <label>
-              Subdomain
-              <input
-                value={tenant.subdomain}
-                onChange={(event) => setTenant((state) => ({ ...state, subdomain: event.target.value }))}
-                placeholder="cityhospital"
-              />
-            </label>
-            <label>
-              Database Name
-              <input
-                value={tenant.database_name}
-                onChange={(event) =>
-                  setTenant((state) => ({ ...state, database_name: event.target.value }))
-                }
-                placeholder="tenant_cityhospital"
-              />
-            </label>
-            <button type="submit" disabled={!canAdd}>
-              Add to Queue
-            </button>
-          </form>
-
-          <ul className="queue">
-            {queue.length === 0 && <li>No pending onboarding requests.</li>}
-            {queue.map((item, index) => (
-              <li key={`${item.subdomain}-${index}`}>
-                <strong>{item.name}</strong>
-                <span>{item.subdomain}.medcorehms.com</span>
-                <code>{item.database_name}</code>
-              </li>
-            ))}
-          </ul>
-        </article>
-
-        <article className="card">
-          <h2>Platform Controls</h2>
-          <ul className="features">
-            <li>Tenant isolation middleware enabled</li>
-            <li>Dynamic tenant database switching enabled</li>
-            <li>Sanctum-based API authentication enabled</li>
-            <li>Role/permission matrix enforcement enabled</li>
-            <li>Audit logs for mutating API requests enabled</li>
-          </ul>
-        </article>
-
-        <article className="card">
-          <h2>Next Delivery Target</h2>
-          <p className="target">Patient registration to OPD consult to invoice</p>
-          <p>Use this shell as the super-admin entrypoint while Phase 2 modules are developed.</p>
-        </article>
-
-        <article className="card card-wide">
-          <h2>Clinical Foundation Console</h2>
-          <form onSubmit={registerPatient} className="form inline-form">
-            <label>
-              Quick Register Patient
-              <input
-                value={newPatientName}
-                onChange={(event) => setNewPatientName(event.target.value)}
-                placeholder="Patient full name"
-              />
-            </label>
-            <button type="submit">Generate UHID</button>
-          </form>
-
-          <div className="clinical-grid">
-            <section>
-              <h3>Patient Demographics</h3>
-              <ul className="queue compact">
-                {patients.map((patient) => (
-                  <li key={patient.uhid}>
-                    <strong>{patient.name}</strong>
-                    <span>{patient.uhid}</span>
-                    <span>{patient.gender} | {patient.bloodGroup}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section>
-              <h3>Visit Timeline</h3>
-              <ul className="features">
-                {patients.slice(0, 2).flatMap((patient) =>
-                  patient.timeline.map((event, index) => (
-                    <li key={`${patient.uhid}-${index}`}>{patient.name}: {event}</li>
-                  ))
-                )}
-              </ul>
-            </section>
-
-            <section>
-              <h3>Live Clinical Boards</h3>
-              <ul className="features">
-                <li>OPD Queue: Token 17 waiting, Token 18 with doctor</li>
-                <li>E-Prescription: 6 generated today</li>
-                <li>Lab/Radiology Orders: 9 pending</li>
-                <li>IPD Beds: 14 available, 22 occupied</li>
-                <li>Emergency Triage: 1 Red, 2 Orange active</li>
-              </ul>
-            </section>
+    <div className="saas-shell">
+      <aside className={`drawer ${drawerOpen ? 'open' : ''}`}>
+        <div className="brand">
+          <div className="brand-mark">M</div>
+          <div>
+            <p className="brand-name">MedCore SaaS</p>
+            <p className="brand-sub">Hospital Platform</p>
           </div>
-        </article>
-      </section>
-    </main>
+        </div>
+
+        <nav className="drawer-nav">
+          {navItems.map((item) => (
+            <button
+              key={item.label}
+              type="button"
+              className={`nav-link ${item.active ? 'active' : ''}`}
+              onClick={() => setDrawerOpen(false)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <section className="plan-card">
+          <p className="plan-kicker">Current Plan</p>
+          <h3>Scale Annual</h3>
+          <p>12 hospitals, priority support, advanced analytics.</p>
+          <button type="button">Manage Subscription</button>
+        </section>
+      </aside>
+
+      <div className="content-area">
+        <header className="topbar">
+          <button
+            type="button"
+            className="menu-toggle"
+            onClick={() => setDrawerOpen((state) => !state)}
+          >
+            Menu
+          </button>
+          <div>
+            <p className="kicker">SaaS Command Center</p>
+            <h1>Product Home</h1>
+          </div>
+          <div className="status-pill">All Systems Healthy</div>
+        </header>
+
+        <section className="metrics-grid">
+          {metrics.map((metric) => (
+            <article key={metric.title} className="metric-card">
+              <p>{metric.title}</p>
+              <strong>{metric.value}</strong>
+              <span>{metric.delta}</span>
+            </article>
+          ))}
+        </section>
+
+        <section className="layout-grid">
+          <article className="panel panel-wide">
+            <div className="panel-head">
+              <h2>Growth Pipeline</h2>
+              <button type="button">View Report</button>
+            </div>
+            <div className="pipeline">
+              <div>
+                <p>Trial</p>
+                <strong>18</strong>
+              </div>
+              <div>
+                <p>Onboarding</p>
+                <strong>7</strong>
+              </div>
+              <div>
+                <p>Live</p>
+                <strong>42</strong>
+              </div>
+              <div>
+                <p>Expansion</p>
+                <strong>11</strong>
+              </div>
+            </div>
+          </article>
+
+          <article className="panel">
+            <h2>Release Tracker</h2>
+            <ul className="clean-list">
+              <li><span>v1.8.4</span><strong>Deploying</strong></li>
+              <li><span>v1.8.3</span><strong>Stable</strong></li>
+              <li><span>v1.9.0-beta</span><strong>QA</strong></li>
+            </ul>
+          </article>
+
+          <article className="panel panel-wide">
+            <h2>Recent Activity</h2>
+            <ul className="activity-list">
+              {activities.map((item) => (
+                <li key={item.title}>
+                  <div>
+                    <p>{item.title}</p>
+                    <span>{item.description}</span>
+                  </div>
+                  <time>{item.time}</time>
+                </li>
+              ))}
+            </ul>
+          </article>
+        </section>
+      </div>
+
+      {drawerOpen && <button type="button" className="backdrop" onClick={() => setDrawerOpen(false)} />}
+    </div>
   )
 }
 
