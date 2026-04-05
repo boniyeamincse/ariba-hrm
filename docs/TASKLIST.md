@@ -51,11 +51,11 @@ This audit reflects the actual repository implementation state after local commi
 - [ ] T013 — Configure Slack webhook notifications for deployment success/failure
 
 ### 0.3 Database & Multi-Tenancy
-- [ ] T014 — Create central database schema migrations (`tenants`, `plans`, `subscriptions`, `invoices`, `admin_users`)
-- [ ] T015 — Install and configure multi-tenancy package (Stancl/Tenancy or custom `TenantMiddleware`)
-- [ ] T016 — Implement subdomain-based tenant resolution middleware
-- [ ] T017 — Implement per-tenant DB connection switching at runtime
-- [ ] T018 — Create tenant database migration runner (provision schema on new tenant signup)
+- [~] T014 — Create central database schema migrations (`tenants`, `plans`, `subscriptions`, `invoices`, `admin_users`)
+- [x] T015 — Install and configure multi-tenancy package (Stancl/Tenancy or custom `TenantMiddleware`)
+- [x] T016 — Implement subdomain-based tenant resolution middleware
+- [x] T017 — Implement per-tenant DB connection switching at runtime
+- [~] T018 — Create tenant database migration runner (provision schema on new tenant signup)
 - [ ] T019 — Write seeders: demo tenant, admin user, sample hospital data
 - [ ] T020 — Configure S3 per-tenant file path isolation (`tenants/{id}/...`)
 
