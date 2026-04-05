@@ -72,7 +72,7 @@ This audit reflects the actual repository implementation state after local commi
 - [ ] T030 — Setup rate limiting middleware (60/min public, 300/min auth, 1000/min API key)
 
 ### 0.5 Base React Configuration
-- [ ] T031 — Install and configure Tailwind CSS 4 with custom design tokens
+- [~] T031 — Install and configure Tailwind CSS 4 with custom design tokens
 - [ ] T032 — Setup React Router v7 with nested layouts per portal
 - [ ] T033 — Configure Axios API client with interceptors (auth token, tenant header, error handling)
 - [ ] T034 — Setup Zustand stores: `authStore`, `tenantStore`, `notificationStore`
@@ -365,7 +365,7 @@ This audit reflects the actual repository implementation state after local commi
 
 | Phase | Tasks | Done | Progress |
 |---|---|---|---|
-| Phase 0 — Foundation | 37 | 11 | 30% |
+| Phase 0 — Foundation | 37 | 12 | 32% |
 | Phase 1 — Auth & RBAC | 16 | 0 | 0% |
 | Phase 2 — Patient | 13 | 0 | 0% |
 | Phase 3 — OPD | 18 | 0 | 0% |
@@ -379,7 +379,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 11 — SaaS Admin | 9 | 0 | 0% |
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
-| **TOTAL** | **210** | **11** | **5%** |
+| **TOTAL** | **210** | **12** | **6%** |
 
 ---
 
