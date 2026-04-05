@@ -4,13 +4,15 @@ import heroVisual from '../../assets/hms-hero-visual.svg'
 import featurePreview from '../../assets/hms-feature-preview.svg'
 
 const featureCards = [
-  'OPD & IPD Workflows',
-  'Digital Prescriptions',
-  'Laboratory Integrations',
-  'Pharmacy Inventory',
-  'Billing & Insurance',
-  'Role-Based Access',
+  'Global Patient Registry & EHR',
+  'OPD/IPD + Emergency Flow',
+  'Lab, RIS, and Diagnostics',
+  'Pharmacy FEFO & Safety Alerts',
+  'Revenue Cycle + Claims Readiness',
+  'Role-Based Security & Audit Trails',
 ]
+
+const trustBadges = ['HIPAA-ready controls', 'GDPR-aware data handling', 'ISO-style audit logging', '99.98% uptime SLA']
 
 export function HomePage() {
   return (
@@ -20,13 +22,13 @@ export function HomePage() {
         <div className="relative mx-auto grid w-full max-w-6xl gap-10 md:grid-cols-2 md:items-center">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <p className="mb-3 inline-flex rounded-full border border-white/20 px-3 py-1 text-xs font-semibold tracking-wide text-sky-200">
-              Ariba Hospital Management SaaS
+              Ariba HMS - International Edition
             </p>
             <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
-              One modern operating system for hospitals, clinics, and care networks
+              International hospital management platform built for modern care networks
             </h1>
             <p className="mt-4 text-slate-300">
-              Manage patient journeys, departments, diagnostics, pharmacy, and billing in a secure multi-tenant cloud platform.
+              Unify patient services, clinical workflows, and finance across branches with multilingual experiences and enterprise-grade security.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <NavLink to="/auth/register" className="rounded-full bg-sky-500 px-5 py-2.5 font-semibold text-white hover:bg-sky-400">
@@ -39,12 +41,12 @@ export function HomePage() {
 
             <div className="mt-8 grid max-w-md grid-cols-3 gap-3 text-left">
               <div className="rounded-xl border border-white/15 bg-white/10 p-3 backdrop-blur">
-                <p className="text-xs text-slate-300">Hospitals</p>
-                <p className="text-lg font-semibold">42+</p>
+                <p className="text-xs text-slate-300">Countries</p>
+                <p className="text-lg font-semibold">14</p>
               </div>
               <div className="rounded-xl border border-white/15 bg-white/10 p-3 backdrop-blur">
-                <p className="text-xs text-slate-300">Daily Visits</p>
-                <p className="text-lg font-semibold">12k</p>
+                <p className="text-xs text-slate-300">Clinics/Hospitals</p>
+                <p className="text-lg font-semibold">120+</p>
               </div>
               <div className="rounded-xl border border-white/15 bg-white/10 p-3 backdrop-blur">
                 <p className="text-xs text-slate-300">Uptime</p>
@@ -61,19 +63,19 @@ export function HomePage() {
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-xl bg-white/10 p-3">
                 <p className="text-xs text-slate-300">Patients Today</p>
-                <p className="mt-1 text-xl font-bold">1,284</p>
+                <p className="mt-1 text-xl font-bold">3,842</p>
               </div>
               <div className="rounded-xl bg-white/10 p-3">
                 <p className="text-xs text-slate-300">Bed Occupancy</p>
-                <p className="mt-1 text-xl font-bold">82%</p>
+                <p className="mt-1 text-xl font-bold">79%</p>
               </div>
               <div className="rounded-xl bg-white/10 p-3">
                 <p className="text-xs text-slate-300">Lab TAT Avg</p>
-                <p className="mt-1 text-xl font-bold">31 min</p>
+                <p className="mt-1 text-xl font-bold">24 min</p>
               </div>
               <div className="rounded-xl bg-white/10 p-3">
-                <p className="text-xs text-slate-300">Revenue Today</p>
-                <p className="mt-1 text-xl font-bold">$24,900</p>
+                <p className="text-xs text-slate-300">Insurance Claims</p>
+                <p className="mt-1 text-xl font-bold">94% clean</p>
               </div>
             </div>
           </motion.div>
@@ -88,8 +90,18 @@ export function HomePage() {
         </div>
       </section>
 
+      <section className="border-y border-slate-200 bg-white py-6">
+        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-center gap-3 px-5 sm:gap-4">
+          {trustBadges.map((badge) => (
+            <span key={badge} className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700">
+              {badge}
+            </span>
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto w-full max-w-6xl px-5 py-16">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Built for real hospital workflows</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Built for international healthcare operations</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featureCards.map((card, index) => (
             <motion.article
@@ -101,7 +113,7 @@ export function HomePage() {
               className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
             >
               <h3 className="font-semibold text-slate-900">{card}</h3>
-              <p className="mt-2 text-sm text-slate-600">Production-grade modules for fast, accurate, and auditable care delivery.</p>
+              <p className="mt-2 text-sm text-slate-600">Production-grade workflows for safe, fast, and measurable care delivery.</p>
             </motion.article>
           ))}
         </div>
@@ -119,9 +131,9 @@ export function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-5">
           <div className="grid gap-5 md:grid-cols-3">
             {[
-              '“Ariba HMS unified OPD, lab, pharmacy, and billing in one clear workflow.”',
-              '“Our discharge cycle became faster with real-time financial clearance.”',
-              '“Doctors and nurses adopted the system quickly because the UI is clean.”',
+              '"Ariba HMS unified OPD, lab, pharmacy, and billing across our two-country care network."',
+              '"Our discharge process dropped from hours to minutes with live clinical and finance coordination."',
+              '"Doctors and nurses onboarded fast thanks to role-focused dashboards and multilingual UI."',
             ].map((quote) => (
               <blockquote key={quote} className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">
                 {quote}
@@ -130,8 +142,8 @@ export function HomePage() {
           </div>
 
           <div className="mt-10 rounded-3xl bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-600 p-8 text-white">
-            <h3 className="text-2xl font-bold">Launch your hospital cloud in days, not months</h3>
-            <p className="mt-2 text-cyan-100">Start a free trial and configure your departments, teams, and billing flows in one platform.</p>
+            <h3 className="text-2xl font-bold">Launch your international HMS rollout in days, not months</h3>
+            <p className="mt-2 text-cyan-100">Start a free trial and configure departments, claims flows, and branch-level controls in one secure cloud.</p>
             <NavLink
               to="/auth/register"
               className="mt-5 inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-sky-700"
