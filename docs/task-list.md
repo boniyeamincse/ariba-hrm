@@ -10,13 +10,13 @@
 - [x] Define coding standards and pre-commit hooks
 
 ## Phase 1 - Core Platform (P0)
-- [ ] Build tenant onboarding flow (create tenant, subdomain, schema provisioning)
-- [ ] Implement tenant resolution middleware by subdomain
-- [ ] Implement per-tenant database connection switching
-- [ ] Build authentication (login, logout, password reset, optional 2FA)
-- [ ] Implement role-based access control with permission matrix
-- [ ] Add audit logging for create, update, delete operations
-- [ ] Build super admin panel shell for tenant management
+- [x] Build tenant onboarding flow (create tenant, subdomain, schema provisioning)
+- [x] Implement tenant resolution middleware by subdomain
+- [x] Implement per-tenant database connection switching
+- [x] Build authentication (login, logout, password reset, optional 2FA)
+- [x] Implement role-based access control with permission matrix
+- [x] Add audit logging for create, update, delete operations
+- [x] Build super admin panel shell for tenant management
 
 ## Phase 2 - Clinical Foundation (P0)
 - [ ] Build patient registration and UHID generation

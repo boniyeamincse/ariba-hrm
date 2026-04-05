@@ -1,120 +1,110 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { type FormEvent, useMemo, useState } from 'react'
 import './App.css'
 
+type TenantDraft = {
+  name: string
+  subdomain: string
+  database_name: string
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [tenant, setTenant] = useState<TenantDraft>({
+    name: '',
+    subdomain: '',
+    database_name: '',
+  })
+  const [queue, setQueue] = useState<TenantDraft[]>([])
+
+  const canAdd = useMemo(() => {
+    return tenant.name.trim() && tenant.subdomain.trim() && tenant.database_name.trim()
+  }, [tenant])
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (!canAdd) {
+      return
+    }
+
+    setQueue((current) => [...current, tenant])
+    setTenant({ name: '', subdomain: '', database_name: '' })
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <main className="layout">
+      <header className="hero">
+        <p className="kicker">MedCore HMS</p>
+        <h1>Super Admin Console</h1>
+        <p className="subtitle">
+          Phase 1 shell for tenant onboarding, access governance, and platform operations.
+        </p>
+      </header>
 
-      <div className="ticks"></div>
+      <section className="grid">
+        <article className="card">
+          <h2>Tenant Onboarding Queue</h2>
+          <form onSubmit={onSubmit} className="form">
+            <label>
+              Tenant Name
+              <input
+                value={tenant.name}
+                onChange={(event) => setTenant((state) => ({ ...state, name: event.target.value }))}
+                placeholder="City Hospital"
+              />
+            </label>
+            <label>
+              Subdomain
+              <input
+                value={tenant.subdomain}
+                onChange={(event) => setTenant((state) => ({ ...state, subdomain: event.target.value }))}
+                placeholder="cityhospital"
+              />
+            </label>
+            <label>
+              Database Name
+              <input
+                value={tenant.database_name}
+                onChange={(event) =>
+                  setTenant((state) => ({ ...state, database_name: event.target.value }))
+                }
+                placeholder="tenant_cityhospital"
+              />
+            </label>
+            <button type="submit" disabled={!canAdd}>
+              Add to Queue
+            </button>
+          </form>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
+          <ul className="queue">
+            {queue.length === 0 && <li>No pending onboarding requests.</li>}
+            {queue.map((item, index) => (
+              <li key={`${item.subdomain}-${index}`}>
+                <strong>{item.name}</strong>
+                <span>{item.subdomain}.medcorehms.com</span>
+                <code>{item.database_name}</code>
+              </li>
+            ))}
           </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        </article>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <article className="card">
+          <h2>Platform Controls</h2>
+          <ul className="features">
+            <li>Tenant isolation middleware enabled</li>
+            <li>Dynamic tenant database switching enabled</li>
+            <li>Sanctum-based API authentication enabled</li>
+            <li>Role/permission matrix enforcement enabled</li>
+            <li>Audit logs for mutating API requests enabled</li>
+          </ul>
+        </article>
+
+        <article className="card">
+          <h2>Next Delivery Target</h2>
+          <p className="target">Patient registration to OPD consult to invoice</p>
+          <p>Use this shell as the super-admin entrypoint while Phase 2 modules are developed.</p>
+        </article>
+      </section>
+    </main>
   )
 }
 

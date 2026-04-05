@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Tenant;
+use App\Services\TenantDatabaseManager;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +21,12 @@ class TenantMiddleware
         $tenant = null;
 
         if (count($parts) > 2) {
-            $tenant = $parts[0];
+            $tenant = Tenant::query()->where('subdomain', $parts[0])->first();
+
+            if ($tenant) {
+                app(TenantDatabaseManager::class)->switchToTenant($tenant);
+                $request->attributes->set('tenant_id', $tenant->id);
+            }
         }
 
         $request->attributes->set('tenant', $tenant);

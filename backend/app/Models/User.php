@@ -5,13 +5,16 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +22,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'tenant_id',
         'name',
         'email',
         'password',
+        'two_factor_enabled',
+        'two_factor_code',
+        'two_factor_expires_at',
     ];
 
     /**
@@ -32,6 +39,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_code',
     ];
 
     /**
@@ -44,6 +52,27 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'two_factor_enabled' => 'boolean',
+            'two_factor_expires_at' => 'datetime',
         ];
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasPermission(string $permission): bool
+    {
+        return $this->roles()
+            ->whereHas('permissions', function ($query) use ($permission): void {
+                $query->where('name', $permission);
+            })
+            ->exists();
     }
 }
