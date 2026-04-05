@@ -60,11 +60,11 @@ This audit reflects the actual repository implementation state after local commi
 - [ ] T020 — Configure S3 per-tenant file path isolation (`tenants/{id}/...`)
 
 ### 0.4 Base Laravel Configuration
-- [ ] T021 — Configure Laravel Sanctum for SPA cookie auth + API token auth
+- [~] T021 — Configure Laravel Sanctum for SPA cookie auth + API token auth
 - [ ] T022 — Install Spatie Laravel Permission package and publish migrations
 - [ ] T023 — Install Laravel Horizon and configure queue workers
 - [ ] T024 — Install and configure Meilisearch driver (`laravel/scout`)
-- [ ] T025 — Configure AWS S3 filesystem driver with CloudFront CDN URL
+- [~] T025 — Configure AWS S3 filesystem driver with CloudFront CDN URL
 - [ ] T026 — Configure Laravel Echo + Soketi WebSocket server
 - [ ] T027 — Setup global API exception handler with structured JSON error responses
 - [ ] T028 — Setup API response macro: `ApiResponse::success()`, `ApiResponse::error()`
@@ -365,7 +365,7 @@ This audit reflects the actual repository implementation state after local commi
 
 | Phase | Tasks | Done | Progress |
 |---|---|---|---|
-| Phase 0 — Foundation | 37 | 0 | 0% |
+| Phase 0 — Foundation | 37 | 11 | 30% |
 | Phase 1 — Auth & RBAC | 16 | 0 | 0% |
 | Phase 2 — Patient | 13 | 0 | 0% |
 | Phase 3 — OPD | 18 | 0 | 0% |
@@ -379,7 +379,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 11 — SaaS Admin | 9 | 0 | 0% |
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
-| **TOTAL** | **210** | **0** | **0%** |
+| **TOTAL** | **210** | **11** | **5%** |
 
 ---
 
