@@ -72,9 +72,9 @@ This audit reflects the actual repository implementation state after local commi
 - [ ] T030 — Setup rate limiting middleware (60/min public, 300/min auth, 1000/min API key)
 
 ### 0.5 Base React Configuration
-- [~] T031 — Install and configure Tailwind CSS 4 with custom design tokens
-- [ ] T032 — Setup React Router v7 with nested layouts per portal
-- [ ] T033 — Configure Axios API client with interceptors (auth token, tenant header, error handling)
+- [x] T031 — Install and configure Tailwind CSS 4 with custom design tokens
+- [x] T032 — Setup React Router v7 with nested layouts per portal
+- [x] T033 — Configure Axios API client with interceptors (auth token, tenant header, error handling)
 - [ ] T034 — Setup Zustand stores: `authStore`, `tenantStore`, `notificationStore`
 - [ ] T035 — Setup React Query (TanStack Query) with global query client config
 - [ ] T036 — Setup i18next with English and Bangla locale files
@@ -101,10 +101,10 @@ This audit reflects the actual repository implementation state after local commi
 - [ ] T048 — Create `DepartmentController`: CRUD departments per tenant
 
 ### 1.3 Frontend — Auth
-- [ ] T049 — Build Login page with email/password form + 2FA OTP step
-- [ ] T050 — Build "Forgot Password" and "Reset Password" flows
-- [ ] T051 — Implement route guards: redirect unauthenticated users to login
-- [ ] T052 — Implement role-based portal routing (doctor → `/doctor`, nurse → `/nurse`, etc.)
+- [x] T049 — Build Login page with email/password form + 2FA OTP step
+- [x] T050 — Build "Forgot Password" and "Reset Password" flows
+- [x] T051 — Implement route guards: redirect unauthenticated users to login
+- [~] T052 — Implement role-based portal routing (doctor → `/doctor`, nurse → `/nurse`, etc.)
 - [ ] T053 — Build Active Sessions page: list devices, revoke session button
 
 ---
@@ -365,8 +365,8 @@ This audit reflects the actual repository implementation state after local commi
 
 | Phase | Tasks | Done | Progress |
 |---|---|---|---|
-| Phase 0 — Foundation | 37 | 12 | 32% |
-| Phase 1 — Auth & RBAC | 16 | 8 | 50% |
+| Phase 0 — Foundation | 37 | 15 | 41% |
+| Phase 1 — Auth & RBAC | 16 | 11 | 69% |
 | Phase 2 — Patient | 13 | 0 | 0% |
 | Phase 3 — OPD | 18 | 0 | 0% |
 | Phase 4 — IPD | 18 | 0 | 0% |
@@ -379,7 +379,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 11 — SaaS Admin | 9 | 0 | 0% |
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
-| **TOTAL** | **210** | **20** | **10%** |
+| **TOTAL** | **210** | **26** | **12%** |
 
 ---
 

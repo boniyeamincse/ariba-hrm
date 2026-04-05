@@ -1,160 +1,80 @@
-import { useState } from 'react'
-import './App.css'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import { ProtectedRoute } from './routes/ProtectedRoute'
+import { AuthLayout } from './layouts/AuthLayout'
+import { DashboardLayout } from './layouts/DashboardLayout'
+import { PublicLayout } from './layouts/PublicLayout'
+import { AboutPage } from './pages/public/AboutPage'
+import { BlogPage } from './pages/public/BlogPage'
+import { ContactPage } from './pages/public/ContactPage'
+import { FAQPage } from './pages/public/FAQPage'
+import { FeaturesPage } from './pages/public/FeaturesPage'
+import { HomePage } from './pages/public/HomePage'
+import { PricingPage } from './pages/public/PricingPage'
+import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage'
+import { LoginPage } from './pages/auth/LoginPage'
+import { RegisterPage } from './pages/auth/RegisterPage'
+import { ResetPasswordPage } from './pages/auth/ResetPasswordPage'
+import { TwoFactorPage } from './pages/auth/TwoFactorPage'
+import { VerifyEmailPage } from './pages/auth/VerifyEmailPage'
+import { AttendancePage } from './pages/dashboard/AttendancePage'
+import { DashboardHomePage } from './pages/dashboard/DashboardHomePage'
+import { EmployeesPage } from './pages/dashboard/EmployeesPage'
+import { LeavePage } from './pages/dashboard/LeavePage'
+import { PayrollPage } from './pages/dashboard/PayrollPage'
+import { RecruitmentPage } from './pages/dashboard/RecruitmentPage'
+import { SettingsPage } from './pages/dashboard/SettingsPage'
 
-const navItems = [
-  { label: 'Overview', active: true },
-  { label: 'Tenants', active: false },
-  { label: 'Revenue', active: false },
-  { label: 'Operations', active: false },
-  { label: 'Support', active: false },
-  { label: 'Settings', active: false },
-]
-
-const metrics = [
-  { title: 'Active Tenants', value: '42', delta: '+8.2% this month' },
-  { title: 'MRR', value: '$118,400', delta: '+5.7% this month' },
-  { title: 'Uptime', value: '99.98%', delta: 'No incidents in last 7 days' },
-  { title: 'Open Tickets', value: '14', delta: '-23% this week' },
-]
-
-const activities = [
+const router = createBrowserRouter([
   {
-    title: 'New tenant onboarded',
-    description: 'Dhaka Care Hospital completed setup and first login.',
-    time: '5m ago',
+    path: '/',
+    element: <PublicLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'features', element: <FeaturesPage /> },
+      { path: 'pricing', element: <PricingPage /> },
+      { path: 'about', element: <AboutPage /> },
+      { path: 'contact', element: <ContactPage /> },
+      { path: 'blog', element: <BlogPage /> },
+      { path: 'faq', element: <FAQPage /> },
+    ],
   },
   {
-    title: 'Subscription upgraded',
-    description: 'City Medica moved from Growth to Scale plan.',
-    time: '27m ago',
+    path: '/auth',
+    element: <AuthLayout />,
+    children: [
+      { path: 'login', element: <LoginPage /> },
+      { path: 'register', element: <RegisterPage /> },
+      { path: 'forgot-password', element: <ForgotPasswordPage /> },
+      { path: 'reset-password', element: <ResetPasswordPage /> },
+      { path: 'verify-email', element: <VerifyEmailPage /> },
+      { path: 'verify-2fa', element: <TwoFactorPage /> },
+    ],
   },
   {
-    title: 'Billing alert resolved',
-    description: 'Failed payment retried successfully for tenant #HMS-113.',
-    time: '1h ago',
+    path: '/dashboard',
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <DashboardHomePage /> },
+      { path: 'employees', element: <EmployeesPage /> },
+      { path: 'attendance', element: <AttendancePage /> },
+      { path: 'payroll', element: <PayrollPage /> },
+      { path: 'leave', element: <LeavePage /> },
+      { path: 'recruitment', element: <RecruitmentPage /> },
+      { path: 'settings', element: <SettingsPage /> },
+    ],
   },
-  {
-    title: 'Support ticket escalated',
-    description: 'Pharmacy print issue escalated to Platform team.',
-    time: '2h ago',
-  },
-]
+])
 
 function App() {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-
   return (
-    <div className="saas-shell">
-      <aside className={`drawer ${drawerOpen ? 'open' : ''}`}>
-        <div className="brand">
-          <div className="brand-mark">M</div>
-          <div>
-            <p className="brand-name">MedCore SaaS</p>
-            <p className="brand-sub">Hospital Platform</p>
-          </div>
-        </div>
-
-        <nav className="drawer-nav">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              type="button"
-              className={`nav-link ${item.active ? 'active' : ''}`}
-              onClick={() => setDrawerOpen(false)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-
-        <section className="plan-card">
-          <p className="plan-kicker">Current Plan</p>
-          <h3>Scale Annual</h3>
-          <p>12 hospitals, priority support, advanced analytics.</p>
-          <button type="button">Manage Subscription</button>
-        </section>
-      </aside>
-
-      <div className="content-area">
-        <header className="topbar">
-          <button
-            type="button"
-            className="menu-toggle"
-            onClick={() => setDrawerOpen((state) => !state)}
-          >
-            Menu
-          </button>
-          <div>
-            <p className="kicker">SaaS Command Center</p>
-            <h1>Product Home</h1>
-          </div>
-          <div className="status-pill">All Systems Healthy</div>
-        </header>
-
-        <section className="metrics-grid">
-          {metrics.map((metric) => (
-            <article key={metric.title} className="metric-card">
-              <p>{metric.title}</p>
-              <strong>{metric.value}</strong>
-              <span>{metric.delta}</span>
-            </article>
-          ))}
-        </section>
-
-        <section className="layout-grid">
-          <article className="panel panel-wide">
-            <div className="panel-head">
-              <h2>Growth Pipeline</h2>
-              <button type="button">View Report</button>
-            </div>
-            <div className="pipeline">
-              <div>
-                <p>Trial</p>
-                <strong>18</strong>
-              </div>
-              <div>
-                <p>Onboarding</p>
-                <strong>7</strong>
-              </div>
-              <div>
-                <p>Live</p>
-                <strong>42</strong>
-              </div>
-              <div>
-                <p>Expansion</p>
-                <strong>11</strong>
-              </div>
-            </div>
-          </article>
-
-          <article className="panel">
-            <h2>Release Tracker</h2>
-            <ul className="clean-list">
-              <li><span>v1.8.4</span><strong>Deploying</strong></li>
-              <li><span>v1.8.3</span><strong>Stable</strong></li>
-              <li><span>v1.9.0-beta</span><strong>QA</strong></li>
-            </ul>
-          </article>
-
-          <article className="panel panel-wide">
-            <h2>Recent Activity</h2>
-            <ul className="activity-list">
-              {activities.map((item) => (
-                <li key={item.title}>
-                  <div>
-                    <p>{item.title}</p>
-                    <span>{item.description}</span>
-                  </div>
-                  <time>{item.time}</time>
-                </li>
-              ))}
-            </ul>
-          </article>
-        </section>
-      </div>
-
-      {drawerOpen && <button type="button" className="backdrop" onClick={() => setDrawerOpen(false)} />}
-    </div>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   )
 }
 
