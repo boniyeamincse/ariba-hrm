@@ -2,6 +2,32 @@
 **Laravel 12 + React 19 + MySQL 8 | ERP SaaS Hospital Management System**
 > Author: Boni Yeamin | Total Tasks: 200 | Status: [ ] = Todo · [x] = Done · [~] = In Progress
 
+## Current Status Audit (2026-04-05)
+
+This audit reflects the actual repository implementation state after local commits through `complete phase 4 advanced modules`.
+
+| Phase | Current State | Approx. Progress | Notes |
+|---|---|---:|---|
+| Phase 0 — Foundation | In Progress | 45% | Project scaffold, Docker base, CI checks, tenancy middleware, Sanctum done; advanced infra (ECR/CodeDeploy/Sentry/Slack/Soketi/Horizon/Meilisearch) pending |
+| Phase 1 — Auth & RBAC | In Progress | 40% | Login/logout/reset/2FA skeleton, custom RBAC, audit middleware done; lockout/session management/staff management/frontend auth screens pending |
+| Phase 2 — Patient | In Progress | 50% | Patient registration, UHID generation service, history and timeline APIs done; Meilisearch, duplicate detection, photo upload, full frontend flows pending |
+| Phase 3 — OPD | In Progress | 45% | Queue, consultations, prescriptions, investigation ordering APIs done; realtime queue, vitals, ICD search, PDF jobs, referrals, dedicated frontend screens pending |
+| Phase 4 — IPD | In Progress | 40% | Admission, bed availability, ward rounds, nursing notes, MAR, discharge clearance APIs done; richer bed states, websocket events, diet/transfer/death summary + frontend UIs pending |
+| Phase 5 — Emergency | In Progress | 30% | Triage workflow and levels implemented; rapid John Doe flow, resuscitation log, dedicated ER bed pool, MLC, focused frontend screens pending |
+| Phase 6 — Pharmacy | In Progress | 45% | Drug master, batch stock, dispense/counter sale APIs done; FEFO, interactions, purchase workflow, alerts, full frontend module pending |
+| Phase 7 — Laboratory | In Progress | 45% | Test catalog, sample collection, lab orders/results/validation/report APIs done; HL7/ASTM import, critical alerts, QR PDF, full frontend module pending |
+| Phase 8 — Billing | In Progress | 40% | Charge master, invoices, payments, discount approval APIs done; gateway integrations, package/refund workflows, daily collection features pending |
+| Phase 9 — Operations | In Progress | 35% | Inventory/procurement and HR/payroll skeleton APIs done; attendance/leave/loan, nursing assignment/call system, dashboard UIs pending |
+| Phase 10 — Reports | Todo | 0% | Not started |
+| Phase 11 — SaaS Admin | In Progress | 20% | Core tenant onboarding backend exists; dedicated super-admin portal + SaaS billing analytics pending |
+| Phase 12 — Patient Portal | Todo | 0% | Not started |
+| Phase 13 — QA & Launch | In Progress | 10% | Baseline test/lint/build pipelines exist; formal coverage/load/security/UAT/go-live hardening pending |
+
+### Audit Notes
+- Detailed checklist line-by-line `[x]` updates are not yet fully synchronized with implementation commits.
+- Current practical focus has delivered backend-first vertical slices and route coverage through advanced modules.
+- Workflow preference is commit-only; pushes are intentionally deferred.
+
 ---
 
 ## 📦 PHASE 0 — Foundation & Infrastructure
