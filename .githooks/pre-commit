@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+set -eu
+
+echo "Running backend tests..."
+cd backend
+php artisan test
+cd ..
+
+echo "Running frontend lint and tests..."
+cd frontend
+npm run lint
+npm run test
+cd ..
+
+echo "Pre-commit checks passed."
