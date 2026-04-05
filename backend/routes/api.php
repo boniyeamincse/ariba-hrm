@@ -2,10 +2,14 @@
 
 use App\Http\Controllers\Api\Admin\TenantController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Clinical\BillingController;
+use App\Http\Controllers\Api\Clinical\DischargeController;
 use App\Http\Controllers\Api\Clinical\EmergencyController;
 use App\Http\Controllers\Api\Clinical\IpdController;
+use App\Http\Controllers\Api\Clinical\LabController;
 use App\Http\Controllers\Api\Clinical\OpdController;
 use App\Http\Controllers\Api\Clinical\PatientController;
+use App\Http\Controllers\Api\Clinical\PharmacyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
@@ -67,4 +71,25 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
 
         Route::get('/emergency/triage', [EmergencyController::class, 'index']);
         Route::post('/emergency/triage', [EmergencyController::class, 'triage']);
+
+        Route::get('/pharmacy/drugs', [PharmacyController::class, 'drugs']);
+        Route::post('/pharmacy/drugs', [PharmacyController::class, 'storeDrug']);
+        Route::post('/pharmacy/drugs/{drug}/batches', [PharmacyController::class, 'addBatch']);
+        Route::post('/pharmacy/dispense', [PharmacyController::class, 'dispense']);
+
+        Route::get('/lab/tests', [LabController::class, 'tests']);
+        Route::post('/lab/tests', [LabController::class, 'storeTest']);
+        Route::post('/lab/samples', [LabController::class, 'collectSample']);
+        Route::post('/lab/orders', [LabController::class, 'order']);
+        Route::post('/lab/orders/{order}/results', [LabController::class, 'enterResult']);
+        Route::post('/lab/results/{result}/validate', [LabController::class, 'validateResult']);
+        Route::get('/lab/results/{result}/report', [LabController::class, 'report']);
+
+        Route::get('/billing/charges', [BillingController::class, 'charges']);
+        Route::post('/billing/charges', [BillingController::class, 'storeCharge']);
+        Route::post('/billing/invoices', [BillingController::class, 'createInvoice']);
+        Route::post('/billing/invoices/{invoice}/payments', [BillingController::class, 'addPayment']);
+        Route::post('/billing/invoices/{invoice}/discount-approve', [BillingController::class, 'approveDiscount']);
+
+        Route::post('/ipd/admissions/{admission}/discharge-clearance', [DischargeController::class, 'clear']);
     });

@@ -29,13 +29,13 @@
 - [x] Implement emergency triage registration and priority handling
 
 ## Phase 3 - Operations and Revenue (P0/P1)
-- [ ] Build pharmacy drug master and batch inventory
-- [ ] Implement prescription dispensing and counter sales
-- [ ] Build laboratory test catalog and sample collection tracking
-- [ ] Implement result entry, validation, and report generation
-- [ ] Build billing charge master and auto-charge aggregation
-- [ ] Implement invoice generation, payment capture, and discount approvals
-- [ ] Add discharge process with billing clearance integration
+- [x] Build pharmacy drug master and batch inventory
+- [x] Implement prescription dispensing and counter sales
+- [x] Build laboratory test catalog and sample collection tracking
+- [x] Implement result entry, validation, and report generation
+- [x] Build billing charge master and auto-charge aggregation
+- [x] Implement invoice generation, payment capture, and discount approvals
+- [x] Add discharge process with billing clearance integration
 
 ## Phase 4 - Advanced Modules (P1/P2)
 - [ ] Build appointment scheduling with slot management
