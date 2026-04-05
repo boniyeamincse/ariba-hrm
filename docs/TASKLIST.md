@@ -43,8 +43,8 @@ This audit reflects the actual repository implementation state after local commi
 - [x] T007 — Setup EditorConfig, PHP-CS-Fixer, ESLint, Prettier configs
 
 ### 0.2 CI/CD Pipeline
-- [ ] T008 — Create GitHub Actions workflow: lint + Pest PHP tests on every PR
-- [ ] T009 — Create GitHub Actions workflow: TypeScript check + Vitest on every PR
+- [~] T008 — Create GitHub Actions workflow: lint + Pest PHP tests on every PR
+- [x] T009 — Create GitHub Actions workflow: TypeScript check + Vitest on every PR
 - [ ] T010 — Create GitHub Actions workflow: build Docker image + push to AWS ECR on merge to `main`
 - [ ] T011 — Configure blue-green deployment to AWS EC2 via CodeDeploy
 - [ ] T012 — Setup Sentry error tracking for both Laravel and React apps
