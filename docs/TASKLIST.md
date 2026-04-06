@@ -28,6 +28,18 @@ This audit reflects the actual repository implementation state after local commi
 - Current practical focus has delivered backend-first vertical slices and route coverage through advanced modules.
 - Workflow preference is commit-only; pushes are intentionally deferred.
 
+### Completion Workflow (Mandatory)
+- When a task is completed, immediately change `[ ]` or `[~]` to `[x]` in this file.
+- After marking a task complete, always suggest the next logical task from the same phase.
+- When all tasks in a phase are complete, create one dedicated phase completion commit.
+- Use commit format: `phase-<number>: complete <phase-name>`.
+- Include completed task IDs in commit body for traceability.
+
+#### Task Completion Template
+- Completed: `T###`
+- Next Suggested Task: `T###`
+- Commit: `<hash> <message>`
+
 ---
 
 ## 📦 PHASE 0 — Foundation & Infrastructure
@@ -107,8 +119,12 @@ This audit reflects the actual repository implementation state after local commi
 - [~] T052 — Implement role-based portal routing (doctor → `/doctor`, nurse → `/nurse`, etc.)
 - [ ] T053 — Build Active Sessions page: list devices, revoke session button
 - [~] T211 — Implement premium Emerald & Slate theme across auth portal [DONE]
-- [~] T212 — Implement dynamic database-driven menu system with permission gating
-- [~] T213 — Build Role-Based Task Dashboard with status/priority workflows
+- [x] T212 — Implement dynamic database-driven menu system with permission gating
+- [x] T213 — Build Role-Based Task Dashboard with status/priority workflows
+
+### 1.4 Next Suggested Task
+- Suggested Now: `T053` — Build Active Sessions page: list devices, revoke session button
+- After `T053`: continue to `T046` — StaffController CRUD (start Phase 1.2 completion)
 
 ---
 
@@ -385,7 +401,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase | Tasks | Done | Progress |
 |---|---|---|---|
 | Phase 0 — Foundation | 37 | 15 | 41% |
-| Phase 1 — Auth & RBAC | 16 | 11 | 69% |
+| Phase 1 — Auth & RBAC | 16 | 13 | 81% |
 | Phase 2 — Patient | 13 | 13 | 100% |
 | Phase 3 — OPD | 18 | 0 | 0% |
 | Phase 4 — IPD | 18 | 0 | 0% |
@@ -399,7 +415,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
 | Phase 14 — Documentation | 10 | 10 | 100% |
-| **TOTAL** | **223** | **50** | **22%** |
+| **TOTAL** | **223** | **52** | **23%** |
 
 ---
 
