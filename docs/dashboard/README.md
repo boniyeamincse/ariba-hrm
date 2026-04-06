@@ -12,6 +12,9 @@ docs/dashboard/
 ├── IMPLEMENTATION_GUIDE.md
 ├── MASTER_MENU_CATALOG.md
 ├── PERMISSION_MENU_MATRIX.md
+├── ROLE_SWITCH_POLICY.md
+├── ROUTE_IMPLEMENTATION_MATRIX.md
+├── WIDGET_LIBRARY_SPEC.md
 └── roles/
     ├── super-admin.md
     ├── tenant-admin-hospital-admin.md
@@ -43,6 +46,9 @@ docs/dashboard/
 - Read `IMPLEMENTATION_GUIDE.md` for frontend/backend implementation mapping.
 - Read `MASTER_MENU_CATALOG.md` for full dashboard menu/submenu tree.
 - Read `PERMISSION_MENU_MATRIX.md` for route-to-permission and role access mapping.
+- Read `ROUTE_IMPLEMENTATION_MATRIX.md` for frontend/backend route completion tracking.
+- Read `WIDGET_LIBRARY_SPEC.md` for reusable dashboard widget standards.
+- Read `ROLE_SWITCH_POLICY.md` for role switching governance and audit rules.
 - Open each role file under `roles/` for menu, submenu, permissions, and capability scope.
 
 ## Naming Convention
