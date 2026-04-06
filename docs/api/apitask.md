@@ -236,3 +236,49 @@ Use this exact order for better development results. Start a module only when it
 | Predictive Analytics | M101 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | OCR / Document Processing | M102 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | API Client / Sandbox Module | M103 | Implement module APIs and contracts | Todo | Not Run | Pending |
+
+## Additional Must-Have Tasks (Recommended)
+
+These are extra tasks to improve software quality, stability, and release success.
+
+| Task ID | Area | Task | Dev Status | Test | Upload |
+|---|---|---|---|---|---|
+| X001 | API Standards | Define OpenAPI/Swagger contract for every module endpoint | Todo | Not Run | Pending |
+| X002 | API Standards | Standardize error response format (code, message, details, trace_id) | Todo | Not Run | Pending |
+| X003 | API Standards | Version all public APIs (`/api/v1`) and add deprecation policy | Todo | Not Run | Pending |
+| X004 | Validation | Create reusable request validators and shared rule sets | Todo | Not Run | Pending |
+| X005 | Security | Add permission matrix test per endpoint (allow + deny cases) | Todo | Not Run | Pending |
+| X006 | Security | Enforce audit trail on create/update/delete critical resources | Todo | Not Run | Pending |
+| X007 | Security | Add tenant-isolation tests for all tenant-scoped queries | Todo | Not Run | Pending |
+| X008 | Security | Add API rate-limit rules by role and endpoint type | Todo | Not Run | Pending |
+| X009 | Performance | Add pagination/filters/sorting to all listing endpoints | Todo | Not Run | Pending |
+| X010 | Performance | Add database indexes based on real query paths | Todo | Not Run | Pending |
+| X011 | Performance | Add cache strategy for heavy dashboards/reports | Todo | Not Run | Pending |
+| X012 | Reliability | Add idempotency keys for payment/claim/refund APIs | Todo | Not Run | Pending |
+| X013 | Reliability | Add retry policy and dead-letter handling for queued jobs | Todo | Not Run | Pending |
+| X014 | Observability | Add request correlation id and structured logs | Todo | Not Run | Pending |
+| X015 | Observability | Add health, readiness, and dependency-check endpoints | Todo | Not Run | Pending |
+| X016 | Testing | Add happy-path + edge-case + failure-case tests per endpoint | Todo | Not Run | Pending |
+| X017 | Testing | Add module integration tests (cross-module workflows) | Todo | Not Run | Pending |
+| X018 | Testing | Add smoke test suite for pre-release validation | Todo | Not Run | Pending |
+| X019 | Data | Add seed packs: minimal, demo, and load-test datasets | Todo | Not Run | Pending |
+| X020 | CI/CD | Add CI gate: lint + unit + feature + migration check | Todo | Not Run | Pending |
+| X021 | CI/CD | Add contract-test step for frontend/backend compatibility | Todo | Not Run | Pending |
+| X022 | Documentation | Add endpoint examples (request/response) for each module | Todo | Not Run | Pending |
+| X023 | Documentation | Add rollback steps and data migration notes per release | Todo | Not Run | Pending |
+| X024 | Release | Add pre-release checklist and go-live sign-off matrix | Todo | Not Run | Pending |
+| X025 | Post-Release | Add post-deploy verification checklist and incident playbook | Todo | Not Run | Pending |
+
+## Definition of Done (Per API Task)
+
+Mark a task Done only if all items below are complete:
+
+| Check | Required |
+|---|---|
+| API endpoint implemented | Yes |
+| Input validation complete | Yes |
+| Permission and tenant-scope enforced | Yes |
+| Unit/feature tests passed | Yes |
+| Error responses standardized | Yes |
+| Docs updated with examples | Yes |
+| Commit merged/uploaded | Yes |
