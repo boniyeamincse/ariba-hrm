@@ -168,7 +168,7 @@ This audit reflects the actual repository implementation state after local commi
 
 ### 3.2 Frontend
 - [x] T078 — Build OPD Queue dashboard with real-time token board (WebSocket)
-- [ ] T079 — Build Vitals entry form (triage screen)
+- [x] T079 — Build Vitals entry form (triage screen)
 - [ ] T080 — Build SOAP Consultation editor with ICD-10 autocomplete
 - [ ] T081 — Build E-Prescription builder: drug search, dose/frequency/duration fields, allergy alert banner
 - [ ] T082 — Build Investigation Order panel (checkboxes for lab/radiology tests)
@@ -176,8 +176,8 @@ This audit reflects the actual repository implementation state after local commi
 - [ ] T084 — Build Appointment Scheduler for receptionist: calendar view, slot grid, booking form
 
 ### 3.3 Next Suggested Task
-- Suggested Now: `T079` — Build Vitals entry form (triage screen)
-- After `T079`: continue to `T080` — SOAP Consultation editor with ICD-10 autocomplete
+- Suggested Now: `T080` — Build SOAP Consultation editor with ICD-10 autocomplete
+- After `T080`: continue to `T081` — Build E-Prescription builder with allergy alerts
 
 ---
 
@@ -413,7 +413,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 0 — Foundation | 37 | 15 | 41% |
 | Phase 1 — Auth & RBAC | 16 | 13 | 81% |
 | Phase 2 — Patient | 13 | 13 | 100% |
-| Phase 3 — OPD | 18 | 12 | 67% |
+| Phase 3 — OPD | 18 | 13 | 72% |
 | Phase 4 — IPD | 18 | 0 | 0% |
 | Phase 5 — Emergency | 8 | 0 | 0% |
 | Phase 6 — Pharmacy | 14 | 0 | 0% |
@@ -425,7 +425,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
 | Phase 14 — Documentation | 16 | 16 | 100% |
-| **TOTAL** | **229** | **70** | **31%** |
+| **TOTAL** | **229** | **71** | **31%** |
 
 ---
 

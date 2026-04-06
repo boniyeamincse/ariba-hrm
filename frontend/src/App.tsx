@@ -30,6 +30,7 @@ import { PatientProfilePage } from './pages/dashboard/PatientProfilePage'
 import { TaskDashboard } from './pages/dashboard/TaskDashboard'
 import { ModulePlaceholderPage } from './pages/dashboard/ModulePlaceholderPage'
 import { OpdQueuePage } from './pages/dashboard/OpdQueuePage'
+import { OpdVitalsEntryPage } from './pages/dashboard/OpdVitalsEntryPage'
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,7 @@ const router = createBrowserRouter([
         element: <ModulePlaceholderPage title="Reports" subtitle="Operational, financial, and compliance analytics." />,
       },
       { path: 'opd/queue', element: <OpdQueuePage /> },
+      { path: 'opd/vitals', element: <OpdVitalsEntryPage /> },
       { path: 'tasks', element: <TaskDashboard /> },
       { path: 'employees', element: <EmployeesPage /> },
       { path: 'attendance', element: <AttendancePage /> },
