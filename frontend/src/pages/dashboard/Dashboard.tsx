@@ -61,7 +61,9 @@ type RoleOverviewResponse = {
 const widgetIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   total_hospitals: Users,
   active_tenants: Building2,
+  suspended_tenants: TriangleAlert,
   global_users: Users,
+  enabled_modules: Boxes,
   service_health: Activity,
   total_patients: Users,
   total_staff: Users,
@@ -93,6 +95,7 @@ const widgetIconMap: Record<string, React.ComponentType<{ className?: string }>>
   audit_events_today: FileSearch,
   api_calls_today: PlugZap,
   webhook_failures: Webhook,
+  payments_today: Receipt,
   vitals_monitoring: HeartPulse,
   daily_revenue: Activity,
 }
@@ -260,6 +263,16 @@ export function Dashboard() {
     }
   }, [role, todayLabel, user?.name])
 
+  const isSuperAdmin = role === 'super-admin'
+  const superAdminCapabilityTiles = [
+    { title: 'System Control', detail: 'Global settings, module switches, and platform policies.' },
+    { title: 'Tenant Operations', detail: 'Hospital onboarding, suspension, and branch governance.' },
+    { title: 'Global Users', detail: 'Cross-tenant identities, RBAC, and password controls.' },
+    { title: 'Subscription Billing', detail: 'Plans, renewals, invoices, and payment monitoring.' },
+    { title: 'Security & Compliance', detail: 'Audit trails, suspicious activity, and policy enforcement.' },
+    { title: 'Integrations & AI', detail: 'API connectors, webhooks, AI usage, and automation rules.' },
+  ]
+
   return (
     <div className="mx-auto max-w-[1320px] space-y-6">
       <section className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/[0.03] p-5 md:flex-row md:items-center md:justify-between">
@@ -269,12 +282,25 @@ export function Dashboard() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Link to="/dashboard/opd/consultations" className="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500">
-            + New Consultation
-          </Link>
-          <Link to="/dashboard/appointments" className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10">
-            Schedule Availability
-          </Link>
+          {isSuperAdmin ? (
+            <>
+              <Link to="/dashboard/users" className="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500">
+                Manage Tenants
+              </Link>
+              <Link to="/dashboard/settings" className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10">
+                Global Settings
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/dashboard/opd/consultations" className="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500">
+                + New Consultation
+              </Link>
+              <Link to="/dashboard/appointments" className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10">
+                Schedule Availability
+              </Link>
+            </>
+          )}
           <div className="rounded-xl border border-white/15 bg-white/[0.04] px-3 py-2 text-xs text-slate-300">
             {todayLabel}
           </div>
@@ -325,68 +351,109 @@ export function Dashboard() {
         })}
       </section>
 
-      <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-1">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-white">Upcoming Appointments</h2>
-            <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Today</span>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-200">
-                <UserRound className="h-4 w-4" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-white">{upcomingPatient.name}</p>
-                <p className="text-xs text-slate-400">{upcomingPatient.uhid}</p>
-              </div>
+      {isSuperAdmin ? (
+        <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+          <article className="rounded-2xl border border-indigo-400/30 bg-[linear-gradient(140deg,rgba(30,27,75,0.55),rgba(37,99,235,0.2),rgba(15,23,42,0.92))] p-5 xl:col-span-2">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white">SaaS Control Center</h2>
+              <span className="rounded-lg border border-indigo-300/30 px-2 py-1 text-[11px] text-indigo-100">Global Scope</span>
             </div>
 
-            <p className="text-sm font-semibold text-slate-100">{upcomingPatient.visitType}</p>
-            <p className="mt-1 text-xs text-slate-400">{upcomingPatient.date} at {upcomingPatient.time}</p>
-
-            <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-300">
-              <div>
-                <p className="text-slate-500">Department</p>
-                <p className="mt-1 font-semibold">{upcomingPatient.department}</p>
-              </div>
-              <div>
-                <p className="text-slate-500">Type</p>
-                <p className="mt-1 font-semibold">{upcomingPatient.mode}</p>
-              </div>
-            </div>
-
-            <Link to="/dashboard/opd/consultations" className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
-              Start Appointment
-            </Link>
-          </div>
-        </article>
-
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-2">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-white">Appointments</h2>
-            <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Monthly</span>
-          </div>
-
-          <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-slate-400">
-            <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-indigo-400" />Total Appointments</span>
-            <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-400" />Completed Appointments</span>
-          </div>
-
-          <div className="grid grid-cols-12 gap-2 rounded-xl border border-white/10 bg-white/[0.02] p-4">
-            {chartSeries.map((point, idx) => (
-              <div key={point.label} className="flex flex-col items-center gap-2">
-                <div className="flex h-44 w-full items-end justify-center gap-1">
-                  <div className="w-2 rounded bg-indigo-500/85" style={{ height: `${Math.min(point.value, 100)}%` }} />
-                  <div className="w-2 rounded bg-emerald-400/80" style={{ height: `${Math.max(18, Math.min(point.value - 22 + (idx % 3) * 6, 90))}%` }} />
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              {superAdminCapabilityTiles.map((tile) => (
+                <div key={tile.title} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+                  <p className="text-sm font-semibold text-white">{tile.title}</p>
+                  <p className="mt-1 text-xs text-slate-300">{tile.detail}</p>
                 </div>
-                <span className="text-[10px] text-slate-500">{point.label}</span>
+              ))}
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white">System Health Signals</h2>
+              <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Live</span>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                { label: 'Security Alerts', value: getNumericWidgetValue(widgets.find((w) => w.key === 'security_alerts')) },
+                { label: 'Webhook Failures', value: getNumericWidgetValue(widgets.find((w) => w.key === 'webhook_failures')) },
+                { label: 'API Calls Today', value: getNumericWidgetValue(widgets.find((w) => w.key === 'api_calls_today')) },
+                { label: 'Active Tenants', value: getNumericWidgetValue(widgets.find((w) => w.key === 'active_tenants')) },
+              ].map((signal) => (
+                <div key={signal.label} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">
+                  <span className="text-sm text-slate-300">{signal.label}</span>
+                  <span className="text-sm font-semibold text-white">{formatCompact(signal.value)}</span>
+                </div>
+              ))}
+            </div>
+          </article>
+        </section>
+      ) : (
+        <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+          <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-1">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white">Upcoming Appointments</h2>
+              <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Today</span>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-200">
+                  <UserRound className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">{upcomingPatient.name}</p>
+                  <p className="text-xs text-slate-400">{upcomingPatient.uhid}</p>
+                </div>
               </div>
-            ))}
-          </div>
-        </article>
-      </section>
+
+              <p className="text-sm font-semibold text-slate-100">{upcomingPatient.visitType}</p>
+              <p className="mt-1 text-xs text-slate-400">{upcomingPatient.date} at {upcomingPatient.time}</p>
+
+              <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-300">
+                <div>
+                  <p className="text-slate-500">Department</p>
+                  <p className="mt-1 font-semibold">{upcomingPatient.department}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">Type</p>
+                  <p className="mt-1 font-semibold">{upcomingPatient.mode}</p>
+                </div>
+              </div>
+
+              <Link to="/dashboard/opd/consultations" className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+                Start Appointment
+              </Link>
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-2">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white">Appointments</h2>
+              <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Monthly</span>
+            </div>
+
+            <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-slate-400">
+              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-indigo-400" />Total Appointments</span>
+              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-400" />Completed Appointments</span>
+            </div>
+
+            <div className="grid grid-cols-12 gap-2 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+              {chartSeries.map((point, idx) => (
+                <div key={point.label} className="flex flex-col items-center gap-2">
+                  <div className="flex h-44 w-full items-end justify-center gap-1">
+                    <div className="w-2 rounded bg-indigo-500/85" style={{ height: `${Math.min(point.value, 100)}%` }} />
+                    <div className="w-2 rounded bg-emerald-400/80" style={{ height: `${Math.max(18, Math.min(point.value - 22 + (idx % 3) * 6, 90))}%` }} />
+                  </div>
+                  <span className="text-[10px] text-slate-500">{point.label}</span>
+                </div>
+              ))}
+            </div>
+          </article>
+        </section>
+      )}
 
       <section className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         {secondaryWidgets.map((widget) => {

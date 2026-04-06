@@ -160,7 +160,9 @@ class RoleDashboardController extends Controller
         $definitions = [
             'total_hospitals' => ['label' => 'Total Hospitals', 'metric' => 'total_hospitals'],
             'active_tenants' => ['label' => 'Active Tenants', 'metric' => 'active_tenants'],
+            'suspended_tenants' => ['label' => 'Suspended Tenants', 'metric' => 'suspended_tenants'],
             'global_users' => ['label' => 'Global Users', 'metric' => 'global_users'],
+            'enabled_modules' => ['label' => 'Enabled Modules', 'metric' => 'enabled_modules'],
             'service_health' => ['label' => 'Service Health', 'metric' => 'service_health'],
             'total_patients' => ['label' => 'Total Patients', 'metric' => 'total_patients'],
             'total_staff' => ['label' => 'Total Staff', 'metric' => 'total_staff'],
@@ -189,6 +191,7 @@ class RoleDashboardController extends Controller
             'audit_events_today' => ['label' => 'Audit Events Today', 'metric' => 'audit_events_today'],
             'api_calls_today' => ['label' => 'API Calls Today', 'metric' => 'api_calls_today'],
             'webhook_failures' => ['label' => 'Webhook Failures', 'metric' => 'webhook_failures'],
+            'payments_today' => ['label' => 'Payments Today', 'metric' => 'payments_today'],
         ];
 
         if (! isset($definitions[$key])) {
@@ -242,13 +245,26 @@ class RoleDashboardController extends Controller
         return [
             'super-admin' => [
                 'label' => 'Super Admin',
-                'widgets' => ['total_hospitals', 'active_tenants', 'global_users', 'service_health'],
+                'widgets' => ['total_hospitals', 'active_tenants', 'suspended_tenants', 'global_users', 'revenue_today', 'payments_today', 'api_calls_today', 'security_alerts', 'webhook_failures', 'enabled_modules'],
                 'quick_actions' => [
-                    ['label' => 'Users', 'route' => '/dashboard/users', 'icon' => 'Building2'],
-                    ['label' => 'Reports', 'route' => '/dashboard/reports', 'icon' => 'LineChart'],
-                    ['label' => 'Settings', 'route' => '/dashboard/settings', 'icon' => 'Shield'],
+                    ['label' => 'Tenant Management', 'route' => '/dashboard/users', 'icon' => 'Building2'],
+                    ['label' => 'Global User Access', 'route' => '/dashboard/users', 'icon' => 'Users'],
+                    ['label' => 'Subscription & Billing', 'route' => '/dashboard/billing', 'icon' => 'Receipt'],
+                    ['label' => 'System Analytics', 'route' => '/dashboard/reports', 'icon' => 'LineChart'],
+                    ['label' => 'Security & RBAC', 'route' => '/dashboard/settings', 'icon' => 'ShieldCheck'],
+                    ['label' => 'API & Integrations', 'route' => '/dashboard/settings', 'icon' => 'PlugZap'],
+                    ['label' => 'Module Controls', 'route' => '/dashboard/settings', 'icon' => 'Boxes'],
+                    ['label' => 'Backup & Maintenance', 'route' => '/dashboard/settings', 'icon' => 'Download'],
+                    ['label' => 'AI Governance', 'route' => '/dashboard/tasks', 'icon' => 'Bot'],
+                    ['label' => 'Support Monitoring', 'route' => '/dashboard/tasks', 'icon' => 'Bell'],
                 ],
-                'focus_areas' => ['Platform Governance', 'Cross-Tenant Health'],
+                'focus_areas' => [
+                    'Global SaaS Operations',
+                    'Tenant Lifecycle Management',
+                    'Subscription Revenue Oversight',
+                    'Security and Compliance Governance',
+                    'Integrations and Platform Reliability',
+                ],
             ],
             'tenant-admin' => [
                 'label' => 'Tenant Admin',
@@ -461,6 +477,18 @@ class RoleDashboardController extends Controller
             $activeTenants = \DB::table('tenants')->where('status', 'active')->count();
         }
 
+        $suspendedTenants = 0;
+        if (Schema::hasTable('tenants')) {
+            $suspendedTenants = \DB::table('tenants')
+                ->whereIn('status', ['suspended', 'inactive'])
+                ->count();
+        }
+
+        $enabledModules = Menu::query()
+            ->whereNull('parent_id')
+            ->where('is_active', true)
+            ->count();
+
         $totalPatients = Patient::query()
             ->when($tenantId, fn ($q) => $q->where('tenant_id', $tenantId))
             ->count();
@@ -538,6 +566,13 @@ class RoleDashboardController extends Controller
             ->when($tenantId, fn ($q) => $q->where('tenant_id', $tenantId))
             ->whereDate('issued_at', today())
             ->count();
+
+        $paymentsToday = 0;
+        if (Schema::hasTable('payments')) {
+            $paymentsToday = \DB::table('payments')
+                ->whereDate('paid_at', today())
+                ->count();
+        }
 
         $outstandingBills = (float) Invoice::query()
             ->when($tenantId, fn ($q) => $q->where('tenant_id', $tenantId))
@@ -626,7 +661,9 @@ class RoleDashboardController extends Controller
         return [
             'total_hospitals' => $totalHospitals,
             'active_tenants' => $activeTenants,
+            'suspended_tenants' => $suspendedTenants,
             'global_users' => User::count(),
+            'enabled_modules' => $enabledModules,
             'service_health' => 'Healthy',
             'total_patients' => $totalPatients,
             'today_registrations' => $todayRegistrations,
@@ -644,6 +681,7 @@ class RoleDashboardController extends Controller
             'inventory_low_stock' => $inventoryLowStock,
             'revenue_today' => round($revenueToday, 2),
             'invoices_today' => $invoicesToday,
+            'payments_today' => $paymentsToday,
             'outstanding_bills' => round($outstandingBills, 2),
             'claims_open' => $claimsOpen,
             'bed_occupied' => $bedOccupied,
