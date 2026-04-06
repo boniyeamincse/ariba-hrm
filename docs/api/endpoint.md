@@ -44,6 +44,39 @@ Global middleware notes:
 | POST | `/auth/2fa/enable` | Sanctum | Enable 2FA |
 | DELETE | `/auth/2fa` | Sanctum | Disable 2FA |
 
+### 2.3 Auth Module (V1) - `/v1/auth`
+
+#### Public Endpoints
+
+| Method | Endpoint | Auth | Notes |
+|---|---|---|---|
+| POST | `/v1/auth/bootstrap-super-admin` | Public | Bootstrap super-admin (legacy controller bridge) |
+| POST | `/v1/auth/login` | Public | Tenant-aware login |
+| POST | `/v1/auth/forgot-password` | Public | Password reset email/link request |
+| POST | `/v1/auth/reset-password` | Public | Reset password with token |
+| POST | `/v1/auth/2fa/verify` | Public | Verify OTP/2FA challenge |
+| POST | `/v1/auth/register-tenant-admin` | Public | Optional SaaS tenant admin registration |
+| POST | `/v1/auth/refresh-token` | Public | Refresh access token |
+| POST | `/v1/auth/resend-otp` | Public | Resend OTP code |
+| POST | `/v1/auth/verify-email` | Public | Verify email hash/token |
+| POST | `/v1/auth/resend-verification-email` | Public | Resend verification email |
+
+#### Protected Endpoints
+
+Middleware: `auth:sanctum`, `audit` (RBAC on selected endpoints).
+
+| Method | Endpoint | Permission |
+|---|---|---|
+| GET | `/v1/auth/me` | authenticated user |
+| POST | `/v1/auth/logout` | authenticated user |
+| POST | `/v1/auth/logout-all-devices` | authenticated user |
+| POST | `/v1/auth/change-password` | authenticated user |
+| GET | `/v1/auth/sessions` | `auth.session.manage` |
+| DELETE | `/v1/auth/sessions/{id}` | `auth.session.manage` |
+| POST | `/v1/auth/2fa/enable` | `auth.2fa.manage` |
+| POST | `/v1/auth/2fa/disable` | `auth.2fa.manage` |
+| GET | `/v1/auth/2fa/status` | `auth.2fa.manage` |
+
 ## 3) Dashboard + Menu + Tasks
 
 Middleware: `auth:sanctum`, `tenant`, permission scoped.
