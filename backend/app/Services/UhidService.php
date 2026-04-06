@@ -2,15 +2,45 @@
 
 namespace App\Services;
 
-use App\Models\Patient;
+use Illuminate\Support\Facades\DB;
 
 class UhidService
 {
-    public function generate(): string
+    public function generate(?int $tenantId = null): string
     {
-        $date = now()->format('Ymd');
-        $sequence = str_pad((string) (Patient::query()->count() + 1), 6, '0', STR_PAD_LEFT);
+        $year = (int) now()->format('Y');
 
-        return 'UHID-'.$date.'-'.$sequence;
+        $nextNumber = DB::transaction(function () use ($tenantId, $year): int {
+            $counter = DB::table('patient_uhid_counters')
+                ->where('tenant_id', $tenantId)
+                ->where('year', $year)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $counter) {
+                DB::table('patient_uhid_counters')->insert([
+                    'tenant_id' => $tenantId,
+                    'year' => $year,
+                    'last_number' => 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                return 1;
+            }
+
+            $next = (int) $counter->last_number + 1;
+
+            DB::table('patient_uhid_counters')
+                ->where('id', $counter->id)
+                ->update([
+                    'last_number' => $next,
+                    'updated_at' => now(),
+                ]);
+
+            return $next;
+        });
+
+        return sprintf('HMS-%d-%06d', $year, $nextNumber);
     }
 }

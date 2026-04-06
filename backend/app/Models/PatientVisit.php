@@ -17,10 +17,13 @@ class PatientVisit extends Model
         'reference_no',
         'visit_at',
         'status',
+        'summary',
+        'meta',
     ];
 
     protected $casts = [
         'visit_at' => 'datetime',
+        'meta' => 'array',
     ];
 
     public function patient(): BelongsTo

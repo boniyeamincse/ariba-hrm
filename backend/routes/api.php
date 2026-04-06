@@ -15,7 +15,9 @@ use App\Http\Controllers\Api\Clinical\MortuaryController;
 use App\Http\Controllers\Api\Clinical\OpdController;
 use App\Http\Controllers\Api\Clinical\AppointmentController;
 use App\Http\Controllers\Api\Clinical\PatientController;
+use App\Http\Controllers\Api\Clinical\PatientMedicalHistoryController;
 use App\Http\Controllers\Api\Clinical\PharmacyController;
+use App\Http\Controllers\Api\Clinical\VisitController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
@@ -45,6 +47,13 @@ Route::middleware(['auth:sanctum'])->prefix('auth')->group(function (): void {
     Route::delete('/2fa', [AuthController::class, 'disableTwoFactor']);
 });
 
+Route::middleware(['auth:sanctum', 'tenant'])->group(function (): void {
+    Route::get('/menus', [\App\Http\Controllers\Api\MenuController::class, 'index']);
+    Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'stats']);
+    
+    Route::apiResource('tasks', \App\Http\Controllers\Api\TaskController::class);
+});
+
 Route::middleware(['tenant'])->group(function (): void {
     Route::get('/tenant-context', function () {
         return response()->json([
@@ -67,8 +76,14 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
         Route::get('/patients', [PatientController::class, 'index']);
         Route::post('/patients', [PatientController::class, 'store']);
         Route::get('/patients/{patient}', [PatientController::class, 'show']);
-        Route::patch('/patients/{patient}/history', [PatientController::class, 'updateHistory']);
-        Route::get('/patients/{patient}/timeline', [PatientController::class, 'timeline']);
+        Route::patch('/patients/{patient}', [PatientController::class, 'update']);
+        Route::post('/patients/{patient}/photo', [PatientController::class, 'uploadPhoto']);
+
+        Route::get('/patients/{patient}/history', [PatientMedicalHistoryController::class, 'show']);
+        Route::patch('/patients/{patient}/history', [PatientMedicalHistoryController::class, 'update']);
+
+        Route::get('/patients/{patient}/visits', [VisitController::class, 'index']);
+        Route::post('/patients/{patient}/visits', [VisitController::class, 'store']);
 
         Route::get('/opd/queue', [OpdController::class, 'queueList']);
         Route::post('/opd/queue', [OpdController::class, 'enqueue']);

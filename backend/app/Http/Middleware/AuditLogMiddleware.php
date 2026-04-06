@@ -15,18 +15,12 @@ class AuditLogMiddleware
 
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
             $payload = collect($request->except(['password', 'password_confirmation', 'code']))
-                ->map(function ($value) {
-                    if (is_array($value)) {
-                        return '[array]';
-                    }
-
-                    return $value;
-                })
+                ->map(fn ($value) => $this->sanitizeValue($value))
                 ->all();
 
             AuditLog::create([
                 'user_id' => $request->user()?->id,
-                'tenant_id' => $request->attributes->get('tenant_id'),
+                'tenant_id' => $request->attributes->get('tenant_id') ?? $request->user()?->tenant_id,
                 'method' => $request->method(),
                 'path' => '/'.$request->path(),
                 'status_code' => $response->getStatusCode(),
@@ -40,5 +34,20 @@ class AuditLogMiddleware
         }
 
         return $response;
+    }
+
+    private function sanitizeValue(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            return collect($value)
+                ->map(fn ($child) => $this->sanitizeValue($child))
+                ->all();
+        }
+
+        if (is_object($value)) {
+            return '['.class_basename($value).']';
+        }
+
+        return $value;
     }
 }

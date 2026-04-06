@@ -24,6 +24,10 @@ import { LeavePage } from './pages/dashboard/LeavePage'
 import { PayrollPage } from './pages/dashboard/PayrollPage'
 import { RecruitmentPage } from './pages/dashboard/RecruitmentPage'
 import { SettingsPage } from './pages/dashboard/SettingsPage'
+import { PatientSearchPage } from './pages/dashboard/PatientSearchPage'
+import { PatientRegistrationPage } from './pages/dashboard/PatientRegistrationPage'
+import { PatientProfilePage } from './pages/dashboard/PatientProfilePage'
+import { TaskDashboard } from './pages/dashboard/TaskDashboard'
 
 const router = createBrowserRouter([
   {
@@ -60,6 +64,7 @@ const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <DashboardHomePage /> },
+      { path: 'tasks', element: <TaskDashboard /> },
       { path: 'employees', element: <EmployeesPage /> },
       { path: 'attendance', element: <AttendancePage /> },
       { path: 'payroll', element: <PayrollPage /> },
@@ -68,8 +73,20 @@ const router = createBrowserRouter([
       { path: 'settings', element: <SettingsPage /> },
     ],
   },
+  {
+    path: '/clinical',
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: 'patients', element: <PatientSearchPage /> },
+      { path: 'patients/register', element: <PatientRegistrationPage /> },
+      { path: 'patients/:id', element: <PatientProfilePage /> },
+    ],
+  },
 ])
-
 function App() {
   return (
     <AuthProvider>

@@ -1,6 +1,6 @@
 # ✅ MedCore HMS — Full Development Task List
 **Laravel 12 + React 19 + MySQL 8 | ERP SaaS Hospital Management System**
-> Author: Boni Yeamin | Total Tasks: 200 | Status: [ ] = Todo · [x] = Done · [~] = In Progress
+> Author: Boni Yeamin | Total Tasks: 223 | Status: [ ] = Todo · [x] = Done · [~] = In Progress
 
 ## Current Status Audit (2026-04-05)
 
@@ -10,7 +10,7 @@ This audit reflects the actual repository implementation state after local commi
 |---|---|---:|---|
 | Phase 0 — Foundation | In Progress | 45% | Project scaffold, Docker base, CI checks, tenancy middleware, Sanctum done; advanced infra (ECR/CodeDeploy/Sentry/Slack/Soketi/Horizon/Meilisearch) pending |
 | Phase 1 — Auth & RBAC | In Progress | 40% | Login/logout/reset/2FA skeleton, custom RBAC, audit middleware done; lockout/session management/staff management/frontend auth screens pending |
-| Phase 2 — Patient | In Progress | 50% | Patient registration, UHID generation service, history and timeline APIs done; Meilisearch, duplicate detection, photo upload, full frontend flows pending |
+| Phase 2 — Patient | Done | 100% | Patient registration, UHID generation service, history and timeline APIs done; Meilisearch, duplicate detection, photo upload, full frontend flows implemented |
 | Phase 3 — OPD | In Progress | 45% | Queue, consultations, prescriptions, investigation ordering APIs done; realtime queue, vitals, ICD search, PDF jobs, referrals, dedicated frontend screens pending |
 | Phase 4 — IPD | In Progress | 40% | Admission, bed availability, ward rounds, nursing notes, MAR, discharge clearance APIs done; richer bed states, websocket events, diet/transfer/death summary + frontend UIs pending |
 | Phase 5 — Emergency | In Progress | 30% | Triage workflow and levels implemented; rapid John Doe flow, resuscitation log, dedicated ER bed pool, MLC, focused frontend screens pending |
@@ -92,7 +92,7 @@ This audit reflects the actual repository implementation state after local commi
 - [x] T041 — Implement password policy: min 8 chars, complexity, expiry, history (last 5)
 - [x] T042 — Implement session management: list active sessions, revoke specific session, revoke all
 - [x] T043 — Create `AuditLogMiddleware`: log every API request with user, IP, method, route, payload diff
-- [x] T044 — Seed all roles: Super Admin, Hospital Admin, Doctor, Nurse, Receptionist, Pharmacist, Lab Tech, Accountant, Patient
+- [x] T044 — Seed all roles: Super Admin, Tenant Admin (Hospital Admin), Hospital Manager, Operations Manager, Doctor, Nurse, Receptionist / Front Desk, Pharmacist, Lab Technician, Accountant / Finance Manager, Ward Manager, Ambulance Driver / Transport Staff, IT Admin / System Administrator, Inventory Manager / Store Manager, HR Manager, Patient (Portal User), Insurance Agent / Partner, Auditor / Compliance Officer, Data Analyst, API Client / Integration Role, AI Assistant Role
 - [x] T045 — Seed all permissions matrix (e.g., `patient.create`, `billing.view`, `prescription.create`, etc.)
 
 ### 1.2 Backend — Staff Management
@@ -106,6 +106,9 @@ This audit reflects the actual repository implementation state after local commi
 - [x] T051 — Implement route guards: redirect unauthenticated users to login
 - [~] T052 — Implement role-based portal routing (doctor → `/doctor`, nurse → `/nurse`, etc.)
 - [ ] T053 — Build Active Sessions page: list devices, revoke session button
+- [~] T211 — Implement premium Emerald & Slate theme across auth portal [DONE]
+- [~] T212 — Implement dynamic database-driven menu system with permission gating
+- [~] T213 — Build Role-Based Task Dashboard with status/priority workflows
 
 ---
 
@@ -113,21 +116,21 @@ This audit reflects the actual repository implementation state after local commi
 > Weeks 5–6 | P0 Critical
 
 ### 2.1 Backend
-- [ ] T054 — Create `patients` migration with all demographic fields + indexes
-- [ ] T055 — Implement UHID auto-generation (format: `HMS-YYYY-XXXXXX`, unique per tenant)
-- [ ] T056 — Create `PatientController`: create, read, update, search
-- [ ] T057 — Integrate Meilisearch index for patient search (name, UHID, phone, NID)
-- [ ] T058 — Implement duplicate detection: flag if name + DOB + phone match existing record
-- [ ] T059 — Create `PatientMedicalHistoryController`: allergies, chronic conditions, surgical history
-- [ ] T060 — Create `visits` migration and `VisitController` to list full patient visit timeline
-- [ ] T061 — Implement patient photo upload to S3 with thumbnail generation
+- [x] T054 — Create `patients` migration with all demographic fields + indexes
+- [x] T055 — Implement UHID auto-generation (format: `HMS-YYYY-XXXXXX`, unique per tenant)
+- [x] T056 — Create `PatientController`: create, read, update, search
+- [x] T057 — Integrate Meilisearch index for patient search (name, UHID, phone, NID)
+- [x] T058 — Implement duplicate detection: flag if name + DOB + phone match existing record
+- [x] T059 — Create `PatientMedicalHistoryController`: allergies, chronic conditions, surgical history
+- [x] T060 — Create `visits` migration and `VisitController` to list full patient visit timeline
+- [x] T061 — Implement patient photo upload to S3 with thumbnail generation
 
 ### 2.2 Frontend
-- [ ] T062 — Build Patient Registration form (walk-in + pre-registered tabs)
-- [ ] T063 — Build Patient Search bar with live Meilisearch results
-- [ ] T064 — Build Patient Profile page: demographics, medical history, visit timeline tabs
-- [ ] T065 — Build duplicate patient warning modal with merge option
-- [ ] T066 — Build photo capture component (webcam + file upload)
+- [x] T062 — Build Patient Registration form (walk-in + pre-registered tabs)
+- [x] T063 — Build Patient Search bar with live Meilisearch results
+- [x] T064 — Build Patient Profile page: demographics, medical history, visit timeline tabs
+- [x] T065 — Build duplicate patient warning modal with merge option
+- [x] T066 — Build photo capture component (webcam + file upload)
 
 ---
 
@@ -361,13 +364,29 @@ This audit reflects the actual repository implementation state after local commi
 
 ---
 
+## 📚 PHASE 14 — Documentation, Internationalization & Team Enablement
+> Completed Documentation Work
+
+- [x] T214 — Create unified documentation hub index (`docs/README.md`) with clear navigation
+- [x] T215 — Create architecture guide for technical boundaries and cross-cutting concerns
+- [x] T216 — Create development onboarding docs (`SETUP.md`, `CONTRIBUTING.md`)
+- [x] T217 — Create API standards documentation for endpoint contracts and versioning
+- [x] T218 — Create security model documentation for tenant boundary and sensitive operations
+- [x] T219 — Create operations runbook for incident response and release-day checks
+- [x] T220 — Create internationalization/localization documentation for multi-country deployment
+- [x] T221 — Create brand guidelines documentation for international product consistency
+- [x] T222 — Create testing strategy documentation for quality gates and risk coverage
+- [x] T223 — Create release process documentation for staged rollout and rollback
+
+---
+
 ## 📈 Progress Tracker
 
 | Phase | Tasks | Done | Progress |
 |---|---|---|---|
 | Phase 0 — Foundation | 37 | 15 | 41% |
 | Phase 1 — Auth & RBAC | 16 | 11 | 69% |
-| Phase 2 — Patient | 13 | 0 | 0% |
+| Phase 2 — Patient | 13 | 13 | 100% |
 | Phase 3 — OPD | 18 | 0 | 0% |
 | Phase 4 — IPD | 18 | 0 | 0% |
 | Phase 5 — Emergency | 8 | 0 | 0% |
@@ -379,7 +398,8 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 11 — SaaS Admin | 9 | 0 | 0% |
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
-| **TOTAL** | **210** | **26** | **12%** |
+| Phase 14 — Documentation | 10 | 10 | 100% |
+| **TOTAL** | **223** | **50** | **22%** |
 
 ---
 
