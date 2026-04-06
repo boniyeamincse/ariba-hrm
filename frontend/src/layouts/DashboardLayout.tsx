@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as LucideIcons from 'lucide-react'
+import { api } from '../lib/api'
 
 type MenuItem = {
   id: number
@@ -16,15 +17,37 @@ export function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [menus, setMenus] = useState<MenuItem[]>([])
   const [expandedMenus, setExpandedMenus] = useState<number[]>([])
+  const [notificationsCount, setNotificationsCount] = useState(0)
+  const [canSwitchRole, setCanSwitchRole] = useState(false)
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Fetch menus from API
-    fetch('/api/menus')
-      .then(res => res.json())
-      .then(data => setMenus(data))
-      .catch(err => console.error('Menu fetch failed', err))
+    const loadNavState = async () => {
+      try {
+        const [menuRes, overviewRes] = await Promise.all([
+          api.get('/dashboard/menu'),
+          api.get('/dashboard/overview'),
+        ])
+
+        const roleMenu = menuRes.data?.items ?? []
+        const normalizedMenu = roleMenu.map((item: any, index: number) => ({
+          id: index + 1,
+          label: item.label,
+          icon: item.icon,
+          route: item.route,
+          children: [],
+        }))
+
+        setMenus(normalizedMenu)
+        setNotificationsCount(overviewRes.data?.top_nav?.notifications_count ?? 0)
+        setCanSwitchRole(Boolean(overviewRes.data?.top_nav?.can_switch_role))
+      } catch (error) {
+        console.error('Dashboard nav bootstrap failed', error)
+      }
+    }
+
+    loadNavState()
   }, [])
 
   const onLogout = () => {
@@ -146,10 +169,19 @@ export function DashboardLayout() {
             <h1 className="text-sm font-medium text-slate-400 uppercase tracking-widest">Workspace Terminal</h1>
           </div>
           
-          <div className="flex gap-4">
+          <div className="flex items-center gap-4">
+            {canSwitchRole && (
+              <button className="hidden sm:inline-flex items-center rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-sky-400">
+                <LucideIcons.UsersRound className="mr-1.5 h-3.5 w-3.5" />
+                Role Switch
+              </button>
+            )}
             <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold text-emerald-500">
-               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-               LIVE CLINICAL SESSION
+              <LucideIcons.Bell className="h-3.5 w-3.5" />
+              {notificationsCount} Notifications
+            </div>
+            <div className="hidden sm:inline-flex rounded-full border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+              {user?.role || 'user'}
             </div>
           </div>
         </header>

@@ -18,7 +18,7 @@ import { ResetPasswordPage } from './pages/auth/ResetPasswordPage'
 import { TwoFactorPage } from './pages/auth/TwoFactorPage'
 import { VerifyEmailPage } from './pages/auth/VerifyEmailPage'
 import { AttendancePage } from './pages/dashboard/AttendancePage'
-import { DashboardHomePage } from './pages/dashboard/DashboardHomePage'
+import { Dashboard } from './pages/dashboard/Dashboard'
 import { EmployeesPage } from './pages/dashboard/EmployeesPage'
 import { LeavePage } from './pages/dashboard/LeavePage'
 import { PayrollPage } from './pages/dashboard/PayrollPage'
@@ -28,6 +28,7 @@ import { PatientSearchPage } from './pages/dashboard/PatientSearchPage'
 import { PatientRegistrationPage } from './pages/dashboard/PatientRegistrationPage'
 import { PatientProfilePage } from './pages/dashboard/PatientProfilePage'
 import { TaskDashboard } from './pages/dashboard/TaskDashboard'
+import { ModulePlaceholderPage } from './pages/dashboard/ModulePlaceholderPage'
 
 const router = createBrowserRouter([
   {
@@ -63,7 +64,31 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <DashboardHomePage /> },
+      { index: true, element: <Dashboard /> },
+      {
+        path: 'users',
+        element: <ModulePlaceholderPage title="Users" subtitle="Role-based user and permission management." />,
+      },
+      {
+        path: 'patients',
+        element: <ModulePlaceholderPage title="Patients" subtitle="Patient search, registration, and demographic records." />,
+      },
+      {
+        path: 'appointments',
+        element: <ModulePlaceholderPage title="Appointments" subtitle="Appointment scheduling, booking, and slot management." />,
+      },
+      {
+        path: 'billing',
+        element: <ModulePlaceholderPage title="Billing" subtitle="Billing records, payments, and finance workflows." />,
+      },
+      {
+        path: 'inventory',
+        element: <ModulePlaceholderPage title="Inventory" subtitle="Stock levels, purchase orders, and suppliers." />,
+      },
+      {
+        path: 'reports',
+        element: <ModulePlaceholderPage title="Reports" subtitle="Operational, financial, and compliance analytics." />,
+      },
       { path: 'tasks', element: <TaskDashboard /> },
       { path: 'employees', element: <EmployeesPage /> },
       { path: 'attendance', element: <AttendancePage /> },

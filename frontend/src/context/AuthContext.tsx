@@ -27,11 +27,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const response = await api.post('/auth/login', input)
       const apiToken = String(response.data.token)
+      const apiUser = response.data.user ?? {}
+      const primaryRole =
+        apiUser.role ??
+        (Array.isArray(apiUser.roles) && apiUser.roles.length > 0 ? apiUser.roles[0]?.name : null) ??
+        'tenant-admin'
 
       const nextUser: AuthUser = {
-        name: response.data.user?.name ?? 'Admin User',
-        email: response.data.user?.email ?? input.email,
-        role: 'admin',
+        name: apiUser.name ?? 'Admin User',
+        email: apiUser.email ?? input.email,
+        role: String(primaryRole),
       }
 
       localStorage.setItem('ariba_token', apiToken)
@@ -44,7 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const fallbackUser: AuthUser = {
         name: 'Demo Admin',
         email: input.email,
-        role: 'admin',
+        role: 'tenant-admin',
       }
 
       localStorage.setItem('ariba_token', fallbackToken)
@@ -59,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const fallbackUser: AuthUser = {
       name: input.fullName,
       email: input.email,
-      role: 'admin',
+      role: 'tenant-admin',
     }
 
     localStorage.setItem('ariba_token', fallbackToken)

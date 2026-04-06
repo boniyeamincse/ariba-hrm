@@ -96,4 +96,18 @@ class User extends Authenticatable
             })
             ->exists();
     }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()
+            ->where('name', $role)
+            ->exists();
+    }
+
+    public function primaryRole(): ?string
+    {
+        return $this->roles()
+            ->orderBy('roles.id')
+            ->value('name');
+    }
 }

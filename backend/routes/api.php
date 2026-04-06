@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\Clinical\PatientController;
 use App\Http\Controllers\Api\Clinical\PatientMedicalHistoryController;
 use App\Http\Controllers\Api\Clinical\PharmacyController;
 use App\Http\Controllers\Api\Clinical\VisitController;
+use App\Http\Controllers\Api\RoleDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
@@ -50,6 +51,9 @@ Route::middleware(['auth:sanctum'])->prefix('auth')->group(function (): void {
 Route::middleware(['auth:sanctum', 'tenant'])->group(function (): void {
     Route::get('/menus', [\App\Http\Controllers\Api\MenuController::class, 'index']);
     Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'stats']);
+    Route::get('/dashboard/overview', [RoleDashboardController::class, 'overview']);
+    Route::get('/dashboard/widgets', [RoleDashboardController::class, 'widgets']);
+    Route::get('/dashboard/menu', [RoleDashboardController::class, 'menu']);
     
     Route::apiResource('tasks', \App\Http\Controllers\Api\TaskController::class);
 });

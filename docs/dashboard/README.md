@@ -9,6 +9,7 @@ docs/dashboard/
 ├── README.md
 ├── ARCHITECTURE.md
 ├── DESIGN_TASKS.md
+├── IMPLEMENTATION_GUIDE.md
 └── roles/
     ├── super-admin.md
     ├── tenant-admin-hospital-admin.md
@@ -37,6 +38,7 @@ docs/dashboard/
 
 - Read `ARCHITECTURE.md` for dashboard system design and access model.
 - Read `DESIGN_TASKS.md` for implementation roadmap and UI/UX tasks.
+- Read `IMPLEMENTATION_GUIDE.md` for frontend/backend implementation mapping.
 - Open each role file under `roles/` for menu, submenu, permissions, and capability scope.
 
 ## Naming Convention
