@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\Clinical\ReferralController;
 use App\Http\Controllers\Api\Clinical\VisitController;
 use App\Http\Controllers\Api\Clinical\OpdQueueController;
 use App\Http\Controllers\Api\Clinical\VitalsController;
+use App\Http\Controllers\Api\V1\Auth\AuthController as V1AuthController;
 use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\RoleDashboardController;
 use App\Http\Controllers\Api\UserManagementController;
@@ -232,3 +233,28 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
         Route::put('/{section}', [SettingsController::class, 'update'])->middleware('permission:settings.manage');
         Route::patch('/{section}', [SettingsController::class, 'update'])->middleware('permission:settings.manage');
     });
+
+Route::prefix('v1/auth')->group(function (): void {
+    Route::post('/bootstrap-super-admin', [AuthController::class, 'bootstrapSuperAdmin']);
+    Route::post('/login', [V1AuthController::class, 'login']);
+    Route::post('/forgot-password', [V1AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password', [V1AuthController::class, 'resetPassword']);
+    Route::post('/2fa/verify', [V1AuthController::class, 'verifyTwoFactor']);
+    Route::post('/register-tenant-admin', [V1AuthController::class, 'registerTenantAdmin']);
+    Route::post('/refresh-token', [V1AuthController::class, 'refreshToken']);
+    Route::post('/resend-otp', [V1AuthController::class, 'resendOtp']);
+    Route::post('/verify-email', [V1AuthController::class, 'verifyEmail']);
+    Route::post('/resend-verification-email', [V1AuthController::class, 'resendVerificationEmail']);
+});
+
+Route::middleware(['auth:sanctum', 'audit'])->prefix('v1/auth')->group(function (): void {
+    Route::get('/me', [V1AuthController::class, 'me']);
+    Route::post('/logout', [V1AuthController::class, 'logout']);
+    Route::post('/logout-all-devices', [V1AuthController::class, 'logoutAllDevices']);
+    Route::post('/change-password', [V1AuthController::class, 'changePassword']);
+    Route::get('/sessions', [V1AuthController::class, 'sessions'])->middleware('permission:auth.session.manage');
+    Route::delete('/sessions/{id}', [V1AuthController::class, 'revokeSession'])->middleware('permission:auth.session.manage');
+    Route::post('/2fa/enable', [V1AuthController::class, 'enableTwoFactor'])->middleware('permission:auth.2fa.manage');
+    Route::post('/2fa/disable', [V1AuthController::class, 'disableTwoFactor'])->middleware('permission:auth.2fa.manage');
+    Route::get('/2fa/status', [V1AuthController::class, 'twoFactorStatus'])->middleware('permission:auth.2fa.manage');
+});
