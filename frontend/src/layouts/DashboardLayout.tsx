@@ -13,6 +13,14 @@ type MenuItem = {
   children?: MenuItem[]
 }
 
+type ApiMenuItem = {
+  id?: number
+  label: string
+  icon: string | null
+  route: string | null
+  children?: ApiMenuItem[]
+}
+
 export function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [menus, setMenus] = useState<MenuItem[]>([])
@@ -31,13 +39,19 @@ export function DashboardLayout() {
         ])
 
         const roleMenu = menuRes.data?.items ?? []
-        const normalizedMenu = roleMenu.map((item: any, index: number) => ({
-          id: index + 1,
-          label: item.label,
-          icon: item.icon,
-          route: item.route,
-          children: [],
-        }))
+        let fallbackId = 1
+        const normalizeTree = (items: ApiMenuItem[]): MenuItem[] => items.map((item) => {
+          const id = item.id ?? fallbackId++
+
+          return {
+            id,
+            label: item.label,
+            icon: item.icon,
+            route: item.route,
+            children: item.children ? normalizeTree(item.children) : [],
+          }
+        })
+        const normalizedMenu = normalizeTree(roleMenu)
 
         setMenus(normalizedMenu)
         setNotificationsCount(overviewRes.data?.top_nav?.notifications_count ?? 0)
