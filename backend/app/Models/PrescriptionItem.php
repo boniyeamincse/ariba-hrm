@@ -11,6 +11,7 @@ class PrescriptionItem extends Model
 
     protected $fillable = [
         'prescription_id',
+        'drug_id',
         'medicine_name',
         'dosage',
         'frequency',

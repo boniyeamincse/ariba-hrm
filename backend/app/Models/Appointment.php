@@ -14,13 +14,17 @@ class Appointment extends Model
         'patient_id',
         'doctor_id',
         'appointment_slot_id',
+        'rescheduled_from_id',
         'scheduled_at',
         'status',
+        'cancelled_at',
+        'cancel_reason',
         'visit_mode',
         'notes',
     ];
 
     protected $casts = [
         'scheduled_at' => 'datetime',
+        'cancelled_at' => 'datetime',
     ];
 }

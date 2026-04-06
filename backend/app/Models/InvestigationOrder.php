@@ -12,9 +12,12 @@ class InvestigationOrder extends Model
     protected $fillable = [
         'tenant_id',
         'consultation_id',
+        'patient_id',
         'order_type',
         'test_name',
         'notes',
         'status',
+        'routed_module',
+        'routed_reference',
     ];
 }

@@ -4,12 +4,14 @@ use App\Http\Controllers\Api\Admin\TenantController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Clinical\BillingController;
 use App\Http\Controllers\Api\Clinical\BloodBankController;
+use App\Http\Controllers\Api\Clinical\ConsultationController;
 use App\Http\Controllers\Api\Clinical\DischargeController;
 use App\Http\Controllers\Api\Clinical\EmergencyController;
 use App\Http\Controllers\Api\Clinical\HrController;
 use App\Http\Controllers\Api\Clinical\IpdController;
 use App\Http\Controllers\Api\Clinical\InsuranceController;
 use App\Http\Controllers\Api\Clinical\InventoryController;
+use App\Http\Controllers\Api\Clinical\InvestigationOrderController;
 use App\Http\Controllers\Api\Clinical\LabController;
 use App\Http\Controllers\Api\Clinical\MortuaryController;
 use App\Http\Controllers\Api\Clinical\OpdController;
@@ -17,7 +19,12 @@ use App\Http\Controllers\Api\Clinical\AppointmentController;
 use App\Http\Controllers\Api\Clinical\PatientController;
 use App\Http\Controllers\Api\Clinical\PatientMedicalHistoryController;
 use App\Http\Controllers\Api\Clinical\PharmacyController;
+use App\Http\Controllers\Api\Clinical\PrescriptionController;
+use App\Http\Controllers\Api\Clinical\PrescriptionItemController;
+use App\Http\Controllers\Api\Clinical\ReferralController;
 use App\Http\Controllers\Api\Clinical\VisitController;
+use App\Http\Controllers\Api\Clinical\OpdQueueController;
+use App\Http\Controllers\Api\Clinical\VitalsController;
 use App\Http\Controllers\Api\RoleDashboardController;
 use App\Http\Controllers\Api\UserManagementController;
 use Illuminate\Support\Facades\Route;
@@ -107,6 +114,36 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
         Route::post('/opd/consultations/{consultation}/prescription', [OpdController::class, 'prescribe']);
         Route::post('/opd/consultations/{consultation}/investigations', [OpdController::class, 'orderInvestigations']);
 
+        Route::prefix('opd')->group(function (): void {
+            Route::get('/appointments/slots', [AppointmentController::class, 'listSlots'])->middleware('permission:appointment.view');
+            Route::post('/appointments/book', [AppointmentController::class, 'book'])->middleware('permission:appointment.manage');
+            Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->middleware('permission:appointment.manage');
+            Route::post('/appointments/{appointment}/reschedule', [AppointmentController::class, 'reschedule'])->middleware('permission:appointment.manage');
+
+            Route::post('/queue/tokens', [OpdQueueController::class, 'generateToken'])->middleware('permission:appointment.manage');
+            Route::get('/queue/state', [OpdQueueController::class, 'state'])->middleware('permission:appointment.view');
+            Route::post('/queue/call-next', [OpdQueueController::class, 'callNext'])->middleware('permission:appointment.manage');
+            Route::post('/queue/{opdQueue}/skip', [OpdQueueController::class, 'skip'])->middleware('permission:appointment.manage');
+
+            Route::post('/vitals', [VitalsController::class, 'store'])->middleware('permission:consultation.create');
+
+            Route::post('/consultations', [ConsultationController::class, 'store'])->middleware('permission:consultation.create');
+            Route::get('/icd10/search', [ConsultationController::class, 'searchIcd10'])->middleware('permission:consultation.create');
+
+            Route::post('/consultations/{consultation}/prescriptions', [PrescriptionController::class, 'store'])->middleware('permission:prescription.create');
+            Route::post('/prescriptions/{prescription}/items', [PrescriptionItemController::class, 'store'])->middleware('permission:prescription.create');
+            Route::get('/prescriptions/{prescription}/pdf-url', [PrescriptionController::class, 'pdfUrl'])->middleware('permission:prescription.create');
+
+            Route::post('/consultations/{consultation}/sick-leave-certificate', [ConsultationController::class, 'createSickLeaveCertificate'])->middleware('permission:consultation.create');
+            Route::get('/sick-leave-certificates/{certificate}/pdf-url', [ConsultationController::class, 'sickLeaveCertificateUrl'])->middleware('permission:consultation.create');
+
+            Route::post('/consultations/{consultation}/investigations', [InvestigationOrderController::class, 'store'])->middleware('permission:investigation.create');
+
+            Route::post('/referrals', [ReferralController::class, 'store'])->middleware('permission:consultation.create');
+            Route::get('/referrals/{referral}', [ReferralController::class, 'show'])->middleware('permission:consultation.create');
+            Route::post('/referrals/{referral}/letter', [ReferralController::class, 'generateLetter'])->middleware('permission:consultation.create');
+        });
+
         Route::get('/ipd/beds', [IpdController::class, 'bedAvailability']);
         Route::post('/ipd/admissions', [IpdController::class, 'admit']);
         Route::post('/ipd/admissions/{admission}/ward-rounds', [IpdController::class, 'addWardRound']);
@@ -140,6 +177,8 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
         Route::get('/appointments/slots', [AppointmentController::class, 'slots'])->middleware('permission:appointment.view');
         Route::post('/appointments/slots', [AppointmentController::class, 'createSlot'])->middleware('permission:appointment.manage');
         Route::post('/appointments/book', [AppointmentController::class, 'book'])->middleware('permission:appointment.manage');
+        Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->middleware('permission:appointment.manage');
+        Route::post('/appointments/{appointment}/reschedule', [AppointmentController::class, 'reschedule'])->middleware('permission:appointment.manage');
         Route::post('/appointments/{appointment}/telemedicine', [AppointmentController::class, 'createTelemedicineSession'])->middleware('permission:appointment.manage');
 
         Route::get('/insurance/providers', [InsuranceController::class, 'providers']);

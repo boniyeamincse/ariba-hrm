@@ -154,17 +154,17 @@ This audit reflects the actual repository implementation state after local commi
 > Weeks 6–8 | P0 Critical
 
 ### 3.1 Backend
-- [ ] T067 — Create `appointments` and `doctor_slots` migrations
-- [ ] T068 — Create `AppointmentController`: slot listing, book, cancel, reschedule
-- [ ] T069 — Create `OpdQueueController`: generate token, real-time queue state, call next, skip
-- [ ] T070 — Broadcast `OpdQueueUpdated` event via WebSocket on every queue change
-- [ ] T071 — Create `VitalsController`: record BP, temp, pulse, SpO2, weight, height, BMI calculation
-- [ ] T072 — Create `ConsultationController`: SOAP note save, ICD-10 code search via Meilisearch
-- [ ] T073 — Create `PrescriptionController` + `PrescriptionItemController`: e-prescription with drug-allergy check
-- [ ] T074 — Create `InvestigationOrderController`: order lab/radiology tests from consultation, auto-route to respective modules
-- [ ] T075 — Implement PDF generation job: e-prescription PDF → S3 → signed URL
-- [ ] T076 — Implement PDF generation job: sick leave certificate with doctor signature
-- [ ] T077 — Create `ReferralController`: internal referral to IPD/specialist + external referral letter PDF
+- [x] T067 — Create `appointments` and `doctor_slots` migrations
+- [x] T068 — Create `AppointmentController`: slot listing, book, cancel, reschedule
+- [x] T069 — Create `OpdQueueController`: generate token, real-time queue state, call next, skip
+- [x] T070 — Broadcast `OpdQueueUpdated` event via WebSocket on every queue change
+- [x] T071 — Create `VitalsController`: record BP, temp, pulse, SpO2, weight, height, BMI calculation
+- [x] T072 — Create `ConsultationController`: SOAP note save, ICD-10 code search via Meilisearch
+- [x] T073 — Create `PrescriptionController` + `PrescriptionItemController`: e-prescription with drug-allergy check
+- [x] T074 — Create `InvestigationOrderController`: order lab/radiology tests from consultation, auto-route to respective modules
+- [x] T075 — Implement PDF generation job: e-prescription PDF → S3 → signed URL
+- [x] T076 — Implement PDF generation job: sick leave certificate with doctor signature
+- [x] T077 — Create `ReferralController`: internal referral to IPD/specialist + external referral letter PDF
 
 ### 3.2 Frontend
 - [ ] T078 — Build OPD Queue dashboard with real-time token board (WebSocket)
@@ -409,7 +409,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 0 — Foundation | 37 | 15 | 41% |
 | Phase 1 — Auth & RBAC | 16 | 13 | 81% |
 | Phase 2 — Patient | 13 | 13 | 100% |
-| Phase 3 — OPD | 18 | 0 | 0% |
+| Phase 3 — OPD | 18 | 11 | 61% |
 | Phase 4 — IPD | 18 | 0 | 0% |
 | Phase 5 — Emergency | 8 | 0 | 0% |
 | Phase 6 — Pharmacy | 14 | 0 | 0% |
@@ -421,7 +421,7 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
 | Phase 14 — Documentation | 16 | 16 | 100% |
-| **TOTAL** | **229** | **58** | **25%** |
+| **TOTAL** | **229** | **69** | **30%** |
 
 ---
 
