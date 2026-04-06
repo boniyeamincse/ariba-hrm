@@ -138,9 +138,9 @@ Mark each module after it is really complete (Dev Done + Test Pass + Upload Uplo
 
 | Task ID | Task | Dev | Test | Git Upload |
 |---|---|---|---|---|
-| Task 01 | Login | Done | Pending | Pending |
-| Task 02 | Registration | Todo | Pending | Pending |
-| Task 03 | Forget Password | Todo | Pending | Pending |
+| Task 01 | Login | Done | Pass | Pending |
+| Task 02 | Registration | Done | Pass | Pending |
+| Task 03 | Forget Password | Done | Pass | Pending |
 
 ### Module 02: Patient
 
