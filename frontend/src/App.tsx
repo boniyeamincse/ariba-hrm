@@ -23,6 +23,7 @@ import { LeavePage } from './components/dashboard/LeavePage'
 import { PayrollPage } from './components/dashboard/PayrollPage'
 import { RecruitmentPage } from './components/dashboard/RecruitmentPage'
 import { SettingsPage } from './components/dashboard/SettingsPage'
+import { UsersPage } from './components/dashboard/UsersPage'
 import { PatientSearchPage } from './components/dashboard/PatientSearchPage'
 import { PatientRegistrationPage } from './components/dashboard/PatientRegistrationPage'
 import { PatientProfilePage } from './components/dashboard/PatientProfilePage'
@@ -70,10 +71,7 @@ const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <Dashboard /> },
-      {
-        path: 'users',
-        element: <ModulePlaceholderPage title="Users" subtitle="Role-based user and permission management." />,
-      },
+      { path: 'users', element: <UsersPage /> },
       {
         path: 'patients',
         element: <ModulePlaceholderPage title="Patients" subtitle="Patient search, registration, and demographic records." />,
