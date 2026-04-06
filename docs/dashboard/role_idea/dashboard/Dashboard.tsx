@@ -41,8 +41,8 @@ import {
   Users2,
   Webhook,
 } from 'lucide-react'
-import { api } from '../../lib/api'
-import { useAuth } from '../../context/useAuth'
+import { api } from '../../../../frontend/src/lib/api'
+import { useAuth } from '../../../../frontend/src/context/useAuth'
 
 type DashboardWidget = {
   key: string
