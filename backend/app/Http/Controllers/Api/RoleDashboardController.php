@@ -12,11 +12,15 @@ use App\Models\Patient;
 use App\Models\LabOrder;
 use App\Models\LabResult;
 use App\Models\Menu;
+use App\Models\AuditLog;
 use App\Models\InvestigationOrder;
 use App\Models\Invoice;
 use App\Models\OpdQueue;
+use App\Models\Payment;
 use App\Models\Prescription;
+use App\Models\Role;
 use App\Models\StaffProfile;
+use App\Models\Tenant;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -63,6 +67,165 @@ class RoleDashboardController extends Controller
         return response()->json([
             'role' => $role,
             'items' => $this->widgetsForRole($role, $metrics),
+        ]);
+    }
+
+    public function superAdminPanel(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $role = $this->normalizeRole($user?->primaryRole() ?? 'tenant-admin');
+
+        if ($role !== 'super-admin') {
+            return response()->json([
+                'message' => 'Forbidden. Super Admin access required.',
+            ], 403);
+        }
+
+        $today = today();
+        $activeTenants = Tenant::query()->where('status', 'active')->count();
+        $suspendedTenants = Tenant::query()->whereIn('status', ['suspended', 'inactive'])->count();
+        $totalTenants = Tenant::query()->count();
+        $totalUsers = User::query()->count();
+        $paymentsToday = Payment::query()->whereDate('paid_at', $today)->count();
+        $revenueToday = (float) Payment::query()->whereDate('paid_at', $today)->sum('amount');
+        $invoicesToday = Invoice::query()->whereDate('issued_at', $today)->count();
+        $outstandingInvoices = Invoice::query()->whereColumn('amount_paid', '<', 'total_due')->count();
+        $apiCallsToday = AuditLog::query()->whereDate('created_at', $today)->where('path', 'like', '%api/%')->count();
+        $webhookFailures = AuditLog::query()->whereDate('created_at', $today)->where('path', 'like', '%webhook%')->where('status_code', '>=', 400)->count();
+        $securityAlerts = AuditLog::query()->whereDate('created_at', $today)->where('status_code', '>=', 400)->count();
+        $enabledModules = Menu::query()->whereNull('parent_id')->where('is_active', true)->count();
+
+        $moduleStatus = Menu::query()
+            ->whereNull('parent_id')
+            ->orderBy('label')
+            ->get(['label', 'is_active'])
+            ->map(fn (Menu $menu) => [
+                'module' => $menu->label,
+                'enabled' => (bool) $menu->is_active,
+            ])
+            ->values()
+            ->all();
+
+        $upcoming = collect();
+
+        Invoice::query()
+            ->whereColumn('amount_paid', '<', 'total_due')
+            ->latest('issued_at')
+            ->take(3)
+            ->get(['invoice_no', 'tenant_id', 'total_due', 'amount_paid', 'issued_at'])
+            ->each(function (Invoice $invoice) use ($upcoming): void {
+                $balance = max((float) $invoice->total_due - (float) $invoice->amount_paid, 0);
+
+                $upcoming->push([
+                    'title' => 'Invoice Follow-up Required',
+                    'detail' => sprintf('%s has outstanding balance of %.2f.', $invoice->invoice_no ?? 'Invoice', $balance),
+                    'route' => '/dashboard/billing',
+                    'priority' => 'medium',
+                ]);
+            });
+
+        Task::query()
+            ->where('status', 'todo')
+            ->whereIn('priority', ['urgent', 'high'])
+            ->latest('created_at')
+            ->take(3)
+            ->get(['title', 'priority'])
+            ->each(function (Task $task) use ($upcoming): void {
+                $upcoming->push([
+                    'title' => 'Operational Task Pending',
+                    'detail' => sprintf('%s (%s priority).', $task->title, Str::headline((string) $task->priority)),
+                    'route' => '/dashboard/tasks',
+                    'priority' => $task->priority === 'urgent' ? 'high' : 'medium',
+                ]);
+            });
+
+        if ($suspendedTenants > 0) {
+            $upcoming->push([
+                'title' => 'Suspended Tenants Need Review',
+                'detail' => sprintf('%d tenant(s) are suspended or inactive.', $suspendedTenants),
+                'route' => '/dashboard/users',
+                'priority' => 'high',
+            ]);
+        }
+
+        return response()->json([
+            'summary' => [
+                'total_hospitals' => $totalTenants,
+                'active_hospitals' => $activeTenants,
+                'suspended_hospitals' => $suspendedTenants,
+                'total_users' => $totalUsers,
+                'revenue_today' => round($revenueToday, 2),
+                'payments_today' => $paymentsToday,
+            ],
+            'system_control' => [
+                'full_access' => true,
+                'global_settings_configurable' => true,
+                'enabled_modules' => $enabledModules,
+                'maintenance_mode' => app()->isDownForMaintenance(),
+            ],
+            'tenant_management' => [
+                'total_hospitals' => $totalTenants,
+                'active_hospitals' => $activeTenants,
+                'suspended_hospitals' => $suspendedTenants,
+                'multi_branch_support' => true,
+            ],
+            'user_management' => [
+                'total_users' => $totalUsers,
+                'roles_count' => Role::query()->count(),
+                'global_user_visibility' => true,
+                'force_password_reset' => true,
+            ],
+            'subscription_billing' => [
+                'plans_supported' => true,
+                'payments_today' => $paymentsToday,
+                'invoices_today' => $invoicesToday,
+                'outstanding_invoices' => $outstandingInvoices,
+                'renewal_monitoring' => true,
+            ],
+            'analytics_reports' => [
+                'total_hospitals' => $totalTenants,
+                'total_users' => $totalUsers,
+                'revenue_today' => round($revenueToday, 2),
+                'api_calls_today' => $apiCallsToday,
+            ],
+            'security_compliance' => [
+                'activity_logs_today' => AuditLog::query()->whereDate('created_at', $today)->count(),
+                'suspicious_activity' => $securityAlerts,
+                'rbac_roles' => Role::query()->count(),
+                'security_policy_enforcement' => true,
+            ],
+            'system_configuration' => [
+                'smtp_configured' => (bool) config('mail.default'),
+                'sms_gateway_configured' => (bool) config('services.twilio.sid'),
+                'payment_gateway_configured' => (bool) config('services.stripe.key'),
+                'api_configuration_ready' => true,
+            ],
+            'module_control' => [
+                'feature_toggles_per_tenant' => true,
+                'modules' => $moduleStatus,
+            ],
+            'backup_maintenance' => [
+                'full_backup_supported' => true,
+                'database_restore_supported' => true,
+                'maintenance_mode' => app()->isDownForMaintenance(),
+                'system_updates' => 'manual',
+            ],
+            'integration_control' => [
+                'api_calls_today' => $apiCallsToday,
+                'webhook_failures' => $webhookFailures,
+                'third_party_integrations' => true,
+            ],
+            'ai_advanced' => [
+                'ai_assistant_enabled' => (bool) env('AI_ASSISTANT_ENABLED', true),
+                'ai_usage_monitoring' => true,
+                'automation_rules' => true,
+            ],
+            'support_monitoring' => [
+                'open_issues' => Task::query()->where('status', 'todo')->count(),
+                'urgent_issues' => Task::query()->where('status', 'todo')->where('priority', 'urgent')->count(),
+                'system_health_monitoring' => true,
+            ],
+            'upcoming' => $upcoming->take(6)->values()->all(),
         ]);
     }
 

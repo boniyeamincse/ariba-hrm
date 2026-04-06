@@ -1,5 +1,7 @@
 import { AlertTriangle, Activity, Boxes, Building2, Shield, Webhook } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { api } from '../../../../lib/api'
 
 type DashboardWidget = {
   key: string
@@ -12,6 +14,90 @@ type SuperAdminDashboardProps = {
   todayLabel: string
   formatCompact: (value: number) => string
   getNumericWidgetValue: (widget?: DashboardWidget) => number
+}
+
+type SuperAdminPanelResponse = {
+  summary: {
+    total_hospitals: number
+    active_hospitals: number
+    suspended_hospitals: number
+    total_users: number
+    revenue_today: number
+    payments_today: number
+  }
+  system_control: {
+    full_access: boolean
+    global_settings_configurable: boolean
+    enabled_modules: number
+    maintenance_mode: boolean
+  }
+  tenant_management: {
+    total_hospitals: number
+    active_hospitals: number
+    suspended_hospitals: number
+    multi_branch_support: boolean
+  }
+  user_management: {
+    total_users: number
+    roles_count: number
+    global_user_visibility: boolean
+    force_password_reset: boolean
+  }
+  subscription_billing: {
+    payments_today: number
+    invoices_today: number
+    outstanding_invoices: number
+    renewal_monitoring: boolean
+  }
+  analytics_reports: {
+    total_hospitals: number
+    total_users: number
+    revenue_today: number
+    api_calls_today: number
+  }
+  security_compliance: {
+    activity_logs_today: number
+    suspicious_activity: number
+    rbac_roles: number
+    security_policy_enforcement: boolean
+  }
+  system_configuration: {
+    smtp_configured: boolean
+    sms_gateway_configured: boolean
+    payment_gateway_configured: boolean
+    api_configuration_ready: boolean
+  }
+  module_control: {
+    feature_toggles_per_tenant: boolean
+    modules: Array<{ module: string; enabled: boolean }>
+  }
+  backup_maintenance: {
+    full_backup_supported: boolean
+    database_restore_supported: boolean
+    maintenance_mode: boolean
+    system_updates: string
+  }
+  integration_control: {
+    api_calls_today: number
+    webhook_failures: number
+    third_party_integrations: boolean
+  }
+  ai_advanced: {
+    ai_assistant_enabled: boolean
+    ai_usage_monitoring: boolean
+    automation_rules: boolean
+  }
+  support_monitoring: {
+    open_issues: number
+    urgent_issues: number
+    system_health_monitoring: boolean
+  }
+  upcoming: Array<{
+    title: string
+    detail: string
+    route: string
+    priority: string
+  }>
 }
 
 const capabilityTiles = [
@@ -29,6 +115,21 @@ export function SuperAdminDashboard({
   formatCompact,
   getNumericWidgetValue,
 }: SuperAdminDashboardProps) {
+  const [panel, setPanel] = useState<SuperAdminPanelResponse | null>(null)
+
+  useEffect(() => {
+    const loadPanel = async () => {
+      try {
+        const response = await api.get<SuperAdminPanelResponse>('/dashboard/super-admin/panel')
+        setPanel(response.data)
+      } catch {
+        setPanel(null)
+      }
+    }
+
+    loadPanel()
+  }, [])
+
   const signalValues = [
     { label: 'Security Alerts', icon: Shield, value: getNumericWidgetValue(widgets.find((w) => w.key === 'security_alerts')) },
     { label: 'Webhook Failures', icon: Webhook, value: getNumericWidgetValue(widgets.find((w) => w.key === 'webhook_failures')) },
@@ -38,6 +139,39 @@ export function SuperAdminDashboard({
   ]
 
   const hasCriticalSignal = signalValues[0].value > 0 || signalValues[1].value > 0
+
+  const commandMatrix = useMemo(() => {
+    if (!panel) {
+      return []
+    }
+
+    return [
+      {
+        title: 'System Control',
+        detail: `Full access active • ${panel.system_control.enabled_modules} modules enabled`,
+      },
+      {
+        title: 'Tenant Management',
+        detail: `${panel.tenant_management.total_hospitals} hospitals • ${panel.tenant_management.suspended_hospitals} suspended`,
+      },
+      {
+        title: 'Global User Management',
+        detail: `${panel.user_management.total_users} users • ${panel.user_management.roles_count} roles`,
+      },
+      {
+        title: 'Subscription & Billing',
+        detail: `${panel.subscription_billing.payments_today} payments • ${panel.subscription_billing.outstanding_invoices} outstanding invoices`,
+      },
+      {
+        title: 'Security & Compliance',
+        detail: `${panel.security_compliance.activity_logs_today} logs today • ${panel.security_compliance.suspicious_activity} suspicious events`,
+      },
+      {
+        title: 'Integrations & AI',
+        detail: `${panel.integration_control.api_calls_today} API calls • AI ${panel.ai_advanced.ai_assistant_enabled ? 'enabled' : 'disabled'}`,
+      },
+    ]
+  }, [panel])
 
   return (
     <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
@@ -67,7 +201,7 @@ export function SuperAdminDashboard({
         )}
 
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {capabilityTiles.map((tile) => (
+          {(commandMatrix.length > 0 ? commandMatrix : capabilityTiles).map((tile) => (
             <div key={tile.title} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
               <p className="text-sm font-semibold text-white">{tile.title}</p>
               <p className="mt-1 text-xs text-slate-300">{tile.detail}</p>
@@ -99,6 +233,35 @@ export function SuperAdminDashboard({
               </div>
             )
           })}
+        </div>
+      </article>
+
+      <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-3">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-white">Upcoming Actions</h2>
+          <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Priority Queue</span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {(panel?.upcoming ?? []).map((item, idx) => (
+            <Link
+              key={`${item.title}-${idx}`}
+              to={item.route}
+              className="rounded-xl border border-white/10 bg-white/[0.02] p-3 transition hover:bg-white/[0.06]"
+            >
+              <p className="text-sm font-semibold text-white">{item.title}</p>
+              <p className="mt-1 text-xs text-slate-300">{item.detail}</p>
+              <p className={`mt-2 text-[11px] font-semibold uppercase tracking-wide ${item.priority === 'high' ? 'text-rose-300' : 'text-amber-300'}`}>
+                {item.priority} priority
+              </p>
+            </Link>
+          ))}
+
+          {(panel?.upcoming?.length ?? 0) === 0 && (
+            <div className="rounded-xl border border-dashed border-white/20 px-4 py-5 text-sm text-slate-400">
+              No urgent upcoming actions. System is operating within expected thresholds.
+            </div>
+          )}
         </div>
       </article>
     </section>

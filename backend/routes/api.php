@@ -61,6 +61,7 @@ Route::middleware(['auth:sanctum', 'tenant'])->group(function (): void {
         Route::get('/menus', [\App\Http\Controllers\Api\MenuController::class, 'index']);
         Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'stats']);
         Route::get('/dashboard/overview', [RoleDashboardController::class, 'overview']);
+        Route::get('/dashboard/super-admin/panel', [RoleDashboardController::class, 'superAdminPanel']);
         Route::get('/dashboard/widgets', [RoleDashboardController::class, 'widgets']);
         Route::get('/dashboard/menu', [RoleDashboardController::class, 'menu']);
     });
