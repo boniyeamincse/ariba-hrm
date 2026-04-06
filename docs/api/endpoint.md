@@ -324,3 +324,60 @@ Supported sections:
 
 - Some appointment and OPD endpoints exist in both general and OPD-prefixed paths for compatibility.
 - For tenant-scoped APIs, send requests through tenant subdomain host to resolve tenant context.
+
+## 10) RBAC Module (`/v1/rbac`)
+
+Middleware: `auth:sanctum`, `tenant`, `audit`, RBAC-permission-based access control.
+
+### Roles
+
+| Method | Endpoint | Permission | Description |
+|---|---|---|---|
+| GET | `/v1/rbac/roles` | `rbac:view_roles` | List all roles with filters (search, active) |
+| POST | `/v1/rbac/roles` | `rbac:create_role` | Create new role with permissions |
+| GET | `/v1/rbac/roles/{id}` | `rbac:view_roles` | Get role with permissions |
+| PATCH | `/v1/rbac/roles/{id}` | `rbac:update_role` | Update role metadata and sync permissions |
+| DELETE | `/v1/rbac/roles/{id}` | `rbac:delete_role` | Delete custom role (system roles protected) |
+
+### Permissions
+
+| Method | Endpoint | Permission | Description |
+|---|---|---|---|
+| GET | `/v1/rbac/permissions` | `rbac:view_permissions` | List permissions with module filtering |
+| POST | `/v1/rbac/permissions` | `rbac:create_permission` | Create new permission |
+| GET | `/v1/rbac/permissions/{id}` | `rbac:view_permissions` | Get permission details |
+| PATCH | `/v1/rbac/permissions/{id}` | `rbac:update_permission` | Update permission metadata |
+| DELETE | `/v1/rbac/permissions/{id}` | `rbac:delete_permission` | Delete custom permissions |
+
+### Role-Permission Mapping
+
+| Method | Endpoint | Permission | Description |
+|---|---|---|---|
+| PUT | `/v1/rbac/roles/{id}/permissions` | `rbac:sync_permissions` | Bulk sync role permissions |
+
+### Permission Groups
+
+| Method | Endpoint | Permission | Description |
+|---|---|---|---|
+| GET | `/v1/rbac/permission-groups` | None | List permission groups (by key: rbac, auth, patient, etc.) |
+| POST | `/v1/rbac/permission-groups` | `rbac:manage_groups` | Create permission group |
+
+### User-Role Assignment
+
+| Method | Endpoint | Permission | Description |
+|---|---|---|---|
+| POST | `/v1/rbac/users/{userId}/roles` | `rbac:assign_role` | Assign one or more roles to user |
+| DELETE | `/v1/rbac/users/{userId}/roles/{roleId}` | `rbac:assign_role` | Remove role from user |
+
+### RBAC Matrix (Dashboard)
+
+| Method | Endpoint | Permission | Description |
+|---|---|---|---|
+| GET | `/v1/rbac/matrix` | `rbac:view_matrix` | Get full permission matrix for dashboard UI |
+
+### System Roles
+
+Pre-seeded roles:
+- `super-admin` (system, all permissions)
+- `tenant-admin` (system, management permissions)
+- `hospital-admin`, `doctor`, `nurse`, `receptionist`, `pharmacist`, `lab-technician` (custom)
