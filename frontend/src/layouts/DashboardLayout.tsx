@@ -196,8 +196,15 @@ export function DashboardLayout() {
         setDashboardRole(normalizedRole)
 
         if (normalizedRole === 'super-admin') {
-          setMenus(superAdminMenus)
-          setExpandedMenus([1000, 1100, 1200, 1300])
+          try {
+            const superAdminMenuRes = await api.get('/dashboard/super-admin/menu')
+            const backendSuperAdminMenu = normalizeTree(superAdminMenuRes.data?.items ?? [])
+            setMenus(backendSuperAdminMenu.length > 0 ? backendSuperAdminMenu : superAdminMenus)
+            setExpandedMenus([1000, 1100, 1200, 1300])
+          } catch {
+            setMenus(superAdminMenus)
+            setExpandedMenus([1000, 1100, 1200, 1300])
+          }
         } else {
           setMenus(normalizedMenu)
         }
