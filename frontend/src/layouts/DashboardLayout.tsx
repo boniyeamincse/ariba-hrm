@@ -247,20 +247,24 @@ export function DashboardLayout() {
             onClick={() => setIsSidebarOpen(false)}
             end={item.route === '/dashboard'}
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all ${
+              `group flex items-center gap-3 rounded-xl border px-3 py-2 text-sm font-medium transition-all ${
                 isActive 
-                  ? 'bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)]' 
-                  : 'text-slate-400 hover:bg-white/5 hover:text-white'
-              } ${isChild ? 'ml-4 py-1.5 opacity-80' : ''}`
+                  ? isChild
+                    ? 'border-emerald-300 bg-emerald-100/90 text-emerald-900'
+                    : 'border-white/40 bg-white/20 text-white shadow-[0_10px_25px_-18px_rgba(12,18,36,0.9)]'
+                  : isChild
+                    ? 'border-transparent text-emerald-50/80 hover:bg-white/10 hover:text-white'
+                    : 'border-transparent text-emerald-100/85 hover:bg-white/10 hover:text-white'
+              } ${isChild ? 'ml-4 py-1.5 text-[13px]' : ''}`
             }
           >
-            {renderIcon(item.icon)}
+            <span className="opacity-90 group-hover:opacity-100">{renderIcon(item.icon)}</span>
             <span>{item.label}</span>
           </NavLink>
         ) : (
           <button
             onClick={() => toggleExpand(item.id)}
-            className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all text-slate-400 hover:bg-white/5 hover:text-white ${isChild ? 'ml-4 py-1.5 opacity-80' : ''}`}
+            className={`flex w-full items-center justify-between gap-3 rounded-xl border border-transparent px-3 py-2 text-sm font-semibold transition-all text-emerald-50/85 hover:bg-white/10 hover:text-white ${isChild ? 'ml-4 py-1.5 text-[13px] font-medium' : ''}`}
           >
             <div className="flex items-center gap-3">
               {renderIcon(item.icon)}
@@ -279,7 +283,7 @@ export function DashboardLayout() {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
+                className="overflow-hidden border-l border-white/15 ml-2 pl-1"
               >
                 {item.children?.map(child => renderNavItem(child, true))}
               </motion.div>
@@ -291,32 +295,32 @@ export function DashboardLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-100">
+    <div className="flex min-h-screen bg-gradient-to-br from-slate-200 via-slate-100 to-emerald-50 text-slate-800">
       {/* Sidebar - Desktop */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 border-r border-white/5 bg-slate-950 p-6 transition-transform md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="mb-10 flex items-center gap-2 text-xl font-bold tracking-tight text-emerald-400">
-          <div className="h-6 w-6 rounded-md bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]" />
+      <aside className={`fixed inset-y-0 left-0 z-50 w-72 border-r border-emerald-900/20 bg-gradient-to-b from-emerald-900 via-emerald-800 to-teal-900 p-5 transition-transform md:static md:translate-x-0 md:rounded-r-3xl md:shadow-[0_20px_45px_-25px_rgba(6,78,59,0.85)] ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="mb-8 flex items-center gap-2 text-xl font-bold tracking-tight text-emerald-200">
+          <div className="h-7 w-7 rounded-lg bg-emerald-300 shadow-[0_0_16px_rgba(110,231,183,0.7)]" />
           <span>ARIBA <span className="text-white text-base">HMS</span></span>
         </div>
 
-        <nav className="space-y-1">
+        <nav className="space-y-1 pb-28">
           {menus.map(menu => renderNavItem(menu))}
         </nav>
 
         <div className="absolute bottom-6 left-6 right-6">
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-4 backdrop-blur-xl">
+          <div className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-xl">
              <div className="flex items-center gap-3 mb-4">
-                <div className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center text-emerald-400 font-bold">
+                <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center text-white font-bold">
                   {user?.name?.[0]}
                 </div>
                 <div>
-                   <p className="text-sm font-semibold truncate max-w-[120px]">{user?.name}</p>
-                   <p className="text-[10px] text-slate-500 truncate max-w-[120px]">{user?.email}</p>
+                   <p className="text-sm font-semibold text-white truncate max-w-[120px]">{user?.name}</p>
+                   <p className="text-[10px] text-emerald-100/75 truncate max-w-[120px]">{user?.email}</p>
                 </div>
              </div>
              <button
                 onClick={onLogout}
-                className="w-full rounded-xl bg-rose-500/10 py-2 text-xs font-bold text-rose-500 transition-all hover:bg-rose-500 hover:text-white"
+                className="w-full rounded-xl border border-rose-200/30 bg-rose-100/10 py-2 text-xs font-bold text-rose-100 transition-all hover:bg-rose-500 hover:text-white"
               >
                 Sign Out
               </button>
@@ -326,29 +330,29 @@ export function DashboardLayout() {
 
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
-        <header className="flex h-16 items-center justify-between border-b border-white/5 bg-slate-950/50 px-6 backdrop-blur-md">
+        <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white/70 px-6 backdrop-blur-md">
           <div className="flex items-center gap-4">
             <button
                onClick={() => setIsSidebarOpen(true)}
-               className="rounded-lg border border-white/10 p-2 text-slate-400 hover:text-white md:hidden"
+               className="rounded-lg border border-slate-200 bg-white p-2 text-slate-500 hover:text-slate-800 md:hidden"
             >
               <LucideIcons.Menu className="h-5 w-5" />
             </button>
-            <h1 className="text-sm font-medium text-slate-400 uppercase tracking-widest">Workspace Terminal</h1>
+            <h1 className="text-sm font-medium text-slate-500 uppercase tracking-widest">Workspace Terminal</h1>
           </div>
           
           <div className="flex items-center gap-4">
             {canSwitchRole && (
-              <button className="hidden sm:inline-flex items-center rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-sky-400">
+              <button className="hidden sm:inline-flex items-center rounded-full border border-teal-300 bg-teal-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-teal-700">
                 <LucideIcons.UsersRound className="mr-1.5 h-3.5 w-3.5" />
                 Role Switch
               </button>
             )}
-            <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold text-emerald-500">
+            <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-bold text-emerald-700">
               <LucideIcons.Bell className="h-3.5 w-3.5" />
               {notificationsCount} Notifications
             </div>
-            <div className="hidden sm:inline-flex rounded-full border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+            <div className="hidden sm:inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-600">
               {dashboardRole || user?.role || 'user'}
             </div>
           </div>
@@ -362,7 +366,7 @@ export function DashboardLayout() {
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm md:hidden" 
+          className="fixed inset-0 z-40 bg-slate-900/45 backdrop-blur-sm md:hidden" 
           onClick={() => setIsSidebarOpen(false)}
         />
       )}

@@ -278,33 +278,33 @@ export function Dashboard() {
 
   return (
     <div className="mx-auto max-w-[1320px] space-y-6">
-      <section className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/[0.03] p-5 md:flex-row md:items-center md:justify-between">
+      <section className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_20px_45px_-30px_rgba(15,23,42,0.25)] md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-300">Workspace Insights</p>
-          <h1 className="mt-1 text-2xl font-bold text-white md:text-3xl">{title}</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">Workspace Insights</p>
+          <h1 className="mt-1 text-2xl font-bold text-slate-900 md:text-3xl">{title}</h1>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           {isSuperAdmin ? (
             <>
-              <Link to="/dashboard/users" className="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500">
+              <Link to="/dashboard/users" className="rounded-xl bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-500">
                 Manage Tenants
               </Link>
-              <Link to="/dashboard/settings" className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10">
+              <Link to="/dashboard/settings" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100">
                 Global Settings
               </Link>
             </>
           ) : (
             <>
-              <Link to="/dashboard/opd/consultations" className="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500">
+              <Link to="/dashboard/opd/consultations" className="rounded-xl bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-500">
                 + New Consultation
               </Link>
-              <Link to="/dashboard/appointments" className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10">
+              <Link to="/dashboard/appointments" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100">
                 Schedule Availability
               </Link>
             </>
           )}
-          <div className="rounded-xl border border-white/15 bg-white/[0.04] px-3 py-2 text-xs text-slate-300">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
             {todayLabel}
           </div>
         </div>
@@ -321,7 +321,7 @@ export function Dashboard() {
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {loading && (
-          <div className="col-span-full rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-slate-400">
+          <div className="col-span-full rounded-2xl border border-slate-200 bg-white p-6 text-slate-500">
             Loading dashboard widgets...
           </div>
         )}
@@ -331,9 +331,9 @@ export function Dashboard() {
           const growth = ((idx % 2 === 0 ? 1 : -1) * (idx + 2)) * 5
 
           return (
-            <article key={widget.key} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <article key={widget.key} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_30px_-25px_rgba(15,23,42,0.45)]">
               <div className="flex items-start justify-between">
-                <div className="rounded-lg bg-indigo-500/15 p-2 text-indigo-300">
+                <div className="rounded-lg bg-emerald-100 p-2 text-emerald-700">
                   <Icon className="h-4 w-4" />
                 </div>
                 <span className={`rounded-md px-2 py-1 text-[10px] font-semibold ${growth >= 0 ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}`}>
@@ -341,12 +341,12 @@ export function Dashboard() {
                 </span>
               </div>
 
-              <p className="mt-3 text-xs text-slate-400">{widget.label}</p>
-              <p className="mt-1 text-3xl font-bold text-white">{formatWidgetValue(widget)}</p>
+              <p className="mt-3 text-xs text-slate-500">{widget.label}</p>
+              <p className="mt-1 text-3xl font-bold text-slate-900">{formatWidgetValue(widget)}</p>
 
               <div className="mt-3 flex h-8 items-end gap-1">
                 {[40, 72, 48, 85, 62, 78, 69].map((h, barIdx) => (
-                  <div key={`${widget.key}-spark-${barIdx}`} className="flex-1 rounded-sm bg-indigo-400/70" style={{ height: `${h}%` }} />
+                  <div key={`${widget.key}-spark-${barIdx}`} className="flex-1 rounded-sm bg-emerald-400/80" style={{ height: `${h}%` }} />
                 ))}
               </div>
             </article>
@@ -363,27 +363,27 @@ export function Dashboard() {
         />
       ) : (
         <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-          <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-1">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5 xl:col-span-1">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-white">Upcoming Appointments</h2>
-              <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Today</span>
+              <h2 className="text-xl font-semibold text-slate-900">Upcoming Appointments</h2>
+              <span className="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-slate-600">Today</span>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-200">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
                   <UserRound className="h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">{upcomingPatient.name}</p>
-                  <p className="text-xs text-slate-400">{upcomingPatient.uhid}</p>
+                  <p className="text-sm font-semibold text-slate-900">{upcomingPatient.name}</p>
+                  <p className="text-xs text-slate-500">{upcomingPatient.uhid}</p>
                 </div>
               </div>
 
-              <p className="text-sm font-semibold text-slate-100">{upcomingPatient.visitType}</p>
-              <p className="mt-1 text-xs text-slate-400">{upcomingPatient.date} at {upcomingPatient.time}</p>
+              <p className="text-sm font-semibold text-slate-800">{upcomingPatient.visitType}</p>
+              <p className="mt-1 text-xs text-slate-500">{upcomingPatient.date} at {upcomingPatient.time}</p>
 
-              <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-300">
+              <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-700">
                 <div>
                   <p className="text-slate-500">Department</p>
                   <p className="mt-1 font-semibold">{upcomingPatient.department}</p>
@@ -394,28 +394,28 @@ export function Dashboard() {
                 </div>
               </div>
 
-              <Link to="/dashboard/opd/consultations" className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+              <Link to="/dashboard/opd/consultations" className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-500">
                 Start Appointment
               </Link>
             </div>
           </article>
 
-          <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-2">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5 xl:col-span-2">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-white">Appointments</h2>
-              <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Monthly</span>
+              <h2 className="text-xl font-semibold text-slate-900">Appointments</h2>
+              <span className="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-slate-600">Monthly</span>
             </div>
 
-            <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-slate-400">
-              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-indigo-400" />Total Appointments</span>
+            <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-500" />Total Appointments</span>
               <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-400" />Completed Appointments</span>
             </div>
 
-            <div className="grid grid-cols-12 gap-2 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="grid grid-cols-12 gap-2 rounded-xl border border-slate-200 bg-slate-50 p-4">
               {chartSeries.map((point, idx) => (
                 <div key={point.label} className="flex flex-col items-center gap-2">
                   <div className="flex h-44 w-full items-end justify-center gap-1">
-                    <div className="w-2 rounded bg-indigo-500/85" style={{ height: `${Math.min(point.value, 100)}%` }} />
+                    <div className="w-2 rounded bg-emerald-600/85" style={{ height: `${Math.min(point.value, 100)}%` }} />
                     <div className="w-2 rounded bg-emerald-400/80" style={{ height: `${Math.max(18, Math.min(point.value - 22 + (idx % 3) * 6, 90))}%` }} />
                   </div>
                   <span className="text-[10px] text-slate-500">{point.label}</span>
@@ -433,28 +433,28 @@ export function Dashboard() {
           const growth = value === 0 ? 0 : Math.max(5, Math.min(95, (value % 37) + 12))
 
           return (
-            <article key={widget.key} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <div className="mb-3 inline-flex rounded-lg bg-teal-500/20 p-2 text-teal-300">
+            <article key={widget.key} className="rounded-2xl border border-slate-200 bg-white p-4">
+              <div className="mb-3 inline-flex rounded-lg bg-teal-100 p-2 text-teal-700">
                 <Icon className="h-4 w-4" />
               </div>
-              <p className="text-xs text-slate-400">{widget.label}</p>
-              <p className="mt-1 text-2xl font-bold text-white">{formatCompact(value)}</p>
-              <p className="mt-1 text-[11px] text-emerald-300">+{growth}% Last Week</p>
+              <p className="text-xs text-slate-500">{widget.label}</p>
+              <p className="mt-1 text-2xl font-bold text-slate-900">{formatCompact(value)}</p>
+              <p className="mt-1 text-[11px] text-emerald-600">+{growth}% Last Week</p>
             </article>
           )
         })}
 
         {secondaryWidgets.length === 0 && (
-          <div className="col-span-full rounded-xl border border-dashed border-white/20 px-4 py-5 text-sm text-slate-400">
+          <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-5 text-sm text-slate-500">
             Additional operational cards will appear here as modules expand.
           </div>
         )}
       </section>
 
       <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-2">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 xl:col-span-2">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">Quick Actions</h2>
+            <h2 className="text-lg font-semibold text-slate-900">Quick Actions</h2>
             <span className="text-xs uppercase tracking-wide text-slate-500">Role Authorized</span>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -465,34 +465,34 @@ export function Dashboard() {
                 <Link
                   key={`${action.route}-${action.label}`}
                   to={action.route}
-                  className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 text-sm text-slate-200 transition hover:bg-white/[0.06]"
+                  className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100"
                 >
                   <span className="flex items-center gap-2">
-                    <Icon className="h-4 w-4 text-emerald-400" />
+                    <Icon className="h-4 w-4 text-emerald-600" />
                     {action.label}
                   </span>
-                  <span className="text-xs text-slate-400">Open</span>
+                  <span className="text-xs text-slate-500">Open</span>
                 </Link>
               )
             })}
 
             {quickActions.length === 0 && (
-              <div className="rounded-xl border border-dashed border-white/20 px-4 py-5 text-sm text-slate-400">
+              <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-5 text-sm text-slate-500">
                 No quick actions configured for this role yet.
               </div>
             )}
           </div>
         </article>
 
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-          <h2 className="mb-4 text-lg font-semibold text-white">Focus Areas</h2>
-          <ul className="space-y-2 text-sm text-slate-300">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5">
+          <h2 className="mb-4 text-lg font-semibold text-slate-900">Focus Areas</h2>
+          <ul className="space-y-2 text-sm text-slate-700">
             {focusAreas.map((area) => (
-              <li key={area} className="rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">{area}</li>
+              <li key={area} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">{area}</li>
             ))}
           </ul>
           {focusAreas.length === 0 && (
-            <p className="rounded-lg border border-dashed border-white/20 px-3 py-2 text-sm text-slate-400">No focus areas configured yet.</p>
+            <p className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-500">No focus areas configured yet.</p>
           )}
           <p className="mt-4 text-xs uppercase tracking-wider text-slate-500">Active Role: {role}</p>
         </article>

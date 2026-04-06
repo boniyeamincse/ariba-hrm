@@ -154,17 +154,17 @@ export function SuperAdminDashboard({
 
 	return (
 		<section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-			<article className="rounded-2xl border border-indigo-400/30 bg-[linear-gradient(140deg,rgba(30,27,75,0.55),rgba(37,99,235,0.2),rgba(15,23,42,0.92))] p-5 xl:col-span-2">
+			<article className="rounded-2xl border border-slate-200 bg-white p-5 xl:col-span-2">
 				<div className="mb-4 flex items-center justify-between">
 					<div>
-						<h2 className="text-xl font-semibold text-white">Super Admin Control Center</h2>
-						<p className="mt-1 text-xs text-indigo-100">Global Scope • {todayLabel}</p>
+						<h2 className="text-xl font-semibold text-slate-900">Super Admin Control Center</h2>
+						<p className="mt-1 text-xs text-slate-500">Global Scope • {todayLabel}</p>
 					</div>
 					<div className="flex items-center gap-2">
-						<Link to="/dashboard/users" className="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500">
+						<Link to="/dashboard/users" className="rounded-xl bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-500">
 							Tenant Management
 						</Link>
-						<Link to="/dashboard/settings" className="rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold text-slate-100 hover:bg-white/20">
+						<Link to="/dashboard/settings" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100">
 							Global Settings
 						</Link>
 					</div>
@@ -181,18 +181,18 @@ export function SuperAdminDashboard({
 
 				<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
 					{(commandMatrix.length > 0 ? commandMatrix : capabilityTiles).map((tile) => (
-						<div key={tile.title} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
-							<p className="text-sm font-semibold text-white">{tile.title}</p>
-							<p className="mt-1 text-xs text-slate-300">{tile.detail}</p>
+						<div key={tile.title} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+							<p className="text-sm font-semibold text-slate-900">{tile.title}</p>
+							<p className="mt-1 text-xs text-slate-600">{tile.detail}</p>
 						</div>
 					))}
 				</div>
 			</article>
 
-			<article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+			<article className="rounded-2xl border border-slate-200 bg-white p-5">
 				<div className="mb-4 flex items-center justify-between">
-					<h2 className="text-lg font-semibold text-white">System Health Signals</h2>
-					<span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Live</span>
+					<h2 className="text-lg font-semibold text-slate-900">System Health Signals</h2>
+					<span className="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-slate-600">Live</span>
 				</div>
 
 				<div className="space-y-3">
@@ -201,12 +201,12 @@ export function SuperAdminDashboard({
 						const isDanger = (signal.label === 'Security Alerts' || signal.label === 'Webhook Failures') && signal.value > 0
 
 						return (
-							<div key={signal.label} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">
-								<span className="inline-flex items-center gap-2 text-sm text-slate-300">
-									<SignalIcon className={`h-4 w-4 ${isDanger ? 'text-rose-300' : 'text-indigo-300'}`} />
+							<div key={signal.label} className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+								<span className="inline-flex items-center gap-2 text-sm text-slate-700">
+									<SignalIcon className={`h-4 w-4 ${isDanger ? 'text-rose-500' : 'text-emerald-700'}`} />
 									{signal.label}
 								</span>
-								<span className={`text-sm font-semibold ${isDanger ? 'text-rose-300' : 'text-white'}`}>
+								<span className={`text-sm font-semibold ${isDanger ? 'text-rose-600' : 'text-slate-900'}`}>
 									{formatCompact(signal.value)}
 								</span>
 							</div>
@@ -215,10 +215,10 @@ export function SuperAdminDashboard({
 				</div>
 			</article>
 
-			<article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-3">
+			<article className="rounded-2xl border border-slate-200 bg-white p-5 xl:col-span-3">
 				<div className="mb-4 flex items-center justify-between">
-					<h2 className="text-lg font-semibold text-white">Upcoming Actions</h2>
-					<span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Priority Queue</span>
+					<h2 className="text-lg font-semibold text-slate-900">Upcoming Actions</h2>
+					<span className="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-slate-600">Priority Queue</span>
 				</div>
 
 				<div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -226,18 +226,18 @@ export function SuperAdminDashboard({
 						<Link
 							key={`${item.title}-${idx}`}
 							to={item.route}
-							className="rounded-xl border border-white/10 bg-white/[0.02] p-3 transition hover:bg-white/[0.06]"
+							className="rounded-xl border border-slate-200 bg-slate-50 p-3 transition hover:bg-slate-100"
 						>
-							<p className="text-sm font-semibold text-white">{item.title}</p>
-							<p className="mt-1 text-xs text-slate-300">{item.detail}</p>
-							<p className={`mt-2 text-[11px] font-semibold uppercase tracking-wide ${item.priority === 'high' ? 'text-rose-300' : 'text-amber-300'}`}>
+							<p className="text-sm font-semibold text-slate-900">{item.title}</p>
+							<p className="mt-1 text-xs text-slate-600">{item.detail}</p>
+							<p className={`mt-2 text-[11px] font-semibold uppercase tracking-wide ${item.priority === 'high' ? 'text-rose-600' : 'text-amber-600'}`}>
 								{item.priority} priority
 							</p>
 						</Link>
 					))}
 
 					{(panel?.upcoming?.length ?? 0) === 0 && (
-						<div className="rounded-xl border border-dashed border-white/20 px-4 py-5 text-sm text-slate-400">
+						<div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-5 text-sm text-slate-500">
 							No urgent upcoming actions. System is operating within expected thresholds.
 						</div>
 					)}
