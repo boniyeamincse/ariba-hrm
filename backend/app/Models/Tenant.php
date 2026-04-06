@@ -15,6 +15,11 @@ class Tenant extends Model
         'subdomain',
         'database_name',
         'status',
+        'metadata',
+    ];
+
+    protected $casts = [
+        'metadata' => 'array',
     ];
 
     public function users(): HasMany

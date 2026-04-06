@@ -43,6 +43,16 @@ class TenantManagementApiTest extends TestCase
             'admin_name' => 'Blue River Admin',
             'admin_email' => 'admin@blue-river.test',
             'admin_password' => 'Password1!',
+            'metadata' => [
+                'hospital' => [
+                    'legal_entity_name' => 'Blue River Health Ltd',
+                    'registration_number' => 'REG-2026-001',
+                ],
+                'billing' => [
+                    'plan' => 'growth',
+                    'cycle' => 'monthly',
+                ],
+            ],
         ]);
 
         $createResponse->assertCreated()
@@ -55,16 +65,35 @@ class TenantManagementApiTest extends TestCase
             ->getJson('/api/tenants/'.$tenantId)
             ->assertOk()
             ->assertJsonPath('tenant.id', $tenantId)
+            ->assertJsonPath('tenant.metadata.hospital.legal_entity_name', 'Blue River Health Ltd')
             ->assertJsonPath('summary.users_total', 1);
 
         $this->withToken($this->token)
             ->patchJson('/api/tenants/'.$tenantId, [
                 'name' => 'Blue River Medical Center',
                 'subdomain' => 'blue-river-mc',
+                'metadata' => [
+                    'hospital' => [
+                        'city' => 'Dhaka',
+                    ],
+                ],
             ])
             ->assertOk()
             ->assertJsonPath('tenant.name', 'Blue River Medical Center')
-            ->assertJsonPath('tenant.subdomain', 'blue-river-mc');
+            ->assertJsonPath('tenant.subdomain', 'blue-river-mc')
+            ->assertJsonPath('tenant.metadata.hospital.city', 'Dhaka');
+
+        $this->withToken($this->token)
+            ->patchJson('/api/tenants/'.$tenantId.'/metadata', [
+                'metadata' => [
+                    'billing' => [
+                        'invoice_email' => 'billing@blue-river.test',
+                    ],
+                ],
+            ])
+            ->assertOk()
+            ->assertJsonPath('tenant.metadata.billing.invoice_email', 'billing@blue-river.test')
+            ->assertJsonPath('tenant.metadata.hospital.city', 'Dhaka');
 
         $this->withToken($this->token)
             ->patchJson('/api/tenants/'.$tenantId.'/status', ['status' => 'suspended'])

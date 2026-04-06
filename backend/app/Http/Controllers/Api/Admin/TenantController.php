@@ -45,6 +45,7 @@ class TenantController extends Controller
             'admin_name' => ['required', 'string', 'max:255'],
             'admin_email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'admin_password' => ['required', 'string', 'min:8'],
+            'metadata' => ['sometimes', 'array'],
         ]);
 
         $response = DB::transaction(function () use ($data): JsonResponse {
@@ -53,6 +54,7 @@ class TenantController extends Controller
                 'subdomain' => strtolower($data['subdomain']),
                 'database_name' => $data['database_name'],
                 'status' => 'active',
+                'metadata' => $this->sanitizeMetadata($data['metadata'] ?? []),
             ]);
 
             $admin = User::create([
@@ -100,10 +102,15 @@ class TenantController extends Controller
                 Rule::unique('tenants', 'database_name')->ignore($tenant->id),
             ],
             'status' => ['sometimes', 'required', Rule::in(self::ALLOWED_STATUSES)],
+            'metadata' => ['sometimes', 'array'],
         ]);
 
         if (array_key_exists('subdomain', $data)) {
             $data['subdomain'] = strtolower($data['subdomain']);
+        }
+
+        if (array_key_exists('metadata', $data)) {
+            $data['metadata'] = $this->sanitizeMetadata($data['metadata']);
         }
 
         $tenant->update($data);
@@ -124,6 +131,25 @@ class TenantController extends Controller
 
         return response()->json([
             'message' => 'Tenant status updated successfully.',
+            'tenant' => $tenant->fresh(),
+        ]);
+    }
+
+    public function updateMetadata(Request $request, Tenant $tenant): JsonResponse
+    {
+        $data = $request->validate([
+            'metadata' => ['required', 'array'],
+        ]);
+
+        $currentMetadata = is_array($tenant->metadata) ? $tenant->metadata : [];
+        $incomingMetadata = $this->sanitizeMetadata($data['metadata']);
+
+        $tenant->update([
+            'metadata' => array_replace_recursive($currentMetadata, $incomingMetadata),
+        ]);
+
+        return response()->json([
+            'message' => 'Tenant metadata updated successfully.',
             'tenant' => $tenant->fresh(),
         ]);
     }
@@ -169,5 +195,28 @@ class TenantController extends Controller
         } catch (\Throwable $exception) {
             report($exception);
         }
+    }
+
+    private function sanitizeMetadata(array $metadata): array
+    {
+        $allowedKeys = [
+            'hospital',
+            'contact',
+            'billing',
+            'admin',
+            'technical',
+            'notes',
+        ];
+
+        return collect($metadata)
+            ->only($allowedKeys)
+            ->map(function ($value) {
+                if (is_array($value)) {
+                    return $value;
+                }
+
+                return (string) $value;
+            })
+            ->all();
     }
 }
