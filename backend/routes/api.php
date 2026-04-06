@@ -26,7 +26,7 @@ use App\Http\Controllers\Api\Clinical\VisitController;
 use App\Http\Controllers\Api\Clinical\OpdQueueController;
 use App\Http\Controllers\Api\Clinical\VitalsController;
 use App\Http\Controllers\Api\V1\Auth\AuthController as V1AuthController;
-use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\Settings\SettingsController as SettingsV1Controller;
 use App\Http\Controllers\Api\V1\Rbac\RbacController;
 use App\Http\Controllers\Api\RoleDashboardController;
 use App\Http\Controllers\Api\UserManagementController;
@@ -229,10 +229,70 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
 Route::middleware(['auth:sanctum', 'tenant', 'audit'])
     ->prefix('v1/settings')
     ->group(function (): void {
-        Route::get('/', [SettingsController::class, 'index'])->middleware('permission:settings.view');
-        Route::get('/{section}', [SettingsController::class, 'show'])->middleware('permission:settings.view');
-        Route::put('/{section}', [SettingsController::class, 'update'])->middleware('permission:settings.manage');
-        Route::patch('/{section}', [SettingsController::class, 'update'])->middleware('permission:settings.manage');
+        // General
+        Route::get('/general', [SettingsV1Controller::class, 'getGeneral'])->middleware('permission:settings.read');
+        Route::put('/general', [SettingsV1Controller::class, 'updateGeneral'])->middleware('permission:settings.update');
+
+        // Branding
+        Route::get('/branding', [SettingsV1Controller::class, 'getBranding'])->middleware('permission:settings.read');
+        Route::put('/branding', [SettingsV1Controller::class, 'updateBranding'])->middleware('permission:settings.branding.update');
+
+        // Localization
+        Route::get('/localization', [SettingsV1Controller::class, 'getLocalization'])->middleware('permission:settings.read');
+        Route::put('/localization', [SettingsV1Controller::class, 'updateLocalization'])->middleware('permission:settings.update');
+
+        // Notifications
+        Route::get('/notifications', [SettingsV1Controller::class, 'getNotifications'])->middleware('permission:settings.read');
+        Route::put('/notifications', [SettingsV1Controller::class, 'updateNotifications'])->middleware('permission:settings.notification.update');
+
+        // Email Config
+        Route::get('/email-config', [SettingsV1Controller::class, 'getEmailConfig'])->middleware('permission:settings.read');
+        Route::put('/email-config', [SettingsV1Controller::class, 'updateEmailConfig'])->middleware('permission:settings.update');
+        Route::post('/email-config/test', [SettingsV1Controller::class, 'testEmailConfig'])->middleware('permission:settings.update');
+
+        // SMS Config
+        Route::get('/sms-config', [SettingsV1Controller::class, 'getSmsConfig'])->middleware('permission:settings.read');
+        Route::put('/sms-config', [SettingsV1Controller::class, 'updateSmsConfig'])->middleware('permission:settings.update');
+        Route::post('/sms-config/test', [SettingsV1Controller::class, 'testSmsConfig'])->middleware('permission:settings.update');
+
+        // Billing
+        Route::get('/billing', [SettingsV1Controller::class, 'getBilling'])->middleware('permission:settings.read');
+        Route::put('/billing', [SettingsV1Controller::class, 'updateBilling'])->middleware('permission:settings.billing.update');
+
+        // Clinical
+        Route::get('/clinical', [SettingsV1Controller::class, 'getClinical'])->middleware('permission:settings.read');
+        Route::put('/clinical', [SettingsV1Controller::class, 'updateClinical'])->middleware('permission:settings.clinical.update');
+
+        // Appointments
+        Route::get('/appointments', [SettingsV1Controller::class, 'getAppointments'])->middleware('permission:settings.read');
+        Route::put('/appointments', [SettingsV1Controller::class, 'updateAppointments'])->middleware('permission:settings.update');
+
+        // IPD
+        Route::get('/ipd', [SettingsV1Controller::class, 'getIpd'])->middleware('permission:settings.read');
+        Route::put('/ipd', [SettingsV1Controller::class, 'updateIpd'])->middleware('permission:settings.update');
+
+        // Pharmacy
+        Route::get('/pharmacy', [SettingsV1Controller::class, 'getPharmacy'])->middleware('permission:settings.read');
+        Route::put('/pharmacy', [SettingsV1Controller::class, 'updatePharmacy'])->middleware('permission:settings.update');
+
+        // Lab
+        Route::get('/lab', [SettingsV1Controller::class, 'getLab'])->middleware('permission:settings.read');
+        Route::put('/lab', [SettingsV1Controller::class, 'updateLab'])->middleware('permission:settings.update');
+
+        // Integrations
+        Route::get('/integrations', [SettingsV1Controller::class, 'getIntegrations'])->middleware('permission:settings.read');
+        Route::put('/integrations', [SettingsV1Controller::class, 'updateIntegrations'])->middleware('permission:settings.integration.update');
+
+        // Security
+        Route::get('/security', [SettingsV1Controller::class, 'getSecurity'])->middleware('permission:settings.read');
+        Route::put('/security', [SettingsV1Controller::class, 'updateSecurity'])->middleware('permission:settings.security.update');
+
+        // Templates
+        Route::get('/templates', [SettingsV1Controller::class, 'getTemplates'])->middleware('permission:settings.read');
+        Route::put('/templates', [SettingsV1Controller::class, 'updateTemplates'])->middleware('permission:settings.update');
+
+        // Audit Logs
+        Route::get('/audit-logs', [SettingsV1Controller::class, 'getAuditLogs'])->middleware('permission:settings.audit.read');
     });
 
 Route::prefix('v1/auth')->group(function (): void {
