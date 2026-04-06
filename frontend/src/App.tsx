@@ -13,7 +13,6 @@ import { HomePage } from './pages/public/HomePage'
 import { PricingPage } from './pages/public/PricingPage'
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage'
 import { LoginPage } from './pages/auth/LoginPage'
-import { RegisterPage } from './pages/auth/RegisterPage'
 import { ResetPasswordPage } from './pages/auth/ResetPasswordPage'
 import { TwoFactorPage } from './pages/auth/TwoFactorPage'
 import { VerifyEmailPage } from './pages/auth/VerifyEmailPage'
@@ -53,7 +52,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="login" replace /> },
       { path: 'login', element: <LoginPage /> },
-      { path: 'register', element: <RegisterPage /> },
+      { path: 'register', element: <Navigate to="/auth/login" replace /> },
       { path: 'forgot-password', element: <ForgotPasswordPage /> },
       { path: 'reset-password', element: <ResetPasswordPage /> },
       { path: 'verify-email', element: <VerifyEmailPage /> },
@@ -61,7 +60,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: '/login', element: <Navigate to="/auth/login" replace /> },
-  { path: '/register', element: <Navigate to="/auth/register" replace /> },
+  { path: '/register', element: <Navigate to="/auth/login" replace /> },
   {
     path: '/dashboard',
     element: (

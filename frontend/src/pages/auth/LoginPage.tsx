@@ -33,12 +33,16 @@ export function LoginPage() {
 
   return (
     <div className="space-y-6">
-      <div>
+      <div className="space-y-2">
+        <span className="inline-flex rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-300">
+          Secure Staff Login
+        </span>
         <h1 className="text-3xl font-bold tracking-tight text-white">Welcome back</h1>
-        <p className="mt-2 text-slate-400">Enter your credentials to access the clinical hub.</p>
+        <p className="text-slate-400">Sign in to access your hospital workspace and live operations panel.</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_20px_60px_-30px_rgba(16,185,129,0.35)]">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="space-y-2">
           <label className="text-sm font-medium text-slate-300 ml-1">Work Email</label>
           <div className="relative group">
@@ -48,7 +52,7 @@ export function LoginPage() {
             <input 
               {...register('email', { required: "Email is required" })} 
               type="email"
-              className="w-full rounded-2xl border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-white outline-none ring-offset-slate-950 transition-all focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20" 
+              className="w-full rounded-2xl border border-white/10 bg-slate-900/80 py-3 pl-10 pr-4 text-white outline-none ring-offset-slate-950 transition-all focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20" 
               placeholder="name@hospital.com" 
             />
           </div>
@@ -69,7 +73,7 @@ export function LoginPage() {
             <input 
               {...register('password', { required: "Password is required" })} 
               type={showPassword ? 'text' : 'password'}
-              className="w-full rounded-2xl border border-white/10 bg-white/5 py-3 pl-10 pr-12 text-white outline-none ring-offset-slate-950 transition-all focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20" 
+              className="w-full rounded-2xl border border-white/10 bg-slate-900/80 py-3 pl-10 pr-12 text-white outline-none ring-offset-slate-950 transition-all focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20" 
               placeholder="••••••••" 
             />
             <button 
@@ -87,9 +91,12 @@ export function LoginPage() {
           {errors.password && <p className="text-xs text-rose-500 ml-1">{errors.password.message}</p>}
         </div>
 
-        <div className="flex items-center gap-2 px-1">
+        <div className="flex items-center justify-between gap-2 px-1">
+          <div className="flex items-center gap-2">
           <input type="checkbox" id="remember" className="rounded border-white/20 bg-white/10 text-emerald-500 focus:ring-emerald-500" />
           <label htmlFor="remember" className="text-xs text-slate-400">Keep me logged in for 30 days</label>
+          </div>
+          <span className="hidden text-[11px] text-slate-500 sm:inline">HIPAA-aware session guard enabled</span>
         </div>
 
         <button 
@@ -112,15 +119,11 @@ export function LoginPage() {
             {authError}
           </p>
         )}
-      </form>
+        </form>
 
-      <div className="pt-4 text-center">
-        <p className="text-sm text-slate-400">
-          New to Ariba HMS?{" "}
-          <NavLink to="/auth/register" className="font-bold text-emerald-400 hover:text-emerald-300">
-            Create an Account
-          </NavLink>
-        </p>
+        <div className="mt-5 rounded-xl border border-white/10 bg-slate-900/60 px-3 py-2 text-[11px] text-slate-400">
+          Tip: Use your assigned work email and role credentials. Super Admin accounts are granted global access across tenants.
+        </div>
       </div>
     </div>
   )

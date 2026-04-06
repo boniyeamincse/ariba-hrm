@@ -74,14 +74,6 @@ export function AuthLayout() {
             >
               Login
             </NavLink>
-            <NavLink
-              to="/auth/register"
-              className={({ isActive }) =>
-                `rounded-lg px-4 py-2 text-sm font-semibold transition ${isActive ? 'bg-emerald-500 text-white' : 'text-slate-300 hover:text-white'}`
-              }
-            >
-              Register
-            </NavLink>
           </div>
 
           <div className="">
