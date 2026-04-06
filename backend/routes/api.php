@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\Clinical\ReferralController;
 use App\Http\Controllers\Api\Clinical\VisitController;
 use App\Http\Controllers\Api\Clinical\OpdQueueController;
 use App\Http\Controllers\Api\Clinical\VitalsController;
+use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\RoleDashboardController;
 use App\Http\Controllers\Api\UserManagementController;
 use Illuminate\Support\Facades\Route;
@@ -221,4 +222,13 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
         Route::get('/mortuary/records', [MortuaryController::class, 'index']);
         Route::post('/mortuary/records', [MortuaryController::class, 'create']);
         Route::post('/mortuary/records/{record}/release', [MortuaryController::class, 'release']);
+    });
+
+Route::middleware(['auth:sanctum', 'tenant', 'audit'])
+    ->prefix('v1/settings')
+    ->group(function (): void {
+        Route::get('/', [SettingsController::class, 'index'])->middleware('permission:settings.view');
+        Route::get('/{section}', [SettingsController::class, 'show'])->middleware('permission:settings.view');
+        Route::put('/{section}', [SettingsController::class, 'update'])->middleware('permission:settings.manage');
+        Route::patch('/{section}', [SettingsController::class, 'update'])->middleware('permission:settings.manage');
     });

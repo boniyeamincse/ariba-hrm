@@ -42,6 +42,8 @@ class RolePermissionSeeder extends Seeder
             'auth.view-sessions',
             'auth.revoke-sessions',
             'super-admin.manage-tenants',
+            'settings.view',
+            'settings.manage',
         ];
 
         $rolePermissions = [
@@ -74,6 +76,8 @@ class RolePermissionSeeder extends Seeder
                 'auth.view-sessions',
                 'auth.revoke-sessions',
                 'audit.view',
+                'settings.view',
+                'settings.manage',
             ],
             'hospital-admin' => [
                 'dashboard.view',
@@ -90,6 +94,8 @@ class RolePermissionSeeder extends Seeder
                 'billing.view',
                 'billing.manage',
                 'reports.view',
+                'settings.view',
+                'settings.manage',
             ],
             'hospital-manager' => ['dashboard.view', 'patient.view', 'appointment.view', 'billing.view', 'reports.view'],
             'operations-manager' => ['dashboard.view', 'patient.view', 'appointment.view', 'inventory.view', 'reports.view'],
@@ -162,6 +168,8 @@ class RolePermissionSeeder extends Seeder
                 'audit.view',
                 'reports.view',
                 'integration.api',
+                'settings.view',
+                'settings.manage',
             ],
             'inventory-manager' => [
                 'dashboard.view',
