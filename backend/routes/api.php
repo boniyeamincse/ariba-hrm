@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\Clinical\OpdQueueController;
 use App\Http\Controllers\Api\Clinical\VitalsController;
 use App\Http\Controllers\Api\V1\Auth\AuthController as V1AuthController;
 use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\Rbac\RbacController;
 use App\Http\Controllers\Api\RoleDashboardController;
 use App\Http\Controllers\Api\UserManagementController;
 use Illuminate\Support\Facades\Route;
@@ -258,3 +259,36 @@ Route::middleware(['auth:sanctum', 'audit'])->prefix('v1/auth')->group(function 
     Route::post('/2fa/disable', [V1AuthController::class, 'disableTwoFactor'])->middleware('permission:auth.2fa.manage');
     Route::get('/2fa/status', [V1AuthController::class, 'twoFactorStatus'])->middleware('permission:auth.2fa.manage');
 });
+
+// RBAC Module Routes (v1)
+Route::middleware(['auth:sanctum', 'tenant', 'audit'])
+    ->prefix('v1/rbac')
+    ->group(function (): void {
+        // Roles Management
+        Route::get('/roles', [RbacController::class, 'indexRoles'])->middleware('permission:rbac:view_roles');
+        Route::post('/roles', [RbacController::class, 'storeRole'])->middleware('permission:rbac:create_role');
+        Route::get('/roles/{id}', [RbacController::class, 'showRole'])->middleware('permission:rbac:view_roles');
+        Route::patch('/roles/{id}', [RbacController::class, 'updateRole'])->middleware('permission:rbac:update_role');
+        Route::delete('/roles/{id}', [RbacController::class, 'deleteRole'])->middleware('permission:rbac:delete_role');
+
+        // Permissions Management
+        Route::get('/permissions', [RbacController::class, 'indexPermissions'])->middleware('permission:rbac:view_permissions');
+        Route::post('/permissions', [RbacController::class, 'storePermission'])->middleware('permission:rbac:create_permission');
+        Route::get('/permissions/{id}', [RbacController::class, 'showPermission'])->middleware('permission:rbac:view_permissions');
+        Route::patch('/permissions/{id}', [RbacController::class, 'updatePermission'])->middleware('permission:rbac:update_permission');
+        Route::delete('/permissions/{id}', [RbacController::class, 'deletePermission'])->middleware('permission:rbac:delete_permission');
+
+        // Role-Permission Mapping
+        Route::put('/roles/{id}/permissions', [RbacController::class, 'syncRolePermissions'])->middleware('permission:rbac:sync_permissions');
+
+        // Permission Groups
+        Route::get('/permission-groups', [RbacController::class, 'indexPermissionGroups']);
+        Route::post('/permission-groups', [RbacController::class, 'storePermissionGroup'])->middleware('permission:rbac:manage_groups');
+
+        // User-Role Assignment
+        Route::post('/users/{userId}/roles', [RbacController::class, 'assignRolesToUser'])->middleware('permission:rbac:assign_role');
+        Route::delete('/users/{userId}/roles/{roleId}', [RbacController::class, 'removeRoleFromUser'])->middleware('permission:rbac:assign_role');
+
+        // RBAC Matrix Dashboard
+        Route::get('/matrix', [RbacController::class, 'getMatrix'])->middleware('permission:rbac:view_matrix');
+    });

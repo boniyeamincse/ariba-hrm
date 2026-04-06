@@ -21,11 +21,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('patient_visits', function (Blueprint $table): void {
-            $table->dropIndex('patient_visits_tenant_patient_visit_at_index');
-            $table->dropIndex('patient_visits_tenant_type_visit_at_index');
-            $table->dropIndex('patient_visits_tenant_reference_index');
+            $table->dropIndexIfExists('patient_visits_tenant_patient_visit_at_index');
+            $table->dropIndexIfExists('patient_visits_tenant_type_visit_at_index');
+            $table->dropIndexIfExists('patient_visits_tenant_reference_index');
 
-            $table->dropColumn(['summary', 'meta']);
+            if (Schema::hasColumn('patient_visits', 'summary')) {
+                $table->dropColumn(['summary', 'meta']);
+            }
         });
     }
 };

@@ -2,23 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Permission\Models\Permission as SpatiePermission;
 
-class Permission extends SpatiePermission
+class PermissionGroup extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'name',
-        'guard_name',
         'tenant_id',
-        'display_name',
-        'module_key',
+        'name',
+        'key',
         'description',
-        'is_system',
+        'sort_order',
+        'is_active',
     ];
 
     protected $casts = [
-        'is_system' => 'boolean',
+        'is_active' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -37,8 +39,8 @@ class Permission extends SpatiePermission
         return $query;
     }
 
-    public function scopeModule($query, string $moduleKey)
+    public function scopeActive($query)
     {
-        return $query->where('module_key', $moduleKey);
+        return $query->where('is_active', true);
     }
 }
