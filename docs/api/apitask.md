@@ -75,11 +75,11 @@ Use this exact order for better development results. Start a module only when it
 | Authentication & RBAC | T047 | Staff suspension/reactivation | Todo | Not Run | Pending |
 | Patient Registration & Demographics | T054 | Patients migration + indexes | Done | Pass | Pending |
 | Patient Registration & Demographics | T055 | UHID generation service | Done | Pass | Pending |
-| Patient Registration & Demographics | T056 | PatientController create/read/update/search | Done | Pass | Pending |
-| Patient Registration & Demographics | T058 | Duplicate detection logic | Done | Pass | Pending |
-| Patient Registration & Demographics | T059 | Medical history API | Done | Pass | Pending |
-| Patient Registration & Demographics | T060 | Visit timeline API | Done | Pass | Pending |
-| Patient Registration & Demographics | T061 | Patient photo upload API | Done | Pass | Pending |
+| Patient Registration & Demographics | T056 | PatientController create/read/update/search | In Progress | Fail | Pending |
+| Patient Registration & Demographics | T058 | Duplicate detection logic | In Progress | Fail | Pending |
+| Patient Registration & Demographics | T059 | Medical history API | In Progress | Fail | Pending |
+| Patient Registration & Demographics | T060 | Visit timeline API | In Progress | Fail | Pending |
+| Patient Registration & Demographics | T061 | Patient photo upload API | In Progress | Fail | Pending |
 | OPD (Out-Patient) | T067 | Appointments + doctor slots migrations | Done | Pass | Pending |
 | OPD (Out-Patient) | T068 | AppointmentController | Done | Pass | Pending |
 | OPD (Out-Patient) | T069 | OPD queue API | Done | Pass | Pending |
@@ -133,50 +133,50 @@ Use this exact order for better development results. Start a module only when it
 
 | Module | Task ID | Task | Dev Status | Test | Upload |
 |---|---|---|---|---|---|
-| Dashboard | M001 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Tenant Management | M002 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| Dashboard | M001 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Tenant Management | M002 | Implement module APIs and contracts | In Progress | Pass | Pending |
 | Hospital Setup | M003 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Branch / Facility Management | M004 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Department Management | M005 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| User Management | M006 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Role & Permission Management (RBAC) | M007 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Staff Management | M008 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Patient Management | M009 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| User Management | M006 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Role & Permission Management (RBAC) | M007 | Implement module APIs and contracts | In Progress | Pass | Pending |
+| Staff Management | M008 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Patient Management | M009 | Implement module APIs and contracts | In Progress | Fail | Pending |
 | Patient Portal | M010 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Appointment Management | M011 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| OPD Management | M012 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| IPD Management | M013 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Emergency / ER Management | M014 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| Appointment Management | M011 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| OPD Management | M012 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| IPD Management | M013 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Emergency / ER Management | M014 | Implement module APIs and contracts | In Progress | Not Run | Pending |
 | Ward Management | M015 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Bed Management | M016 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| Bed Management | M016 | Implement module APIs and contracts | In Progress | Not Run | Pending |
 | Doctor Management | M017 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Nurse Management | M018 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Consultation Management | M019 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| E-Prescription | M020 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Prescription Management | M021 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| Consultation Management | M019 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| E-Prescription | M020 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Prescription Management | M021 | Implement module APIs and contracts | In Progress | Not Run | Pending |
 | Medication Administration Record (MAR) | M022 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | OT / Surgery Management | M023 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Anesthesia Management | M024 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Blood Bank Management | M025 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Laboratory Management | M026 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| Blood Bank Management | M025 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Laboratory Management | M026 | Implement module APIs and contracts | In Progress | Not Run | Pending |
 | Radiology / Imaging Management | M027 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Pharmacy Management | M028 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Inventory / Store Management | M029 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Procurement / Purchase Management | M030 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| Pharmacy Management | M028 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Inventory / Store Management | M029 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Procurement / Purchase Management | M030 | Implement module APIs and contracts | In Progress | Not Run | Pending |
 | Vendor / Supplier Management | M031 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Asset Management | M032 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Ambulance / Transport Management | M033 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Billing Management | M034 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Invoicing | M035 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Payment Management | M036 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Insurance / TPA Management | M037 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Claims Management | M038 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| Billing Management | M034 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Invoicing | M035 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Payment Management | M036 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Insurance / TPA Management | M037 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| Claims Management | M038 | Implement module APIs and contracts | In Progress | Not Run | Pending |
 | Revenue Cycle Management | M039 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Refund Management | M040 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Finance / Accounts Management | M041 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Tax Management | M042 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| Payroll Management | M043 | Implement module APIs and contracts | Todo | Not Run | Pending |
-| HR Management | M044 | Implement module APIs and contracts | Todo | Not Run | Pending |
+| Payroll Management | M043 | Implement module APIs and contracts | In Progress | Not Run | Pending |
+| HR Management | M044 | Implement module APIs and contracts | In Progress | Not Run | Pending |
 | Attendance Management | M045 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Leave Management | M046 | Implement module APIs and contracts | Todo | Not Run | Pending |
 | Shift / Duty Roster Management | M047 | Implement module APIs and contracts | Todo | Not Run | Pending |
@@ -258,8 +258,8 @@ These are extra tasks to improve software quality, stability, and release succes
 | X013 | Reliability | Add retry policy and dead-letter handling for queued jobs | Todo | Not Run | Pending |
 | X014 | Observability | Add request correlation id and structured logs | Todo | Not Run | Pending |
 | X015 | Observability | Add health, readiness, and dependency-check endpoints | In Progress | Pass | Pending |
-| X016 | Testing | Add happy-path + edge-case + failure-case tests per endpoint | In Progress | Pass | Pending |
-| X017 | Testing | Add module integration tests (cross-module workflows) | In Progress | Pass | Pending |
+| X016 | Testing | Add happy-path + edge-case + failure-case tests per endpoint | In Progress | Fail | Pending |
+| X017 | Testing | Add module integration tests (cross-module workflows) | In Progress | Fail | Pending |
 | X018 | Testing | Add smoke test suite for pre-release validation | Todo | Not Run | Pending |
 | X019 | Data | Add seed packs: minimal, demo, and load-test datasets | Todo | Not Run | Pending |
 | X020 | CI/CD | Add CI gate: lint + unit + feature + migration check | In Progress | Pass | Pending |
@@ -293,3 +293,4 @@ Statuses auto-updated to In Progress/Pass where implementation evidence exists:
 - Pagination is implemented in several listing controllers (tenant, patient, billing, lab, inventory, pharmacy, users).
 - Feature tests exist for auth, tenant management, and patient workflows.
 - CI workflow exists and runs backend tests + frontend lint/test/build.
+- Current gap: `PatientModuleTest` has failing scenarios (403 responses) and is marked as Fail in related rows until fixed.
