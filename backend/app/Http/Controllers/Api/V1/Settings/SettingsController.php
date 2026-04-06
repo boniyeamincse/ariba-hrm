@@ -311,8 +311,6 @@ class SettingsController extends Controller
 
     public function getAuditLogs(Request $request): JsonResponse
     {
-        $this->authorize('settings.audit.read');
-
         $paginator = $this->service()->getAuditLogs($request->only(['section', 'user_id', 'from', 'to', 'per_page']));
 
         return response()->json([

@@ -122,6 +122,9 @@ class SettingsModuleTest extends TestCase
 
     public function test_general_get_is_cached_and_put_clears_cache(): void
     {
+        $seedResponse = $this->tenantRequest('put', '/api/v1/settings/general', $this->generalPayload('Initial Hospital'));
+        $seedResponse->assertOk();
+
         $firstGet = $this->tenantRequest('get', '/api/v1/settings/general');
         $firstGet->assertOk();
 
@@ -259,12 +262,12 @@ class SettingsModuleTest extends TestCase
             ->assertJsonPath('pagination.per_page', 1);
 
         $this->assertGreaterThanOrEqual(2, (int) $paginated->json('pagination.total'));
-        $this->assertIsArray($paginated->json('data.data'));
+        $this->assertIsArray($paginated->json('data'));
 
         $filtered = $this->tenantRequest('get', '/api/v1/settings/audit-logs?section=general&per_page=10');
         $filtered->assertOk();
 
-        $records = $filtered->json('data.data');
+        $records = $filtered->json('data');
         $this->assertIsArray($records);
 
         foreach ($records as $record) {
@@ -301,7 +304,12 @@ class SettingsModuleTest extends TestCase
 
     private function tenantRequest(string $method, string $uri, array $data = [], bool $authenticate = true, ?string $token = null)
     {
-        $request = $this->withServerVariables(['HTTP_HOST' => $this->host])
+        $url = "http://{$this->host}{$uri}";
+
+        $request = $this->withServerVariables([
+            'HTTP_HOST' => $this->host,
+            'SERVER_NAME' => $this->host,
+        ])
             ->withHeader('Host', $this->host);
 
         if ($authenticate) {
@@ -309,9 +317,9 @@ class SettingsModuleTest extends TestCase
         }
 
         return match ($method) {
-            'post' => $request->postJson($uri, $data),
-            'get' => $request->getJson($uri),
-            'put' => $request->putJson($uri, $data),
+            'post' => $request->postJson($url, $data),
+            'get' => $request->getJson($url),
+            'put' => $request->putJson($url, $data),
             default => throw new \InvalidArgumentException('Unsupported request method.'),
         };
     }
