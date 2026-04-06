@@ -7,6 +7,32 @@ Status legend:
 - Test: Not Run | Pass | Fail
 - Upload: Pending | Uploaded
 
+## API Module Format Example
+
+### Module 01: Auth
+
+| Task ID | Task | Dev | Test | Git Upload |
+|---|---|---|---|---|
+| Task 01 | Login | Done | Pending | Pending |
+| Task 02 | Registration | Todo | Pending | Pending |
+| Task 03 | Forget Password | Todo | Pending | Pending |
+
+### Module 02: Patient
+
+| Task ID | Task | Dev | Test | Git Upload |
+|---|---|---|---|---|
+| Task 01 | Create Patient | Todo | Pending | Pending |
+| Task 02 | Patient List | Todo | Pending | Pending |
+| Task 03 | Patient Details | Todo | Pending | Pending |
+
+### Module 03: Appointment
+
+| Task ID | Task | Dev | Test | Git Upload |
+|---|---|---|---|---|
+| Task 01 | Book Appointment | Todo | Pending | Pending |
+| Task 02 | Reschedule Appointment | Todo | Pending | Pending |
+| Task 03 | Cancel Appointment | Todo | Pending | Pending |
+
 ## Module-wise API Tasks
 
 | Module | Task ID | Task | Dev Status | Test | Upload |
