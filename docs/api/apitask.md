@@ -33,6 +33,30 @@ Status legend:
 | Task 02 | Reschedule Appointment | Todo | Pending | Pending |
 | Task 03 | Cancel Appointment | Todo | Pending | Pending |
 
+## Dependency-First Development Sequence
+
+Use this exact order for better development results. Start a module only when its dependency modules are stable.
+
+| Order | Phase | Modules | Why First | Dependency Gate |
+|---|---|---|---|---|
+| 01 | Platform Foundation | Authentication, Role & Permission Management (RBAC), User Management, Tenant Management, Hospital Setup, System Configuration | Every secured API and tenant-scoped module depends on auth, RBAC, and tenant context. | Login, token, RBAC checks, tenant resolver, and core config must pass tests. |
+| 02 | Core Clinical Master Data | Department Management, Staff Management, Doctor Management, Nurse Management, Patient Management, Medical Records Management, Consent Management | Clinical flows cannot run without staff, doctor, and patient master data. | CRUD + validation + permission tests all pass. |
+| 03 | Scheduling and Queue | Calendar / Scheduling, Appointment Management, Queue Management, OPD Management, Consultation Management, Clinical Notes Management | OPD and consultation are driven by appointment and queue lifecycle. | Booking, queue transitions, and consultation save APIs must be stable. |
+| 04 | Inpatient and Emergency | Admission / Transfer Management, IPD Management, Ward Management, Bed Management, Emergency / ER Management, Discharge Management, Care Plan Management, MAR | IPD/ER requires patient + doctor + ward/bed + admission rules from earlier phases. | Admit/transfer/discharge and bed state APIs must pass integration tests. |
+| 05 | Diagnostics and Medication | Laboratory Management, Radiology / Imaging Management, E-Prescription, Prescription Management, Pharmacy Management, Blood Bank Management, OT / Surgery Management, Anesthesia Management | Orders are generated from consultations and admissions, so these depend on phases 03-04. | Order-to-result and order-to-dispense workflows tested end-to-end. |
+| 06 | Billing and Revenue | Billing Management, Invoicing, Payment Management, Insurance / TPA Management, Claims Management, Revenue Cycle Management, Refund Management, Tax Management, Finance / Accounts Management | Financial workflows depend on clinical and pharmacy/lab events for charge capture. | Charge, invoice, payment, and claim APIs validated with real scenarios. |
+| 07 | Operations and HR | Inventory / Store Management, Procurement / Purchase Management, Vendor / Supplier Management, Asset Management, Ambulance / Transport Management, Facility/Housekeeping/Maintenance, Biomedical Equipment, HR/Payroll/Attendance/Leave/Roster/Recruitment/Performance/Training | Operational modules support hospital execution and are safer after clinical-finance core is stable. | Stock, procurement, payroll, and service workflows pass module tests. |
+| 08 | Platform Integrations and Security | API Management, Webhook Management, Integration Management, HL7 / FHIR, Third-party Integration, Security Management, MFA / SSO Management, Access Logs, Audit Logs, Data Privacy, Backup & Recovery, Disaster Recovery | Integrations/security hardening should layer on top of stable business APIs. | Security, audit, recovery, and integration contract tests pass. |
+| 09 | Intelligence and Experience | Reports Management, Analytics Dashboard, BI Dashboard, Data Export / Import, CRM, Communication, SMS/Email/Notification Center, Help Desk, Patient Portal, Telemedicine, Localization, White-label/Branding, Template Management, Subscription/Plan/Pricing/Trial, AI Assistant, Workflow Automation, Background Job Queue, Predictive Analytics, OCR, API Client/Sandbox | Final optimization and productization layer after core platform reliability. | Reporting accuracy, notification reliability, and SLA smoke tests pass. |
+
+### Development Rules
+
+1. Do not start a later phase if dependency gate of earlier phase is failing.
+2. For each module, finish API contract, validation, auth, and tests before frontend integration.
+3. Mark Dev as Done only when Test is Pass.
+4. Mark Git Upload as Uploaded only after branch merge or approved release commit.
+5. If a dependency changes (example: RBAC, tenant middleware), re-test all dependent modules.
+
 ## Module-wise API Tasks
 
 | Module | Task ID | Task | Dev Status | Test | Upload |
