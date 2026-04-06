@@ -140,9 +140,10 @@ class MenuSeeder extends Seeder
                 'order' => 11,
                 'children' => [
                     ['label' => 'Queue Dashboard', 'icon' => 'ListChecks', 'route' => '/dashboard/opd/queue', 'permission' => 'appointment.view', 'order' => 1],
-                    ['label' => 'Consultations', 'icon' => 'NotebookPen', 'route' => '/dashboard/opd/consultations', 'permission' => 'consultation.create', 'order' => 2],
-                    ['label' => 'Prescriptions', 'icon' => 'PillBottle', 'route' => '/dashboard/opd/prescriptions', 'permission' => 'prescription.create', 'order' => 3],
-                    ['label' => 'Investigations', 'icon' => 'Microscope', 'route' => '/dashboard/opd/investigations', 'permission' => 'investigation.create', 'order' => 4],
+                    ['label' => 'Vitals Entry', 'icon' => 'HeartPulse', 'route' => '/dashboard/opd/vitals', 'permission' => 'consultation.create', 'order' => 2],
+                    ['label' => 'Consultations', 'icon' => 'NotebookPen', 'route' => '/dashboard/opd/consultations', 'permission' => 'consultation.create', 'order' => 3],
+                    ['label' => 'Prescriptions', 'icon' => 'PillBottle', 'route' => '/dashboard/opd/prescriptions', 'permission' => 'prescription.create', 'order' => 4],
+                    ['label' => 'Investigations', 'icon' => 'Microscope', 'route' => '/dashboard/opd/investigations', 'permission' => 'investigation.create', 'order' => 5],
                 ],
             ],
             [

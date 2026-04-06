@@ -62,6 +62,7 @@ This catalog is aligned with:
 
 11. OPD
 - Queue Dashboard
+- Vitals Entry
 - Consultations
 - Prescriptions
 - Investigations
