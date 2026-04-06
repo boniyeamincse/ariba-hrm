@@ -31,6 +31,7 @@ import { TaskDashboard } from './pages/dashboard/TaskDashboard'
 import { ModulePlaceholderPage } from './pages/dashboard/ModulePlaceholderPage'
 import { OpdQueuePage } from './pages/dashboard/OpdQueuePage'
 import { OpdVitalsEntryPage } from './pages/dashboard/OpdVitalsEntryPage'
+import { OpdConsultationPage } from './pages/dashboard/OpdConsultationPage'
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,7 @@ const router = createBrowserRouter([
       },
       { path: 'opd/queue', element: <OpdQueuePage /> },
       { path: 'opd/vitals', element: <OpdVitalsEntryPage /> },
+      { path: 'opd/consultations', element: <OpdConsultationPage /> },
       { path: 'tasks', element: <TaskDashboard /> },
       { path: 'employees', element: <EmployeesPage /> },
       { path: 'attendance', element: <AttendancePage /> },

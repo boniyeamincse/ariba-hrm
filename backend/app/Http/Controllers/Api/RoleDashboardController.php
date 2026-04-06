@@ -285,6 +285,7 @@ class RoleDashboardController extends Controller
                 'widgets' => ['appointments_today', 'queue_with_doctor', 'pending_investigations', 'prescriptions_today'],
                 'quick_actions' => [
                     ['label' => 'OPD Queue', 'route' => '/dashboard/opd/queue', 'icon' => 'Stethoscope'],
+                    ['label' => 'SOAP Editor', 'route' => '/dashboard/opd/consultations', 'icon' => 'FilePenLine'],
                     ['label' => 'Record Vitals', 'route' => '/dashboard/opd/vitals', 'icon' => 'HeartPulse'],
                     ['label' => 'Appointments', 'route' => '/dashboard/appointments', 'icon' => 'CalendarDays'],
                 ],
