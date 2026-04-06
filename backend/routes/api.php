@@ -93,6 +93,21 @@ Route::middleware(['auth:sanctum', 'audit', 'permission:super-admin.manage-tenan
     ->group(function (): void {
         Route::get('/tenants', [TenantController::class, 'index']);
         Route::post('/tenants', [TenantController::class, 'store']);
+        Route::get('/tenants/{tenant}', [TenantController::class, 'show']);
+        Route::patch('/tenants/{tenant}', [TenantController::class, 'update']);
+        Route::patch('/tenants/{tenant}/status', [TenantController::class, 'updateStatus']);
+        Route::delete('/tenants/{tenant}', [TenantController::class, 'destroy']);
+    });
+
+Route::middleware(['auth:sanctum', 'audit', 'permission:super-admin.manage-tenants'])
+    ->group(function (): void {
+        // Frontend compatibility aliases for tenant management.
+        Route::get('/tenants', [TenantController::class, 'index']);
+        Route::post('/tenants', [TenantController::class, 'store']);
+        Route::get('/tenants/{tenant}', [TenantController::class, 'show']);
+        Route::patch('/tenants/{tenant}', [TenantController::class, 'update']);
+        Route::patch('/tenants/{tenant}/status', [TenantController::class, 'updateStatus']);
+        Route::delete('/tenants/{tenant}', [TenantController::class, 'destroy']);
     });
 
 Route::middleware(['auth:sanctum', 'tenant', 'audit'])
