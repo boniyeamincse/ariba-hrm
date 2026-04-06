@@ -56,6 +56,20 @@ class RoleDashboardController extends Controller
         ]);
     }
 
+    public function reportsSummary(Request $request): JsonResponse
+    {
+        $tenantId = $request->attributes->get('tenant_id') ?? $request->user()?->tenant_id;
+
+        return response()->json([
+            'tenant_id' => $tenantId,
+            'summary' => [
+                'patients_total' => Patient::query()->when($tenantId, fn ($q) => $q->where('tenant_id', $tenantId))->count(),
+                'appointments_today' => Appointment::query()->when($tenantId, fn ($q) => $q->where('tenant_id', $tenantId))->whereDate('appointment_date', today())->count(),
+                'tasks_completed_today' => Task::query()->when($tenantId, fn ($q) => $q->where('tenant_id', $tenantId))->where('status', 'completed')->whereDate('updated_at', today())->count(),
+            ],
+        ]);
+    }
+
     /**
      * @return array<int, array<string, mixed>>
      */

@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Clinical\PatientMedicalHistoryController;
 use App\Http\Controllers\Api\Clinical\PharmacyController;
 use App\Http\Controllers\Api\Clinical\VisitController;
 use App\Http\Controllers\Api\RoleDashboardController;
+use App\Http\Controllers\Api\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
@@ -49,11 +50,22 @@ Route::middleware(['auth:sanctum'])->prefix('auth')->group(function (): void {
 });
 
 Route::middleware(['auth:sanctum', 'tenant'])->group(function (): void {
-    Route::get('/menus', [\App\Http\Controllers\Api\MenuController::class, 'index']);
-    Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'stats']);
-    Route::get('/dashboard/overview', [RoleDashboardController::class, 'overview']);
-    Route::get('/dashboard/widgets', [RoleDashboardController::class, 'widgets']);
-    Route::get('/dashboard/menu', [RoleDashboardController::class, 'menu']);
+    Route::middleware('permission:dashboard.view')->group(function (): void {
+        Route::get('/menus', [\App\Http\Controllers\Api\MenuController::class, 'index']);
+        Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'stats']);
+        Route::get('/dashboard/overview', [RoleDashboardController::class, 'overview']);
+        Route::get('/dashboard/widgets', [RoleDashboardController::class, 'widgets']);
+        Route::get('/dashboard/menu', [RoleDashboardController::class, 'menu']);
+    });
+
+    Route::prefix('users')->group(function (): void {
+        Route::get('/', [UserManagementController::class, 'index'])->middleware('permission:users.view');
+        Route::post('/', [UserManagementController::class, 'store'])->middleware('permission:users.manage');
+        Route::patch('/{user}', [UserManagementController::class, 'update'])->middleware('permission:users.manage');
+    });
+
+    Route::get('/reports/summary', [RoleDashboardController::class, 'reportsSummary'])
+        ->middleware('permission:reports.view');
     
     Route::apiResource('tasks', \App\Http\Controllers\Api\TaskController::class);
 });
@@ -77,17 +89,17 @@ Route::middleware(['auth:sanctum', 'audit', 'permission:super-admin.manage-tenan
 Route::middleware(['auth:sanctum', 'tenant', 'audit'])
     ->prefix('clinical')
     ->group(function (): void {
-        Route::get('/patients', [PatientController::class, 'index']);
-        Route::post('/patients', [PatientController::class, 'store']);
-        Route::get('/patients/{patient}', [PatientController::class, 'show']);
-        Route::patch('/patients/{patient}', [PatientController::class, 'update']);
-        Route::post('/patients/{patient}/photo', [PatientController::class, 'uploadPhoto']);
+        Route::get('/patients', [PatientController::class, 'index'])->middleware('permission:patient.view');
+        Route::post('/patients', [PatientController::class, 'store'])->middleware('permission:patient.create');
+        Route::get('/patients/{patient}', [PatientController::class, 'show'])->middleware('permission:patient.view');
+        Route::patch('/patients/{patient}', [PatientController::class, 'update'])->middleware('permission:patient.update');
+        Route::post('/patients/{patient}/photo', [PatientController::class, 'uploadPhoto'])->middleware('permission:patient.update');
 
-        Route::get('/patients/{patient}/history', [PatientMedicalHistoryController::class, 'show']);
-        Route::patch('/patients/{patient}/history', [PatientMedicalHistoryController::class, 'update']);
+        Route::get('/patients/{patient}/history', [PatientMedicalHistoryController::class, 'show'])->middleware('permission:patient.view');
+        Route::patch('/patients/{patient}/history', [PatientMedicalHistoryController::class, 'update'])->middleware('permission:patient.update');
 
-        Route::get('/patients/{patient}/visits', [VisitController::class, 'index']);
-        Route::post('/patients/{patient}/visits', [VisitController::class, 'store']);
+        Route::get('/patients/{patient}/visits', [VisitController::class, 'index'])->middleware('permission:patient.view');
+        Route::post('/patients/{patient}/visits', [VisitController::class, 'store'])->middleware('permission:patient.update');
 
         Route::get('/opd/queue', [OpdController::class, 'queueList']);
         Route::post('/opd/queue', [OpdController::class, 'enqueue']);
@@ -104,31 +116,31 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
         Route::get('/emergency/triage', [EmergencyController::class, 'index']);
         Route::post('/emergency/triage', [EmergencyController::class, 'triage']);
 
-        Route::get('/pharmacy/drugs', [PharmacyController::class, 'drugs']);
-        Route::post('/pharmacy/drugs', [PharmacyController::class, 'storeDrug']);
-        Route::post('/pharmacy/drugs/{drug}/batches', [PharmacyController::class, 'addBatch']);
-        Route::post('/pharmacy/dispense', [PharmacyController::class, 'dispense']);
+        Route::get('/pharmacy/drugs', [PharmacyController::class, 'drugs'])->middleware('permission:pharmacy.view');
+        Route::post('/pharmacy/drugs', [PharmacyController::class, 'storeDrug'])->middleware('permission:pharmacy.manage');
+        Route::post('/pharmacy/drugs/{drug}/batches', [PharmacyController::class, 'addBatch'])->middleware('permission:pharmacy.manage');
+        Route::post('/pharmacy/dispense', [PharmacyController::class, 'dispense'])->middleware('permission:pharmacy.manage');
 
-        Route::get('/lab/tests', [LabController::class, 'tests']);
-        Route::post('/lab/tests', [LabController::class, 'storeTest']);
-        Route::post('/lab/samples', [LabController::class, 'collectSample']);
-        Route::post('/lab/orders', [LabController::class, 'order']);
-        Route::post('/lab/orders/{order}/results', [LabController::class, 'enterResult']);
-        Route::post('/lab/results/{result}/validate', [LabController::class, 'validateResult']);
-        Route::get('/lab/results/{result}/report', [LabController::class, 'report']);
+        Route::get('/lab/tests', [LabController::class, 'tests'])->middleware('permission:lab.view');
+        Route::post('/lab/tests', [LabController::class, 'storeTest'])->middleware('permission:lab.manage');
+        Route::post('/lab/samples', [LabController::class, 'collectSample'])->middleware('permission:lab.manage');
+        Route::post('/lab/orders', [LabController::class, 'order'])->middleware('permission:lab.manage');
+        Route::post('/lab/orders/{order}/results', [LabController::class, 'enterResult'])->middleware('permission:lab.manage');
+        Route::post('/lab/results/{result}/validate', [LabController::class, 'validateResult'])->middleware('permission:lab.manage');
+        Route::get('/lab/results/{result}/report', [LabController::class, 'report'])->middleware('permission:lab.view');
 
-        Route::get('/billing/charges', [BillingController::class, 'charges']);
-        Route::post('/billing/charges', [BillingController::class, 'storeCharge']);
-        Route::post('/billing/invoices', [BillingController::class, 'createInvoice']);
-        Route::post('/billing/invoices/{invoice}/payments', [BillingController::class, 'addPayment']);
-        Route::post('/billing/invoices/{invoice}/discount-approve', [BillingController::class, 'approveDiscount']);
+        Route::get('/billing/charges', [BillingController::class, 'charges'])->middleware('permission:billing.view');
+        Route::post('/billing/charges', [BillingController::class, 'storeCharge'])->middleware('permission:billing.manage');
+        Route::post('/billing/invoices', [BillingController::class, 'createInvoice'])->middleware('permission:billing.manage');
+        Route::post('/billing/invoices/{invoice}/payments', [BillingController::class, 'addPayment'])->middleware('permission:billing.manage');
+        Route::post('/billing/invoices/{invoice}/discount-approve', [BillingController::class, 'approveDiscount'])->middleware('permission:billing.manage');
 
-        Route::post('/ipd/admissions/{admission}/discharge-clearance', [DischargeController::class, 'clear']);
+        Route::post('/ipd/admissions/{admission}/discharge-clearance', [DischargeController::class, 'clear'])->middleware('permission:billing.manage');
 
-        Route::get('/appointments/slots', [AppointmentController::class, 'slots']);
-        Route::post('/appointments/slots', [AppointmentController::class, 'createSlot']);
-        Route::post('/appointments/book', [AppointmentController::class, 'book']);
-        Route::post('/appointments/{appointment}/telemedicine', [AppointmentController::class, 'createTelemedicineSession']);
+        Route::get('/appointments/slots', [AppointmentController::class, 'slots'])->middleware('permission:appointment.view');
+        Route::post('/appointments/slots', [AppointmentController::class, 'createSlot'])->middleware('permission:appointment.manage');
+        Route::post('/appointments/book', [AppointmentController::class, 'book'])->middleware('permission:appointment.manage');
+        Route::post('/appointments/{appointment}/telemedicine', [AppointmentController::class, 'createTelemedicineSession'])->middleware('permission:appointment.manage');
 
         Route::get('/insurance/providers', [InsuranceController::class, 'providers']);
         Route::post('/insurance/providers', [InsuranceController::class, 'createProvider']);
@@ -136,13 +148,13 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
         Route::post('/insurance/claims', [InsuranceController::class, 'submitClaim']);
         Route::post('/insurance/claims/{claim}/approve', [InsuranceController::class, 'approveClaim']);
 
-        Route::get('/inventory/items', [InventoryController::class, 'items']);
-        Route::post('/inventory/items', [InventoryController::class, 'createItem']);
-        Route::post('/inventory/procurement-orders', [InventoryController::class, 'createProcurementOrder']);
+        Route::get('/inventory/items', [InventoryController::class, 'items'])->middleware('permission:inventory.view');
+        Route::post('/inventory/items', [InventoryController::class, 'createItem'])->middleware('permission:inventory.manage');
+        Route::post('/inventory/procurement-orders', [InventoryController::class, 'createProcurementOrder'])->middleware('permission:inventory.manage');
 
-        Route::get('/hr/staff', [HrController::class, 'staff']);
-        Route::post('/hr/staff', [HrController::class, 'createStaff']);
-        Route::post('/hr/payroll/runs', [HrController::class, 'runPayroll']);
+        Route::get('/hr/staff', [HrController::class, 'staff'])->middleware('permission:hr.view');
+        Route::post('/hr/staff', [HrController::class, 'createStaff'])->middleware('permission:hr.manage');
+        Route::post('/hr/payroll/runs', [HrController::class, 'runPayroll'])->middleware('permission:hr.manage');
 
         Route::get('/blood-bank/stock', [BloodBankController::class, 'stock']);
         Route::post('/blood-bank/donations', [BloodBankController::class, 'addDonation']);
