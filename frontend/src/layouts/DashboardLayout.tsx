@@ -21,12 +21,151 @@ type ApiMenuItem = {
   children?: ApiMenuItem[]
 }
 
+const superAdminMenus: MenuItem[] = [
+  {
+    id: 1000,
+    label: 'Dashboard',
+    icon: 'LayoutDashboard',
+    route: null,
+    children: [
+      { id: 1001, label: 'Overview / Stats', icon: 'BarChart3', route: '/dashboard', children: [] },
+      { id: 1002, label: 'System Health', icon: 'Activity', route: '/dashboard/reports', children: [] },
+      { id: 1003, label: 'Revenue Analytics', icon: 'LineChart', route: '/dashboard/reports', children: [] },
+    ],
+  },
+  {
+    id: 1100,
+    label: 'Tenants Management',
+    icon: 'Building2',
+    route: null,
+    children: [
+      { id: 1101, label: 'Tenant List (All Hospitals)', icon: 'List', route: '/dashboard/users', children: [] },
+      { id: 1102, label: 'Create Tenant', icon: 'PlusCircle', route: '/dashboard/users?tab=create-tenant', children: [] },
+      { id: 1103, label: 'Tenant Details / Edit', icon: 'SquarePen', route: '/dashboard/users?tab=tenant-details', children: [] },
+      { id: 1104, label: 'Change Subscription Plan', icon: 'CreditCard', route: '/dashboard/billing?tab=plans', children: [] },
+      { id: 1105, label: 'Suspend / Activate Tenant', icon: 'Power', route: '/dashboard/users?tab=tenant-status', children: [] },
+      { id: 1106, label: 'Delete Tenant', icon: 'Trash2', route: '/dashboard/users?tab=tenant-delete', children: [] },
+    ],
+  },
+  {
+    id: 1200,
+    label: 'User Management',
+    icon: 'Users',
+    route: null,
+    children: [
+      { id: 1201, label: 'All Users (Across Tenants)', icon: 'UsersRound', route: '/dashboard/users', children: [] },
+      { id: 1202, label: 'Roles & Permissions', icon: 'ShieldCheck', route: '/dashboard/settings?tab=rbac', children: [] },
+      { id: 1203, label: 'Assign Roles', icon: 'UserCog', route: '/dashboard/users?tab=assign-roles', children: [] },
+      { id: 1204, label: 'Activity Logs', icon: 'FileSearch', route: '/dashboard/reports?tab=activity-logs', children: [] },
+    ],
+  },
+  {
+    id: 1300,
+    label: 'Modules & Features',
+    icon: 'Boxes',
+    route: null,
+    children: [
+      { id: 1301, label: 'Enable / Disable Modules', icon: 'ToggleLeft', route: '/dashboard/settings?tab=modules', children: [] },
+      { id: 1302, label: 'OPD / IPD', icon: 'Stethoscope', route: '/dashboard/opd/queue', children: [] },
+      { id: 1303, label: 'Pharmacy', icon: 'Pill', route: '/dashboard/inventory?tab=pharmacy', children: [] },
+      { id: 1304, label: 'Lab', icon: 'FlaskConical', route: '/dashboard/reports?tab=lab', children: [] },
+      { id: 1305, label: 'HRM', icon: 'Users', route: '/dashboard/employees', children: [] },
+      { id: 1306, label: 'Billing & Finance', icon: 'Receipt', route: '/dashboard/billing', children: [] },
+      { id: 1307, label: 'Inventory', icon: 'Package', route: '/dashboard/inventory', children: [] },
+      { id: 1308, label: 'Feature Toggle Settings', icon: 'SlidersHorizontal', route: '/dashboard/settings?tab=feature-toggles', children: [] },
+    ],
+  },
+  {
+    id: 1400,
+    label: 'Subscription & Billing',
+    icon: 'BadgeDollarSign',
+    route: null,
+    children: [
+      { id: 1401, label: 'Plans Overview', icon: 'FileText', route: '/dashboard/billing?tab=plans-overview', children: [] },
+      { id: 1402, label: 'Assign / Change Plans', icon: 'Repeat', route: '/dashboard/billing?tab=assign-plan', children: [] },
+      { id: 1403, label: 'Payment Status', icon: 'Wallet', route: '/dashboard/billing?tab=payment-status', children: [] },
+      { id: 1404, label: 'Billing History', icon: 'History', route: '/dashboard/billing?tab=history', children: [] },
+      { id: 1405, label: 'Invoices', icon: 'FileSpreadsheet', route: '/dashboard/billing?tab=invoices', children: [] },
+    ],
+  },
+  {
+    id: 1500,
+    label: 'System Configuration',
+    icon: 'Settings',
+    route: null,
+    children: [
+      { id: 1501, label: 'General Settings', icon: 'Settings2', route: '/dashboard/settings', children: [] },
+      { id: 1502, label: 'Email / SMS Configuration', icon: 'Mail', route: '/dashboard/settings?tab=communications', children: [] },
+      { id: 1503, label: 'Payment Gateway Setup', icon: 'CreditCard', route: '/dashboard/settings?tab=payments', children: [] },
+      { id: 1504, label: 'API & Integration Settings', icon: 'PlugZap', route: '/dashboard/settings?tab=integrations', children: [] },
+    ],
+  },
+  {
+    id: 1600,
+    label: 'Audit & Security',
+    icon: 'Shield',
+    route: null,
+    children: [
+      { id: 1601, label: 'Login Logs', icon: 'LogIn', route: '/dashboard/reports?tab=login-logs', children: [] },
+      { id: 1602, label: 'Audit Logs', icon: 'ScrollText', route: '/dashboard/reports?tab=audit-logs', children: [] },
+      { id: 1603, label: 'Access Control', icon: 'Lock', route: '/dashboard/settings?tab=access-control', children: [] },
+      { id: 1604, label: 'Security Settings', icon: 'ShieldAlert', route: '/dashboard/settings?tab=security', children: [] },
+    ],
+  },
+  {
+    id: 1700,
+    label: 'Reports & Analytics',
+    icon: 'ChartNoAxesCombined',
+    route: null,
+    children: [
+      { id: 1701, label: 'Tenant Reports', icon: 'Building2', route: '/dashboard/reports?tab=tenant-reports', children: [] },
+      { id: 1702, label: 'User Reports', icon: 'UsersRound', route: '/dashboard/reports?tab=user-reports', children: [] },
+      { id: 1703, label: 'Revenue Reports', icon: 'LineChart', route: '/dashboard/reports?tab=revenue-reports', children: [] },
+      { id: 1704, label: 'System Usage Analytics', icon: 'BarChart3', route: '/dashboard/reports?tab=usage-analytics', children: [] },
+    ],
+  },
+  {
+    id: 1800,
+    label: 'Support & Monitoring',
+    icon: 'LifeBuoy',
+    route: null,
+    children: [
+      { id: 1801, label: 'Tickets / Support Requests', icon: 'MessagesSquare', route: '/dashboard/tasks?tab=tickets', children: [] },
+      { id: 1802, label: 'Notifications / Alerts', icon: 'Bell', route: '/dashboard/tasks?tab=alerts', children: [] },
+      { id: 1803, label: 'System Maintenance', icon: 'Wrench', route: '/dashboard/settings?tab=maintenance', children: [] },
+    ],
+  },
+  {
+    id: 1900,
+    label: 'Advanced / AI',
+    icon: 'Bot',
+    route: null,
+    children: [
+      { id: 1901, label: 'AI Assistant Management', icon: 'BotMessageSquare', route: '/dashboard/tasks?tab=ai-assistant', children: [] },
+      { id: 1902, label: 'Automation Rules', icon: 'Workflow', route: '/dashboard/settings?tab=automation', children: [] },
+      { id: 1903, label: 'Advanced Analytics', icon: 'Radar', route: '/dashboard/reports?tab=advanced-analytics', children: [] },
+    ],
+  },
+  {
+    id: 2000,
+    label: 'Account',
+    icon: 'UserRoundCog',
+    route: null,
+    children: [
+      { id: 2001, label: 'Profile', icon: 'UserRound', route: '/dashboard/settings?tab=profile', children: [] },
+      { id: 2002, label: 'Change Password', icon: 'KeyRound', route: '/dashboard/settings?tab=password', children: [] },
+      { id: 2003, label: 'Logout', icon: 'LogOut', route: '/dashboard/settings?tab=logout', children: [] },
+    ],
+  },
+]
+
 export function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [menus, setMenus] = useState<MenuItem[]>([])
   const [expandedMenus, setExpandedMenus] = useState<number[]>([])
   const [notificationsCount, setNotificationsCount] = useState(0)
   const [canSwitchRole, setCanSwitchRole] = useState(false)
+  const [dashboardRole, setDashboardRole] = useState<string>('')
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
@@ -52,8 +191,16 @@ export function DashboardLayout() {
           }
         })
         const normalizedMenu = normalizeTree(roleMenu)
+        const normalizedRole = String(overviewRes.data?.role ?? '')
 
-        setMenus(normalizedMenu)
+        setDashboardRole(normalizedRole)
+
+        if (normalizedRole === 'super-admin') {
+          setMenus(superAdminMenus)
+          setExpandedMenus([1000, 1100, 1200, 1300])
+        } else {
+          setMenus(normalizedMenu)
+        }
         setNotificationsCount(overviewRes.data?.top_nav?.notifications_count ?? 0)
         setCanSwitchRole(Boolean(overviewRes.data?.top_nav?.can_switch_role))
       } catch (error) {
@@ -195,7 +342,7 @@ export function DashboardLayout() {
               {notificationsCount} Notifications
             </div>
             <div className="hidden sm:inline-flex rounded-full border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">
-              {user?.role || 'user'}
+              {dashboardRole || user?.role || 'user'}
             </div>
           </div>
         </header>
