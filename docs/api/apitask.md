@@ -7,6 +7,131 @@ Status legend:
 - Test: Not Run | Pass | Fail
 - Upload: Pending | Uploaded
 
+## What To Do Next (Module-Wise)
+
+Use this section as your daily working list. Complete top to bottom.
+
+| Step | Module | Primary Task IDs | What To Build Now | Current Status |
+|---|---|---|---|---|
+| 1 | Auth + RBAC | T038-T047, M006-M008 | Finish staff CRUD, role assignment, permission checks for all protected APIs | In Progress |
+| 2 | Tenant + Settings | T014, T018, M002, X005-X007 | Complete tenant provisioning hardening and verify settings module per tenant | In Progress |
+| 3 | Patient | T054-T061, M009 | Fix failing patient tests and stabilize patient CRUD/history/photo workflows | In Progress (Tests Fail) |
+| 4 | Appointment + OPD | T067-T077, M011-M012, M019-M021 | Finish OPD flow end-to-end: queue, consultation, prescription, investigations | In Progress |
+| 5 | IPD + Emergency | T085-T105, M013-M016 | Complete bed/ward/admission/discharge and emergency triage workflows | In Progress |
+| 6 | Lab + Pharmacy + Blood Bank | T111-T133, M025-M028 | Complete order-to-result and order-to-dispense pipelines | In Progress |
+| 7 | Billing + Insurance | T157-T160, M034-M040 | Complete invoice/payment/claims/refund cycle with validation and audit | In Progress |
+| 8 | Inventory + HR | T170-T181, M029-M033, M043-M047 | Complete store/procurement and HR/payroll core APIs | In Progress |
+| 9 | Reports + Portal | T195-T206, M010, M082-M085 | Build reports, analytics, and patient self-service APIs | In Progress |
+| 10 | Security + Release | X001-X025, M073-M103 | Complete API standards, observability, CI gates, release checklist | In Progress |
+
+## Module Checklist (Simple)
+
+Mark each module after it is really complete (Dev Done + Test Pass + Upload Uploaded).
+
+- [ ] M001 Dashboard
+- [ ] M002 Tenant Management
+- [ ] M003 Hospital Setup
+- [ ] M004 Branch / Facility Management
+- [ ] M005 Department Management
+- [ ] M006 User Management
+- [ ] M007 Role & Permission Management (RBAC)
+- [ ] M008 Staff Management
+- [ ] M009 Patient Management
+- [ ] M010 Patient Portal
+- [ ] M011 Appointment Management
+- [ ] M012 OPD Management
+- [ ] M013 IPD Management
+- [ ] M014 Emergency / ER Management
+- [ ] M015 Ward Management
+- [ ] M016 Bed Management
+- [ ] M017 Doctor Management
+- [ ] M018 Nurse Management
+- [ ] M019 Consultation Management
+- [ ] M020 E-Prescription
+- [ ] M021 Prescription Management
+- [ ] M022 Medication Administration Record (MAR)
+- [ ] M023 OT / Surgery Management
+- [ ] M024 Anesthesia Management
+- [ ] M025 Blood Bank Management
+- [ ] M026 Laboratory Management
+- [ ] M027 Radiology / Imaging Management
+- [ ] M028 Pharmacy Management
+- [ ] M029 Inventory / Store Management
+- [ ] M030 Procurement / Purchase Management
+- [ ] M031 Vendor / Supplier Management
+- [ ] M032 Asset Management
+- [ ] M033 Ambulance / Transport Management
+- [ ] M034 Billing Management
+- [ ] M035 Invoicing
+- [ ] M036 Payment Management
+- [ ] M037 Insurance / TPA Management
+- [ ] M038 Claims Management
+- [ ] M039 Revenue Cycle Management
+- [ ] M040 Refund Management
+- [ ] M041 Finance / Accounts Management
+- [ ] M042 Tax Management
+- [ ] M043 Payroll Management
+- [ ] M044 HR Management
+- [ ] M045 Attendance Management
+- [ ] M046 Leave Management
+- [ ] M047 Shift / Duty Roster Management
+- [ ] M048 Recruitment Management
+- [ ] M049 Performance Management
+- [ ] M050 Training Management
+- [ ] M051 Facility Management
+- [ ] M052 Housekeeping Management
+- [ ] M053 Maintenance Management
+- [ ] M054 Biomedical Equipment Management
+- [ ] M055 Help Desk / Support Ticketing
+- [ ] M056 CRM / Patient Relationship Management
+- [ ] M057 Communication Management
+- [ ] M058 SMS / Email / Notification Center
+- [ ] M059 Document Management
+- [ ] M060 Medical Records Management
+- [ ] M061 Consent Management
+- [ ] M062 Queue Management
+- [ ] M063 Calendar / Scheduling
+- [ ] M064 Telemedicine
+- [ ] M065 Clinical Notes Management
+- [ ] M066 Care Plan Management
+- [ ] M067 Discharge Management
+- [ ] M068 Admission / Transfer Management
+- [ ] M069 Infection Control Management
+- [ ] M070 Incident Management
+- [ ] M071 Quality Assurance Management
+- [ ] M072 Compliance Management
+- [ ] M073 Audit Logs
+- [ ] M074 Access Logs
+- [ ] M075 Security Management
+- [ ] M076 MFA / SSO Management
+- [ ] M077 API Management
+- [ ] M078 Webhook Management
+- [ ] M079 Integration Management
+- [ ] M080 HL7 / FHIR Integration
+- [ ] M081 Third-party Integration
+- [ ] M082 Reports Management
+- [ ] M083 Analytics Dashboard
+- [ ] M084 BI / Intelligence Dashboard
+- [ ] M085 Data Export / Import
+- [ ] M086 Data Privacy Management
+- [ ] M087 Backup & Recovery
+- [ ] M088 Disaster Recovery
+- [ ] M089 Subscription Management
+- [ ] M090 Plan Management
+- [ ] M091 Pricing Management
+- [ ] M092 Trial Management
+- [ ] M093 White-label / Branding Management
+- [ ] M094 Localization Management
+- [ ] M095 Language / Currency / Timezone Settings
+- [ ] M096 System Configuration
+- [ ] M097 Template Management
+- [ ] M098 AI Assistant Module
+- [ ] M099 Workflow Automation
+- [ ] M100 Background Job / Task Queue
+- [ ] M101 Predictive Analytics
+- [ ] M102 OCR / Document Processing
+- [ ] M103 API Client / Sandbox Module
+
 ## API Module Format Example
 
 ### Module 01: Auth
