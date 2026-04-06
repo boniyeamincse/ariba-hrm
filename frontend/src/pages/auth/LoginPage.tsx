@@ -16,13 +16,17 @@ export function LoginPage() {
   const location = useLocation()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [authError, setAuthError] = useState<string | null>(null)
 
   const onSubmit = async (values: LoginInput) => {
     setIsLoading(true)
+    setAuthError(null)
     try {
       await login(values)
       const from = (location.state as { from?: string } | null)?.from ?? '/dashboard'
       navigate(from)
+    } catch (error) {
+      setAuthError(error instanceof Error ? error.message : 'Unable to sign in.')
     } finally {
       setIsLoading(false)
     }
@@ -103,6 +107,12 @@ export function LoginPage() {
             "Authenticate System"
           )}
         </button>
+
+        {authError && (
+          <p className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs text-rose-300">
+            {authError}
+          </p>
+        )}
       </form>
 
       <div className="pt-4 text-center">

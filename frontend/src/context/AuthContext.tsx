@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import axios from 'axios'
 import { api } from '../lib/api'
 import {
   AuthContext,
@@ -44,18 +45,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setToken(apiToken)
       setUser(nextUser)
       return
-    } catch {
-      const fallbackToken = 'demo-token'
-      const fallbackUser: AuthUser = {
-        name: 'Demo Admin',
-        email: input.email,
-        role: 'tenant-admin',
-      }
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? String(error.response?.data?.message ?? 'Login failed. Please verify credentials and API connectivity.')
+        : 'Login failed. Please verify credentials and API connectivity.'
 
-      localStorage.setItem('ariba_token', fallbackToken)
-      localStorage.setItem('ariba_user', JSON.stringify(fallbackUser))
-      setToken(fallbackToken)
-      setUser(fallbackUser)
+      throw new Error(message)
     }
   }
 
