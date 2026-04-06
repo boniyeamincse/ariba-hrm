@@ -1,18 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
+  Ambulance,
   Activity,
   AlertTriangle,
   BarChart3,
+  BadgeDollarSign,
   Bed,
   Bell,
   Bot,
   Boxes,
   Building2,
+  CalendarCheck2,
   CalendarDays,
   ClipboardList,
   Download,
+  DoorOpen,
   Factory,
+  FileBadge2,
   FileText,
   FilePenLine,
   FileSearch,
@@ -43,6 +48,7 @@ import {
 } from 'lucide-react'
 import { api } from '../../lib/api'
 import { useAuth } from '../../context/useAuth'
+import { SuperAdminDashboard } from './roles/super-admin/SuperAdminDashboard'
 
 type DashboardWidget = {
   key: string
@@ -101,10 +107,15 @@ const widgetIconMap: Record<string, React.ComponentType<{ className?: string }>>
 }
 
 const quickActionIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  Ambulance,
   Building2,
+  BadgeDollarSign,
   LineChart,
   Shield,
   Users,
+  DoorOpen,
+  CalendarCheck2,
+  FileBadge2,
   ListOrdered,
   Receipt,
   Bed,
@@ -264,14 +275,6 @@ export function Dashboard() {
   }, [role, todayLabel, user?.name])
 
   const isSuperAdmin = role === 'super-admin'
-  const superAdminCapabilityTiles = [
-    { title: 'System Control', detail: 'Global settings, module switches, and platform policies.' },
-    { title: 'Tenant Operations', detail: 'Hospital onboarding, suspension, and branch governance.' },
-    { title: 'Global Users', detail: 'Cross-tenant identities, RBAC, and password controls.' },
-    { title: 'Subscription Billing', detail: 'Plans, renewals, invoices, and payment monitoring.' },
-    { title: 'Security & Compliance', detail: 'Audit trails, suspicious activity, and policy enforcement.' },
-    { title: 'Integrations & AI', detail: 'API connectors, webhooks, AI usage, and automation rules.' },
-  ]
 
   return (
     <div className="mx-auto max-w-[1320px] space-y-6">
@@ -352,44 +355,12 @@ export function Dashboard() {
       </section>
 
       {isSuperAdmin ? (
-        <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-          <article className="rounded-2xl border border-indigo-400/30 bg-[linear-gradient(140deg,rgba(30,27,75,0.55),rgba(37,99,235,0.2),rgba(15,23,42,0.92))] p-5 xl:col-span-2">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-white">SaaS Control Center</h2>
-              <span className="rounded-lg border border-indigo-300/30 px-2 py-1 text-[11px] text-indigo-100">Global Scope</span>
-            </div>
-
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-              {superAdminCapabilityTiles.map((tile) => (
-                <div key={tile.title} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
-                  <p className="text-sm font-semibold text-white">{tile.title}</p>
-                  <p className="mt-1 text-xs text-slate-300">{tile.detail}</p>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">System Health Signals</h2>
-              <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Live</span>
-            </div>
-
-            <div className="space-y-3">
-              {[
-                { label: 'Security Alerts', value: getNumericWidgetValue(widgets.find((w) => w.key === 'security_alerts')) },
-                { label: 'Webhook Failures', value: getNumericWidgetValue(widgets.find((w) => w.key === 'webhook_failures')) },
-                { label: 'API Calls Today', value: getNumericWidgetValue(widgets.find((w) => w.key === 'api_calls_today')) },
-                { label: 'Active Tenants', value: getNumericWidgetValue(widgets.find((w) => w.key === 'active_tenants')) },
-              ].map((signal) => (
-                <div key={signal.label} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">
-                  <span className="text-sm text-slate-300">{signal.label}</span>
-                  <span className="text-sm font-semibold text-white">{formatCompact(signal.value)}</span>
-                </div>
-              ))}
-            </div>
-          </article>
-        </section>
+        <SuperAdminDashboard
+          widgets={widgets}
+          todayLabel={todayLabel}
+          formatCompact={formatCompact}
+          getNumericWidgetValue={getNumericWidgetValue}
+        />
       ) : (
         <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
           <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-1">
