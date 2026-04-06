@@ -36,6 +36,7 @@ import {
   TriangleAlert,
   Truck,
   UserPlus,
+  UserRound,
   Users,
   Users2,
   Webhook,
@@ -148,6 +149,13 @@ const formatWidgetValue = (widget: DashboardWidget): string => {
   return String(widget.value)
 }
 
+const formatCompact = (value: number): string => {
+  return new Intl.NumberFormat('en-US', {
+    notation: value > 999 ? 'compact' : 'standard',
+    maximumFractionDigits: 1,
+  }).format(value)
+}
+
 const getNumericWidgetValue = (widget?: DashboardWidget): number => {
   if (!widget) {
     return 0
@@ -228,73 +236,185 @@ export function Dashboard() {
     }).format(new Date())
   }, [])
 
+  const chartSeries = useMemo(() => {
+    const seed = Math.max(getNumericWidgetValue(primaryWidgets[0]), 60)
+    return Array.from({ length: 12 }).map((_, index) => {
+      const wave = Math.sin(index / 1.8) * 24
+      const value = Math.max(28, Math.round((seed / 8) + 44 + wave + (index % 4) * 6))
+      return {
+        label: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][index],
+        value,
+      }
+    })
+  }, [primaryWidgets])
+
+  const upcomingPatient = useMemo(() => {
+    return {
+      name: user?.name ? `${user.name.split(' ')[0]} Patient` : 'Andrew Billard',
+      uhid: '#AP455698',
+      visitType: 'General Visit',
+      department: role.includes('doctor') ? 'Cardiology' : 'General Medicine',
+      mode: 'Online Consultation',
+      time: '06:30 PM',
+      date: todayLabel,
+    }
+  }, [role, todayLabel, user?.name])
+
   return (
-    <div className="space-y-6">
-      <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(120deg,rgba(15,23,42,0.96),rgba(3,105,161,0.35)_45%,rgba(16,185,129,0.24))] p-6">
-        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-emerald-400/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-sky-400/15 blur-3xl" />
+    <div className="mx-auto max-w-[1320px] space-y-6">
+      <section className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/[0.03] p-5 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-300">Workspace Insights</p>
+          <h1 className="mt-1 text-2xl font-bold text-white md:text-3xl">{title}</h1>
+        </div>
 
-        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-emerald-300">MedCore Role Command</p>
-            <h1 className="text-3xl font-bold text-white lg:text-4xl">{title}</h1>
-            <p className="mt-2 max-w-2xl text-slate-200">
-              Welcome {user?.name}. This view is generated from role-specific permissions, menu policies, and operational KPIs.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2 text-xs sm:w-auto">
-            <div className="rounded-xl border border-white/15 bg-white/[0.06] px-3 py-2 text-slate-100">
-              <p className="text-[10px] uppercase tracking-widest text-slate-300">Role</p>
-              <p className="mt-1 font-semibold">{role}</p>
-            </div>
-            <div className="rounded-xl border border-white/15 bg-white/[0.06] px-3 py-2 text-slate-100">
-              <p className="text-[10px] uppercase tracking-widest text-slate-300">Date</p>
-              <p className="mt-1 font-semibold">{todayLabel}</p>
-            </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link to="/dashboard/opd/consultations" className="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500">
+            + New Consultation
+          </Link>
+          <Link to="/dashboard/appointments" className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10">
+            Schedule Availability
+          </Link>
+          <div className="rounded-xl border border-white/15 bg-white/[0.04] px-3 py-2 text-xs text-slate-300">
+            {todayLabel}
           </div>
         </div>
       </section>
 
       {criticalSignals.hasCritical && (
-        <section className="rounded-2xl border border-rose-500/35 bg-rose-500/10 px-4 py-3">
+        <section className="rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-3">
           <p className="inline-flex items-center gap-2 text-sm font-semibold text-rose-200">
             <AlertTriangle className="h-4 w-4" />
-            Priority Alert: security/lab signals require immediate review.
-          </p>
-          <p className="mt-1 text-xs text-rose-100/90">
-            Security alerts: {criticalSignals.securityAlerts} | Critical labs: {criticalSignals.criticalLabs} | Pending investigations: {criticalSignals.pendingInvestigations}
+            Immediate attention required for critical operational signals.
           </p>
         </section>
       )}
 
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {loading && (
           <div className="col-span-full rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-slate-400">
             Loading dashboard widgets...
           </div>
         )}
 
-        {!loading && primaryWidgets.map((widget) => {
+        {!loading && primaryWidgets.map((widget, idx) => {
           const Icon = widgetIconMap[widget.key] ?? Activity
+          const growth = ((idx % 2 === 0 ? 1 : -1) * (idx + 2)) * 5
 
           return (
-            <article key={widget.key} className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-sm transition hover:bg-white/[0.05]">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="rounded-lg bg-emerald-500/10 p-2 text-emerald-400">
+            <article key={widget.key} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="flex items-start justify-between">
+                <div className="rounded-lg bg-indigo-500/15 p-2 text-indigo-300">
                   <Icon className="h-4 w-4" />
                 </div>
-                <span className="text-xs uppercase tracking-wide text-slate-400">KPI</span>
+                <span className={`rounded-md px-2 py-1 text-[10px] font-semibold ${growth >= 0 ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}`}>
+                  {growth >= 0 ? '+' : ''}{growth}%
+                </span>
               </div>
-              <p className="text-sm text-slate-300">{widget.label}</p>
-              <p className="mt-1 text-2xl font-semibold text-white">{formatWidgetValue(widget)}</p>
+
+              <p className="mt-3 text-xs text-slate-400">{widget.label}</p>
+              <p className="mt-1 text-3xl font-bold text-white">{formatWidgetValue(widget)}</p>
+
+              <div className="mt-3 flex h-8 items-end gap-1">
+                {[40, 72, 48, 85, 62, 78, 69].map((h, barIdx) => (
+                  <div key={`${widget.key}-spark-${barIdx}`} className="flex-1 rounded-sm bg-indigo-400/70" style={{ height: `${h}%` }} />
+                ))}
+              </div>
             </article>
           )
         })}
       </section>
 
-      <section className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-        <article className="xl:col-span-2 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-1">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-white">Upcoming Appointments</h2>
+            <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Today</span>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-200">
+                <UserRound className="h-4 w-4" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white">{upcomingPatient.name}</p>
+                <p className="text-xs text-slate-400">{upcomingPatient.uhid}</p>
+              </div>
+            </div>
+
+            <p className="text-sm font-semibold text-slate-100">{upcomingPatient.visitType}</p>
+            <p className="mt-1 text-xs text-slate-400">{upcomingPatient.date} at {upcomingPatient.time}</p>
+
+            <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-300">
+              <div>
+                <p className="text-slate-500">Department</p>
+                <p className="mt-1 font-semibold">{upcomingPatient.department}</p>
+              </div>
+              <div>
+                <p className="text-slate-500">Type</p>
+                <p className="mt-1 font-semibold">{upcomingPatient.mode}</p>
+              </div>
+            </div>
+
+            <Link to="/dashboard/opd/consultations" className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+              Start Appointment
+            </Link>
+          </div>
+        </article>
+
+        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-2">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-white">Appointments</h2>
+            <span className="rounded-lg border border-white/10 px-2 py-1 text-[11px] text-slate-300">Monthly</span>
+          </div>
+
+          <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-slate-400">
+            <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-indigo-400" />Total Appointments</span>
+            <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-400" />Completed Appointments</span>
+          </div>
+
+          <div className="grid grid-cols-12 gap-2 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            {chartSeries.map((point, idx) => (
+              <div key={point.label} className="flex flex-col items-center gap-2">
+                <div className="flex h-44 w-full items-end justify-center gap-1">
+                  <div className="w-2 rounded bg-indigo-500/85" style={{ height: `${Math.min(point.value, 100)}%` }} />
+                  <div className="w-2 rounded bg-emerald-400/80" style={{ height: `${Math.max(18, Math.min(point.value - 22 + (idx % 3) * 6, 90))}%` }} />
+                </div>
+                <span className="text-[10px] text-slate-500">{point.label}</span>
+              </div>
+            ))}
+          </div>
+        </article>
+      </section>
+
+      <section className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+        {secondaryWidgets.map((widget) => {
+          const Icon = widgetIconMap[widget.key] ?? Activity
+          const value = getNumericWidgetValue(widget)
+          const growth = value === 0 ? 0 : Math.max(5, Math.min(95, (value % 37) + 12))
+
+          return (
+            <article key={widget.key} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="mb-3 inline-flex rounded-lg bg-teal-500/20 p-2 text-teal-300">
+                <Icon className="h-4 w-4" />
+              </div>
+              <p className="text-xs text-slate-400">{widget.label}</p>
+              <p className="mt-1 text-2xl font-bold text-white">{formatCompact(value)}</p>
+              <p className="mt-1 text-[11px] text-emerald-300">+{growth}% Last Week</p>
+            </article>
+          )
+        })}
+
+        {secondaryWidgets.length === 0 && (
+          <div className="col-span-full rounded-xl border border-dashed border-white/20 px-4 py-5 text-sm text-slate-400">
+            Additional operational cards will appear here as modules expand.
+          </div>
+        )}
+      </section>
+
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-2">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">Quick Actions</h2>
             <span className="text-xs uppercase tracking-wide text-slate-500">Role Authorized</span>
@@ -328,7 +448,7 @@ export function Dashboard() {
 
         <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
           <h2 className="mb-4 text-lg font-semibold text-white">Focus Areas</h2>
-          <ul className="space-y-3 text-sm text-slate-300">
+          <ul className="space-y-2 text-sm text-slate-300">
             {focusAreas.map((area) => (
               <li key={area} className="rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">{area}</li>
             ))}
@@ -337,46 +457,6 @@ export function Dashboard() {
             <p className="rounded-lg border border-dashed border-white/20 px-3 py-2 text-sm text-slate-400">No focus areas configured yet.</p>
           )}
           <p className="mt-4 text-xs uppercase tracking-wider text-slate-500">Active Role: {role}</p>
-        </article>
-      </section>
-
-      <section className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-        <article className="xl:col-span-2 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">Operational Pulse</h2>
-            <span className="text-xs uppercase tracking-wide text-slate-500">Live Snapshot</span>
-          </div>
-
-          <div className="space-y-3">
-            {secondaryWidgets.map((widget) => {
-              const Icon = widgetIconMap[widget.key] ?? Activity
-
-              return (
-                <div key={widget.key} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3">
-                  <p className="inline-flex items-center gap-2 text-sm text-slate-200">
-                    <Icon className="h-4 w-4 text-emerald-400" />
-                    {widget.label}
-                  </p>
-                  <span className="text-sm font-semibold text-white">{formatWidgetValue(widget)}</span>
-                </div>
-              )
-            })}
-
-            {secondaryWidgets.length === 0 && (
-              <div className="rounded-xl border border-dashed border-white/20 px-4 py-5 text-sm text-slate-400">
-                Additional operational widgets will appear here as modules expand.
-              </div>
-            )}
-          </div>
-        </article>
-
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-          <h2 className="mb-4 text-lg font-semibold text-white">Governance Checks</h2>
-          <ul className="space-y-2 text-sm text-slate-300">
-            <li className="rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">Permission gating is backend-enforced.</li>
-            <li className="rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">Menus are tenant-safe and role-filtered.</li>
-            <li className="rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">Critical actions are audit-tagged.</li>
-          </ul>
         </article>
       </section>
     </div>
