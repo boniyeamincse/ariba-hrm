@@ -167,7 +167,7 @@ Security is enforced at every layer via Laravel Sanctum tokens, fine-grained RBA
 | Feature | Description |
 |---|---|
 | **Authentication** | Email/password + OTP 2FA; JWT tokens for API; Sanctum SPA cookies for web |
-| **User Roles** | Super Admin · Hospital Admin · Doctor · Nurse · Receptionist · Pharmacist · Lab Tech · Accountant · Patient |
+| **User Roles** | Super Admin · Tenant Admin (Hospital Admin) · Hospital Manager · Operations Manager · Doctor · Nurse · Receptionist / Front Desk · Pharmacist · Lab Technician · Accountant / Finance Manager · Ward Manager · Ambulance Driver / Transport Staff · IT Admin / System Administrator · Inventory Manager / Store Manager · HR Manager · Patient (Portal User) · Insurance Agent / Partner · Auditor / Compliance Officer · Data Analyst · API Client / Integration Role · AI Assistant Role |
 | **Permission Matrix** | Spatie Laravel Permission — granular permissions per role (e.g., `billing.view`, `prescription.create`) |
 | **Staff Management** | Create / edit / suspend staff accounts; assign departments and roles |
 | **Audit Log** | Every create/update/delete logged with user, IP, timestamp, before/after values |
