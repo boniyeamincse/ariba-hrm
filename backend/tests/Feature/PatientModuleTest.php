@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Patient;
+use App\Models\Role;
 use App\Models\Tenant;
 use App\Models\User;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -26,6 +28,7 @@ class PatientModuleTest extends TestCase
         parent::setUp();
 
         $this->artisan('migrate:fresh');
+        $this->seed(RolePermissionSeeder::class);
 
         config(['scout.driver' => 'database']);
 
@@ -39,6 +42,9 @@ class PatientModuleTest extends TestCase
         $user = User::factory()->create([
             'tenant_id' => $this->tenant->id,
         ]);
+
+        $hospitalAdminRole = Role::query()->where('name', 'hospital-admin')->firstOrFail();
+        $user->roles()->syncWithoutDetaching([$hospitalAdminRole->id]);
 
         $this->token = $user->createToken('patient-tests')->plainTextToken;
     }
