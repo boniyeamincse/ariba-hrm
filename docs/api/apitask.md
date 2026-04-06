@@ -154,9 +154,9 @@ Mark each module after it is really complete (Dev Done + Test Pass + Upload Uplo
 
 | Task ID | Task | Dev | Test | Git Upload |
 |---|---|---|---|---|
-| Task 01 | Book Appointment | Todo | Pending | Pending |
-| Task 02 | Reschedule Appointment | Todo | Pending | Pending |
-| Task 03 | Cancel Appointment | Todo | Pending | Pending |
+| Task 01 | Book Appointment | Done | Pass | Pending |
+| Task 02 | Reschedule Appointment | Done | Pass | Pending |
+| Task 03 | Cancel Appointment | Done | Pass | Pending |
 
 ## Dependency-First Development Sequence
 
