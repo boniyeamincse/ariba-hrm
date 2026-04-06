@@ -62,6 +62,14 @@ type ApiTenant = {
   subdomain: string
   database_name: string
   status: string
+  metadata?: {
+    hospital?: Record<string, string>
+    contact?: Record<string, string>
+    billing?: Record<string, string>
+    admin?: Record<string, string>
+    technical?: Record<string, string>
+    notes?: string
+  }
   created_at?: string
   updated_at?: string
 }
@@ -258,6 +266,34 @@ const buildFallbackMeta = (tenant: ApiTenant, index: number): TenantMeta => {
   }
 }
 
+const metaFromApi = (tenant: ApiTenant, fallbackIndex: number): TenantMeta => {
+  const m = tenant.metadata
+  if (!m) return buildFallbackMeta(tenant, fallbackIndex)
+  const seed = seedRows[fallbackIndex % seedRows.length]
+  return {
+    legalEntityName: m.hospital?.legal_entity_name ?? `${tenant.name} Limited`,
+    hospitalType: m.hospital?.hospital_type ?? 'General Hospital',
+    registrationNumber: m.hospital?.registration_number ?? '',
+    totalBranches: m.hospital?.total_branches ?? '1',
+    bedCapacity: m.hospital?.bed_capacity ?? '120',
+    country: m.hospital?.country ?? 'Bangladesh',
+    city: m.hospital?.city ?? seed.city,
+    timezone: m.hospital?.timezone ?? 'Asia/Dhaka',
+    contactEmail: m.contact?.email ?? `ops@${tenant.subdomain}.com`,
+    contactPhone: m.contact?.phone ?? '+880 1712 345 678',
+    address: m.contact?.address ?? `${seed.city} Clinical District, Main Avenue`,
+    plan: (m.billing?.plan ?? 'growth') as TenantFormState['plan'],
+    billingCycle: (m.billing?.cycle ?? 'monthly') as TenantFormState['billingCycle'],
+    userSeats: m.billing?.user_seats ?? '80',
+    invoiceEmail: m.billing?.invoice_email ?? `billing@${tenant.subdomain}.com`,
+    billingContact: m.billing?.billing_contact ?? 'Finance Controller',
+    taxId: m.billing?.tax_id ?? `VAT-${String(tenant.id).padStart(8, '0')}`,
+    adminFullName: m.admin?.full_name ?? 'Hospital Admin',
+    adminEmail: m.admin?.email ?? `admin@${tenant.subdomain}.com`,
+    tenantId: m.technical?.tenant_id ?? buildTenantId(tenant.name, String(tenant.id).padStart(4, '0')),
+  }
+}
+
 const normalizeTenantRecord = (tenant: ApiTenant, meta: TenantMeta): TenantRecord => ({
   ...tenant,
   meta,
@@ -304,6 +340,13 @@ export function UsersPage() {
   const [submitError, setSubmitError] = useState('')
   const [actionMessage, setActionMessage] = useState('')
   const [deleteConfirmation, setDeleteConfirmation] = useState('')
+  const [pagination, setPagination] = useState<{
+    total: number
+    per_page: number
+    current_page: number
+    last_page: number
+  } | null>(null)
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false)
 
   useEffect(() => {
     setTenantId(buildTenantId(form.hospitalName, tenantSuffix))
@@ -324,9 +367,15 @@ export function UsersPage() {
       setLoadError('')
 
       try {
-        const response = await api.get<{ data: ApiTenant[] }>('/tenants')
-        const nextTenants = (response.data.data ?? []).map((tenant, index) => normalizeTenantRecord(tenant, buildFallbackMeta(tenant, index)))
+        const response = await api.get<{
+          data: ApiTenant[]
+          pagination: { total: number; per_page: number; current_page: number; last_page: number }
+        }>('/tenants')
+        const nextTenants = (response.data.data ?? []).map((tenant, index) =>
+          normalizeTenantRecord(tenant, metaFromApi(tenant, index))
+        )
         setTenants(nextTenants)
+        setPagination(response.data.pagination ?? null)
         setSelectedTenantId((current) => current ?? nextTenants[0]?.id ?? null)
       } catch (error: any) {
         setLoadError(error.response?.data?.message ?? 'Unable to load tenants right now.')
@@ -408,18 +457,25 @@ export function UsersPage() {
     window.setTimeout(() => setCopiedTenantId(false), 1600)
   }
 
-  const refreshTenants = async () => {
+  const refreshTenants = async (page = 1) => {
     setIsLoading(true)
     setLoadError('')
 
     try {
-      const response = await api.get<{ data: ApiTenant[] }>('/tenants')
-      const nextTenants = (response.data.data ?? []).map((tenant, index) => {
-        const existing = tenants.find((item) => item.id === tenant.id)
-        return normalizeTenantRecord(tenant, existing?.meta ?? buildFallbackMeta(tenant, index))
-      })
+      const params: Record<string, string | number> = { page }
+      if (search) params.search = search
+      if (statusFilter !== 'all') params.status = statusFilter
+
+      const response = await api.get<{
+        data: ApiTenant[]
+        pagination: { total: number; per_page: number; current_page: number; last_page: number }
+      }>('/tenants', { params })
+      const nextTenants = (response.data.data ?? []).map((tenant, index) =>
+        normalizeTenantRecord(tenant, metaFromApi(tenant, index))
+      )
 
       setTenants(nextTenants)
+      setPagination(response.data.pagination ?? null)
       setSelectedTenantId((current) => current ?? nextTenants[0]?.id ?? null)
     } catch (error: any) {
       setLoadError(error.response?.data?.message ?? 'Unable to refresh tenants right now.')
@@ -458,6 +514,38 @@ export function UsersPage() {
         admin_name: form.adminFullName,
         admin_email: form.adminEmail,
         admin_password: form.adminPassword,
+        metadata: {
+          hospital: {
+            legal_entity_name: form.legalEntityName,
+            hospital_type: form.hospitalType,
+            registration_number: form.registrationNumber,
+            total_branches: form.totalBranches,
+            bed_capacity: form.bedCapacity,
+            country: form.country,
+            city: form.city,
+            timezone: form.timezone,
+          },
+          contact: {
+            email: form.contactEmail,
+            phone: form.contactPhone,
+            address: form.address,
+          },
+          billing: {
+            plan: form.plan,
+            cycle: form.billingCycle,
+            user_seats: form.userSeats,
+            invoice_email: form.invoiceEmail,
+            billing_contact: form.billingContact,
+            tax_id: form.taxId,
+          },
+          admin: {
+            full_name: form.adminFullName,
+            email: form.adminEmail,
+          },
+          technical: {
+            tenant_id: tenantId,
+          },
+        },
       })
 
       const createdTenant = response.data.tenant
@@ -483,18 +571,27 @@ export function UsersPage() {
     }
   }
 
-  const applyStatusChange = (status: string) => {
+  const applyStatusChange = async (status: string) => {
     if (!selectedTenant) {
       return
     }
 
-    setTenants((current) => current.map((tenant) => (
-      tenant.id === selectedTenant.id ? { ...tenant, status } : tenant
-    )))
-    setActionMessage(`Tenant ${selectedTenant.name} is now marked as ${status}. Backend status API can be connected next.`)
+    setIsStatusUpdating(true)
+    setActionMessage('')
+    try {
+      await api.patch(`/tenants/${selectedTenant.id}/status`, { status })
+      setTenants((current) =>
+        current.map((tenant) => (tenant.id === selectedTenant.id ? { ...tenant, status } : tenant))
+      )
+      setActionMessage(`${selectedTenant.name} status updated to ${status}.`)
+    } catch (error: any) {
+      setActionMessage(error.response?.data?.message ?? 'Status update failed. Please try again.')
+    } finally {
+      setIsStatusUpdating(false)
+    }
   }
 
-  const archiveSelectedTenant = () => {
+  const archiveSelectedTenant = async () => {
     if (!selectedTenant) {
       return
     }
@@ -504,11 +601,18 @@ export function UsersPage() {
       return
     }
 
-    setTenants((current) => current.map((tenant) => (
-      tenant.id === selectedTenant.id ? { ...tenant, status: 'archived' } : tenant
-    )))
-    setDeleteConfirmation('')
-    setActionMessage(`${selectedTenant.name} has been marked archived in the frontend workspace.`)
+    try {
+      await api.delete(`/tenants/${selectedTenant.id}`, { data: { mode: 'archive' } })
+      setTenants((current) =>
+        current.map((tenant) =>
+          tenant.id === selectedTenant.id ? { ...tenant, status: 'archived' } : tenant
+        )
+      )
+      setDeleteConfirmation('')
+      setActionMessage(`${selectedTenant.name} has been archived successfully.`)
+    } catch (error: any) {
+      setActionMessage(error.response?.data?.message ?? 'Archive failed. Please try again.')
+    }
   }
 
   const activeCount = tenants.filter((tenant) => tenant.status.toLowerCase() === 'active').length
@@ -617,7 +721,7 @@ export function UsersPage() {
                   <option value="archived">Archived</option>
                 </select>
                 <button
-                  onClick={refreshTenants}
+                  onClick={() => refreshTenants(1)}
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100"
                 >
                   Refresh
@@ -686,6 +790,28 @@ export function UsersPage() {
                 </tbody>
               </table>
             </div>
+
+            {pagination && pagination.last_page > 1 && (
+              <div className="mt-4 flex items-center justify-between text-sm text-slate-600">
+                <span>{pagination.total} hospitals — page {pagination.current_page} of {pagination.last_page}</span>
+                <div className="flex gap-2">
+                  <button
+                    disabled={pagination.current_page <= 1 || isLoading}
+                    onClick={() => refreshTenants(pagination.current_page - 1)}
+                    className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 font-medium transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    disabled={pagination.current_page >= pagination.last_page || isLoading}
+                    onClick={() => refreshTenants(pagination.current_page + 1)}
+                    className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 font-medium transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </section>
 
           <aside className="space-y-4">
@@ -1095,7 +1221,7 @@ export function UsersPage() {
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.15fr_0.85fr]">
           <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_20px_45px_-30px_rgba(15,23,42,0.25)]">
             <h2 className="text-2xl font-semibold text-slate-900">Suspend or activate tenant</h2>
-            <p className="mt-1 text-sm text-slate-500">Frontend status controls are ready. Backend status mutation endpoint can attach to these actions next.</p>
+            <p className="mt-1 text-sm text-slate-500">Select a tenant from the list, then use the controls below to activate, suspend, or move it to trial.</p>
 
             {selectedTenant ? (
               <div className="mt-6 space-y-5">
@@ -1105,15 +1231,15 @@ export function UsersPage() {
                   <span className={`mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-semibold capitalize ${statusTone(selectedTenant.status)}`}>{selectedTenant.status}</span>
                 </div>
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                  <button onClick={() => applyStatusChange('active')} className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-left transition hover:bg-emerald-100">
+                  <button onClick={() => applyStatusChange('active')} disabled={isStatusUpdating} className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-left transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-60">
                     <p className="font-semibold text-emerald-900">Activate</p>
                     <p className="mt-1 text-sm text-emerald-700">Re-enable billing and user sign-in.</p>
                   </button>
-                  <button onClick={() => applyStatusChange('suspended')} className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-4 text-left transition hover:bg-rose-100">
+                  <button onClick={() => applyStatusChange('suspended')} disabled={isStatusUpdating} className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-4 text-left transition hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60">
                     <p className="font-semibold text-rose-900">Suspend</p>
                     <p className="mt-1 text-sm text-rose-700">Block workspace access temporarily.</p>
                   </button>
-                  <button onClick={() => applyStatusChange('trial')} className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-4 text-left transition hover:bg-cyan-100">
+                  <button onClick={() => applyStatusChange('trial')} disabled={isStatusUpdating} className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-4 text-left transition hover:bg-cyan-100 disabled:cursor-not-allowed disabled:opacity-60">
                     <p className="font-semibold text-cyan-900">Move to Trial</p>
                     <p className="mt-1 text-sm text-cyan-700">Return to onboarding and sales review.</p>
                   </button>
@@ -1142,7 +1268,7 @@ export function UsersPage() {
               <AlertTriangle className="h-5 w-5" />
               <h2 className="text-2xl font-semibold text-slate-900">Tenant archive and delete safeguards</h2>
             </div>
-            <p className="mt-2 text-sm text-slate-600">Permanent delete is not wired yet. This screen provides a frontend-first archival guardrail until the backend delete flow exists.</p>
+            <p className="mt-2 text-sm text-slate-600">Archive sets the tenant status to archived and can be reversed. Permanent delete removes all records and requires the tenant to have no active users.</p>
 
             {selectedTenant ? (
               <div className="mt-6 space-y-5">

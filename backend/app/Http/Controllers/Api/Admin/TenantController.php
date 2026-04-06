@@ -16,10 +16,32 @@ class TenantController extends Controller
 {
     private const ALLOWED_STATUSES = ['active', 'inactive', 'suspended', 'trial', 'provisioning', 'archived'];
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $query = Tenant::query()->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('subdomain', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status') && $request->input('status') !== 'all') {
+            $query->where('status', $request->input('status'));
+        }
+
+        $paginator = $query->paginate((int) $request->input('per_page', 25));
+
         return response()->json([
-            'data' => Tenant::query()->latest()->get(),
+            'data' => $paginator->items(),
+            'pagination' => [
+                'total'        => $paginator->total(),
+                'per_page'     => $paginator->perPage(),
+                'current_page' => $paginator->currentPage(),
+                'last_page'    => $paginator->lastPage(),
+            ],
         ]);
     }
 
@@ -110,7 +132,11 @@ class TenantController extends Controller
         }
 
         if (array_key_exists('metadata', $data)) {
-            $data['metadata'] = $this->sanitizeMetadata($data['metadata']);
+            $currentMetadata = is_array($tenant->metadata) ? $tenant->metadata : [];
+            $data['metadata'] = array_replace_recursive(
+                $currentMetadata,
+                $this->sanitizeMetadata($data['metadata'])
+            );
         }
 
         $tenant->update($data);
