@@ -65,6 +65,25 @@ export function AuthLayout() {
             Return to Gateway
           </NavLink>
 
+          <div className="mb-6 inline-flex rounded-xl border border-white/10 bg-white/5 p-1">
+            <NavLink
+              to="/auth/login"
+              className={({ isActive }) =>
+                `rounded-lg px-4 py-2 text-sm font-semibold transition ${isActive ? 'bg-emerald-500 text-white' : 'text-slate-300 hover:text-white'}`
+              }
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/auth/register"
+              className={({ isActive }) =>
+                `rounded-lg px-4 py-2 text-sm font-semibold transition ${isActive ? 'bg-emerald-500 text-white' : 'text-slate-300 hover:text-white'}`
+              }
+            >
+              Register
+            </NavLink>
+          </div>
+
           <div className="">
              <Outlet />
           </div>

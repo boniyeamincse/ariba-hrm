@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/useAuth'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 
 type LoginInput = {
   email: string
@@ -59,7 +58,7 @@ export function LoginPage() {
         <div className="space-y-2">
           <div className="flex items-center justify-between ml-1">
             <label className="text-sm font-medium text-slate-300">Password</label>
-            <NavLink to="/auth/forgot-password" size="sm" className="text-xs font-medium text-emerald-400 hover:text-emerald-300">
+            <NavLink to="/auth/forgot-password" className="text-xs font-medium text-emerald-400 hover:text-emerald-300">
               Forgot?
             </NavLink>
           </div>

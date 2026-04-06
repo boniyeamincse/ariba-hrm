@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { ProtectedRoute } from './routes/ProtectedRoute'
 import { AuthLayout } from './layouts/AuthLayout'
@@ -51,6 +51,7 @@ const router = createBrowserRouter([
     path: '/auth',
     element: <AuthLayout />,
     children: [
+      { index: true, element: <Navigate to="login" replace /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'register', element: <RegisterPage /> },
       { path: 'forgot-password', element: <ForgotPasswordPage /> },
@@ -59,6 +60,8 @@ const router = createBrowserRouter([
       { path: 'verify-2fa', element: <TwoFactorPage /> },
     ],
   },
+  { path: '/login', element: <Navigate to="/auth/login" replace /> },
+  { path: '/register', element: <Navigate to="/auth/register" replace /> },
   {
     path: '/dashboard',
     element: (
