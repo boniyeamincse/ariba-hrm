@@ -1,6 +1,6 @@
 # ✅ MedCore HMS — Full Development Task List
 **Laravel 12 + React 19 + MySQL 8 | ERP SaaS Hospital Management System**
-> Author: Boni Yeamin | Total Tasks: 224 | Status: [ ] = Todo · [x] = Done · [~] = In Progress
+> Author: Boni Yeamin | Total Tasks: 225 | Status: [ ] = Todo · [x] = Done · [~] = In Progress
 
 ## Current Status Audit (2026-04-05)
 
@@ -394,6 +394,7 @@ This audit reflects the actual repository implementation state after local commi
 - [x] T222 — Create testing strategy documentation for quality gates and risk coverage
 - [x] T223 — Create release process documentation for staged rollout and rollback
 - [x] T224 — Create permission-to-menu matrix (`docs/dashboard/PERMISSION_MENU_MATRIX.md`) mapped to backend permission keys
+- [x] T225 — Add complete dashboard menu/submenu catalog and backend seed structure for all modules
 
 ---
 
@@ -415,8 +416,8 @@ This audit reflects the actual repository implementation state after local commi
 | Phase 11 — SaaS Admin | 9 | 0 | 0% |
 | Phase 12 — Patient Portal | 6 | 0 | 0% |
 | Phase 13 — QA & Launch | 12 | 0 | 0% |
-| Phase 14 — Documentation | 11 | 11 | 100% |
-| **TOTAL** | **224** | **53** | **24%** |
+| Phase 14 — Documentation | 12 | 12 | 100% |
+| **TOTAL** | **225** | **54** | **24%** |
 
 ---
 

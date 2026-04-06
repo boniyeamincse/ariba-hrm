@@ -10,6 +10,7 @@ docs/dashboard/
 ├── ARCHITECTURE.md
 ├── DESIGN_TASKS.md
 ├── IMPLEMENTATION_GUIDE.md
+├── MASTER_MENU_CATALOG.md
 ├── PERMISSION_MENU_MATRIX.md
 └── roles/
     ├── super-admin.md
@@ -40,6 +41,7 @@ docs/dashboard/
 - Read `ARCHITECTURE.md` for dashboard system design and access model.
 - Read `DESIGN_TASKS.md` for implementation roadmap and UI/UX tasks.
 - Read `IMPLEMENTATION_GUIDE.md` for frontend/backend implementation mapping.
+- Read `MASTER_MENU_CATALOG.md` for full dashboard menu/submenu tree.
 - Read `PERMISSION_MENU_MATRIX.md` for route-to-permission and role access mapping.
 - Open each role file under `roles/` for menu, submenu, permissions, and capability scope.
 
