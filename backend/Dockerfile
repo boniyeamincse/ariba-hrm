@@ -15,4 +15,8 @@ RUN composer install --no-interaction
 
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Make the custom entrypoint executable
+RUN chmod +x /var/www/html/docker-entrypoint.sh
+
+# Use the entrypoint script for DB waiting, migration, seeding and booting
+ENTRYPOINT ["/var/www/html/docker-entrypoint.sh"]
