@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   AlertTriangle,
@@ -348,6 +348,44 @@ export function UsersPage() {
   } | null>(null)
   const [isStatusUpdating, setIsStatusUpdating] = useState(false)
 
+  const refreshTenants = useCallback(async (page = 1) => {
+    setIsLoading(true)
+    setLoadError('')
+
+    try {
+      const params: Record<string, string | number> = { page }
+      if (search) params.search = search
+      if (statusFilter !== 'all') params.status = statusFilter
+
+      const response = await api.get<{
+        data: ApiTenant[]
+        pagination: { total: number; per_page: number; current_page: number; last_page: number }
+      }>('/tenants', { params })
+      const nextTenants = (response.data.data ?? []).map((tenant, index) =>
+        normalizeTenantRecord(tenant, metaFromApi(tenant, index))
+      )
+
+      setTenants(nextTenants)
+      setPagination(response.data.pagination ?? null)
+      setSelectedTenantId((current) => current ?? nextTenants[0]?.id ?? null)
+    } catch (error: any) {
+      setLoadError(error.response?.data?.message ?? 'Unable to refresh tenants right now.')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [search, statusFilter])
+
+  const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    const delay = search.length > 0 ? 400 : 0
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current)
+    searchDebounceRef.current = setTimeout(() => refreshTenants(1), delay)
+    return () => {
+      if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current)
+    }
+  }, [search, statusFilter, refreshTenants])
+
   useEffect(() => {
     setTenantId(buildTenantId(form.hospitalName, tenantSuffix))
   }, [form.hospitalName, tenantSuffix])
@@ -360,33 +398,6 @@ export function UsersPage() {
       }))
     }
   }, [form.hospitalName, form.subdomain])
-
-  useEffect(() => {
-    const loadTenants = async () => {
-      setIsLoading(true)
-      setLoadError('')
-
-      try {
-        const response = await api.get<{
-          data: ApiTenant[]
-          pagination: { total: number; per_page: number; current_page: number; last_page: number }
-        }>('/tenants')
-        const nextTenants = (response.data.data ?? []).map((tenant, index) =>
-          normalizeTenantRecord(tenant, metaFromApi(tenant, index))
-        )
-        setTenants(nextTenants)
-        setPagination(response.data.pagination ?? null)
-        setSelectedTenantId((current) => current ?? nextTenants[0]?.id ?? null)
-      } catch (error: any) {
-        setLoadError(error.response?.data?.message ?? 'Unable to load tenants right now.')
-        setTenants([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    loadTenants()
-  }, [])
 
   const selectedPlan = planConfig[form.plan]
   const seats = Number(form.userSeats || 0)
@@ -408,19 +419,11 @@ export function UsersPage() {
 
   const completedChecks = readinessChecks.filter((item) => item.complete).length
 
-  const visibleTenants = useMemo(() => tenants.filter((tenant) => {
-    const matchesSearch =
-      tenant.name.toLowerCase().includes(search.toLowerCase()) ||
-      tenant.subdomain.toLowerCase().includes(search.toLowerCase()) ||
-      tenant.meta.tenantId.toLowerCase().includes(search.toLowerCase())
-    const matchesStatus = statusFilter === 'all' || tenant.status.toLowerCase() === statusFilter
-
-    return matchesSearch && matchesStatus
-  }), [search, statusFilter, tenants])
+  const visibleTenants = tenants
 
   const selectedTenant = useMemo(
-    () => visibleTenants.find((tenant) => tenant.id === selectedTenantId) ?? tenants.find((tenant) => tenant.id === selectedTenantId) ?? null,
-    [selectedTenantId, tenants, visibleTenants],
+    () => tenants.find((tenant) => tenant.id === selectedTenantId) ?? null,
+    [selectedTenantId, tenants],
   )
 
   const allUsers = useMemo(() => tenants.map((tenant) => ({
@@ -455,33 +458,6 @@ export function UsersPage() {
     await navigator.clipboard.writeText(tenantId)
     setCopiedTenantId(true)
     window.setTimeout(() => setCopiedTenantId(false), 1600)
-  }
-
-  const refreshTenants = async (page = 1) => {
-    setIsLoading(true)
-    setLoadError('')
-
-    try {
-      const params: Record<string, string | number> = { page }
-      if (search) params.search = search
-      if (statusFilter !== 'all') params.status = statusFilter
-
-      const response = await api.get<{
-        data: ApiTenant[]
-        pagination: { total: number; per_page: number; current_page: number; last_page: number }
-      }>('/tenants', { params })
-      const nextTenants = (response.data.data ?? []).map((tenant, index) =>
-        normalizeTenantRecord(tenant, metaFromApi(tenant, index))
-      )
-
-      setTenants(nextTenants)
-      setPagination(response.data.pagination ?? null)
-      setSelectedTenantId((current) => current ?? nextTenants[0]?.id ?? null)
-    } catch (error: any) {
-      setLoadError(error.response?.data?.message ?? 'Unable to refresh tenants right now.')
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -704,8 +680,11 @@ export function UsersPage() {
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
                     placeholder="Search hospital, subdomain, or tenant ID"
-                    className="w-full rounded-xl border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 outline-none transition-colors focus:border-emerald-400/50 focus:ring-2 focus:ring-emerald-100 sm:w-72"
+                    className="w-full rounded-xl border border-slate-200 bg-white py-2 pl-9 pr-10 text-sm text-slate-900 outline-none transition-colors focus:border-emerald-400/50 focus:ring-2 focus:ring-emerald-100 sm:w-72"
                   />
+                  {isLoading && search.length > 0 && (
+                    <span className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-500" />
+                  )}
                 </div>
                 <select
                   value={statusFilter}
