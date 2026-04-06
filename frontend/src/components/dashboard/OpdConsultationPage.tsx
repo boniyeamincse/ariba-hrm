@@ -108,44 +108,44 @@ export function OpdConsultationPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <section className="rounded-3xl border border-white/10 bg-gradient-to-r from-slate-900 via-slate-900 to-teal-900/40 p-6">
+      <section className="rounded-3xl border border-slate-200 bg-gradient-to-r from-teal-100 via-white to-emerald-50 p-6">
         <p className="mb-2 text-xs uppercase tracking-[0.2em] text-teal-400">OPD Consultation</p>
-        <h1 className="text-3xl font-bold text-white">SOAP Consultation Editor</h1>
-        <p className="mt-2 text-slate-300">Capture structured clinical notes with ICD-10 assisted diagnosis lookup.</p>
+        <h1 className="text-3xl font-bold text-slate-900">SOAP Consultation Editor</h1>
+        <p className="mt-2 text-slate-600">Capture structured clinical notes with ICD-10 assisted diagnosis lookup.</p>
       </section>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-          <p className="text-xs uppercase tracking-wider text-slate-400">Current Diagnosis Code</p>
-          <p className="mt-2 text-xl font-bold text-white">{form.icd10_code || '--'}</p>
-          <p className="mt-1 text-xs text-slate-400">{selectedDiagnosis?.label ?? 'No diagnosis selected'}</p>
+        <article className="rounded-2xl border border-slate-200 bg-white p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-500">Current Diagnosis Code</p>
+          <p className="mt-2 text-xl font-bold text-slate-900">{form.icd10_code || '--'}</p>
+          <p className="mt-1 text-xs text-slate-500">{selectedDiagnosis?.label ?? 'No diagnosis selected'}</p>
         </article>
 
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-          <p className="text-xs uppercase tracking-wider text-slate-400">Follow-up Date</p>
-          <p className="mt-2 text-xl font-bold text-white">{form.follow_up_at || '--'}</p>
-          <p className="mt-1 text-xs text-slate-400">Set next review schedule after consultation.</p>
+        <article className="rounded-2xl border border-slate-200 bg-white p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-500">Follow-up Date</p>
+          <p className="mt-2 text-xl font-bold text-slate-900">{form.follow_up_at || '--'}</p>
+          <p className="mt-1 text-xs text-slate-500">Set next review schedule after consultation.</p>
         </article>
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+      <section className="rounded-2xl border border-slate-200 bg-white p-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <label className="block">
-            <span className="mb-1 block text-xs text-slate-300">Patient ID *</span>
+            <span className="mb-1 block text-xs text-slate-600">Patient ID *</span>
             <input
               value={form.patient_id}
               onChange={(e) => setField('patient_id', e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-teal-400/50"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-teal-400/50"
               placeholder="e.g. 1001"
             />
           </label>
 
           <label className="block">
-            <span className="mb-1 block text-xs text-slate-300">OPD Queue ID (optional)</span>
+            <span className="mb-1 block text-xs text-slate-600">OPD Queue ID (optional)</span>
             <input
               value={form.opd_queue_id}
               onChange={(e) => setField('opd_queue_id', e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-teal-400/50"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-teal-400/50"
               placeholder="e.g. 24"
             />
           </label>
@@ -153,45 +153,45 @@ export function OpdConsultationPage() {
 
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           <label className="block md:col-span-2">
-            <span className="mb-1 block text-xs text-slate-300">Subjective</span>
+            <span className="mb-1 block text-xs text-slate-600">Subjective</span>
             <textarea
               value={form.subjective}
               onChange={(e) => setField('subjective', e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-teal-400/50"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-teal-400/50"
               placeholder="Patient complaints and history..."
             />
           </label>
 
           <label className="block md:col-span-2">
-            <span className="mb-1 block text-xs text-slate-300">Objective</span>
+            <span className="mb-1 block text-xs text-slate-600">Objective</span>
             <textarea
               value={form.objective}
               onChange={(e) => setField('objective', e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-teal-400/50"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-teal-400/50"
               placeholder="Exam findings and measurable signs..."
             />
           </label>
 
           <label className="block">
-            <span className="mb-1 block text-xs text-slate-300">Assessment</span>
+            <span className="mb-1 block text-xs text-slate-600">Assessment</span>
             <textarea
               value={form.assessment}
               onChange={(e) => setField('assessment', e.target.value)}
               rows={4}
-              className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-teal-400/50"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-teal-400/50"
               placeholder="Clinical impression..."
             />
           </label>
 
           <label className="block">
-            <span className="mb-1 block text-xs text-slate-300">Plan</span>
+            <span className="mb-1 block text-xs text-slate-600">Plan</span>
             <textarea
               value={form.plan}
               onChange={(e) => setField('plan', e.target.value)}
               rows={4}
-              className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-teal-400/50"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-teal-400/50"
               placeholder="Treatment and follow-up plan..."
             />
           </label>
@@ -199,24 +199,24 @@ export function OpdConsultationPage() {
 
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           <label className="block">
-            <span className="mb-1 block text-xs text-slate-300">ICD-10 Search</span>
+            <span className="mb-1 block text-xs text-slate-600">ICD-10 Search</span>
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
               <input
                 value={icdQuery}
                 onChange={(e) => setIcdQuery(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-slate-900/80 py-2 pl-10 pr-3 text-sm text-white outline-none focus:border-teal-400/50"
+                className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-10 pr-3 text-sm text-slate-900 outline-none focus:border-teal-400/50"
                 placeholder="Type diagnosis keyword or code"
               />
             </div>
             {icdLoading && (
-              <p className="mt-2 inline-flex items-center gap-2 text-xs text-slate-400">
+              <p className="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 Searching ICD-10...
               </p>
             )}
             {!icdLoading && icdResults.length > 0 && (
-              <div className="mt-2 max-h-48 overflow-y-auto rounded-lg border border-white/10 bg-slate-900/90">
+              <div className="mt-2 max-h-48 overflow-y-auto rounded-lg border border-slate-200 bg-white">
                 {icdResults.map((item) => (
                   <button
                     key={`${item.code}-${item.label}`}
@@ -225,7 +225,7 @@ export function OpdConsultationPage() {
                       setField('icd10_code', item.code)
                       setIcdQuery(`${item.code} - ${item.label}`)
                     }}
-                    className="block w-full border-b border-white/5 px-3 py-2 text-left text-xs text-slate-200 last:border-b-0 hover:bg-white/5"
+                    className="block w-full border-b border-white/5 px-3 py-2 text-left text-xs text-slate-200 last:border-b-0 hover:bg-slate-50"
                   >
                     <span className="font-semibold text-teal-300">{item.code}</span>
                     <span className="ml-2">{item.label}</span>
@@ -236,12 +236,12 @@ export function OpdConsultationPage() {
           </label>
 
           <label className="block">
-            <span className="mb-1 block text-xs text-slate-300">Follow-up At</span>
+            <span className="mb-1 block text-xs text-slate-600">Follow-up At</span>
             <input
               type="datetime-local"
               value={form.follow_up_at}
               onChange={(e) => setField('follow_up_at', e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-teal-400/50"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-teal-400/50"
             />
           </label>
         </div>
@@ -265,7 +265,7 @@ export function OpdConsultationPage() {
               setSuccess(null)
             }}
             disabled={submitting}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm text-slate-300 hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Stethoscope className="h-4 w-4" />
             Reset Form
@@ -274,7 +274,7 @@ export function OpdConsultationPage() {
           <button
             onClick={() => setField('plan', `${form.plan}${form.plan ? '\n' : ''}Review labs and continue treatment.`)}
             disabled={submitting}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm text-slate-300 hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <FileText className="h-4 w-4" />
             Add Plan Template
@@ -288,7 +288,7 @@ export function OpdConsultationPage() {
               setField('follow_up_at', local.toISOString().slice(0, 16))
             }}
             disabled={submitting}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm text-slate-300 hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <CalendarClock className="h-4 w-4" />
             +7 Days Follow-up

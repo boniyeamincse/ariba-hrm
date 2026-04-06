@@ -109,8 +109,8 @@ export function PatientRegistrationPage() {
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20">
               <Check className="h-8 w-8 text-emerald-500" />
             </div>
-            <h2 className="mb-2 text-2xl font-bold text-white">Patient Registered</h2>
-            <p className="mb-6 text-slate-400">New patient UHID: <span className="font-mono font-semibold text-emerald-400">{patientUhid}</span></p>
+            <h2 className="mb-2 text-2xl font-bold text-slate-900">Patient Registered</h2>
+            <p className="mb-6 text-slate-500">New patient UHID: <span className="font-mono font-semibold text-emerald-400">{patientUhid}</span></p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
               <button
                 onClick={() => navigate(`/clinical/patients`)}
@@ -120,7 +120,7 @@ export function PatientRegistrationPage() {
               </button>
               <button
                 onClick={() => navigate(`/clinical/patients`)}
-                className="rounded-xl border border-white/10 px-6 py-2 font-semibold text-white transition-all hover:bg-white/5"
+                className="rounded-xl border border-slate-200 px-6 py-2 font-semibold text-slate-900 transition-all hover:bg-slate-50"
               >
                 Back to Search
               </button>
@@ -166,15 +166,15 @@ export function PatientRegistrationPage() {
 
       <div className="mx-auto max-w-4xl">
         {/* Tabs */}
-        <div className="mb-8 flex gap-2 border-b border-white/10">
+        <div className="mb-8 flex gap-2 border-b border-slate-200">
           {['walk-in', 'pre-registered'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as TabType)}
               className={`px-4 py-3 font-semibold transition-all ${
                 activeTab === tab
-                  ? 'border-b-2 border-emerald-500 text-white'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'border-b-2 border-emerald-500 text-slate-900'
+                  : 'text-slate-500 hover:text-slate-900'
               }`}
             >
               {tab === 'walk-in' ? 'Walk-in Patient' : 'Pre-Registered Patient'}
@@ -190,27 +190,27 @@ export function PatientRegistrationPage() {
           >
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-rose-500 mt-0.5" />
             <div>
-              <p className="font-semibold text-white">Registration Error</p>
-              <p className="text-sm text-slate-300">{submitError}</p>
+              <p className="font-semibold text-slate-900">Registration Error</p>
+              <p className="text-sm text-slate-600">{submitError}</p>
             </div>
           </motion.div>
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Basic Information */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-            <h3 className="mb-4 font-semibold text-white">Basic Information</h3>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <h3 className="mb-4 font-semibold text-slate-900">Basic Information</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   First Name *
                 </label>
                 <input
                   {...register('first_name', { required: 'First name is required' })}
                   type="text"
                   className={`w-full rounded-lg border ${
-                    errors.first_name ? 'border-rose-500' : 'border-white/10'
-                  } bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50`}
+                    errors.first_name ? 'border-rose-500' : 'border-slate-200'
+                  } bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50`}
                   placeholder="John"
                 />
                 {errors.first_name && (
@@ -219,50 +219,50 @@ export function PatientRegistrationPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   Middle Name
                 </label>
                 <input
                   {...register('middle_name')}
                   type="text"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   placeholder="Middle"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   Last Name
                 </label>
                 <input
                   {...register('last_name')}
                   type="text"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   placeholder="Doe"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   Date of Birth
                 </label>
                 <input
                   {...register('date_of_birth')}
                   type="date"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   Phone *
                 </label>
                 <input
                   {...register('phone', { required: 'Phone is required' })}
                   type="tel"
                   className={`w-full rounded-lg border ${
-                    errors.phone ? 'border-rose-500' : 'border-white/10'
-                  } bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50`}
+                    errors.phone ? 'border-rose-500' : 'border-slate-200'
+                  } bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50`}
                   placeholder="+880 1700 000000"
                 />
                 {errors.phone && (
@@ -271,24 +271,24 @@ export function PatientRegistrationPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   Email
                 </label>
                 <input
                   {...register('email')}
                   type="email"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   placeholder="john@example.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   Gender
                 </label>
                 <select
                   {...register('gender')}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                 >
                   <option value="">Select Gender</option>
                   <option value="male">Male</option>
@@ -298,12 +298,12 @@ export function PatientRegistrationPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   Blood Group
                 </label>
                 <select
                   {...register('blood_group')}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                 >
                   <option value="">Select Blood Group</option>
                   <option value="O+">O+</option>
@@ -320,29 +320,29 @@ export function PatientRegistrationPage() {
           </div>
 
           {/* Identification */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-            <h3 className="mb-4 font-semibold text-white">Identification</h3>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <h3 className="mb-4 font-semibold text-slate-900">Identification</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   National ID Number
                 </label>
                 <input
                   {...register('national_id_no')}
                   type="text"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   placeholder="1234567890"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-600 mb-2">
                   Passport Number
                 </label>
                 <input
                   {...register('passport_no')}
                   type="text"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   placeholder="AB123456"
                 />
               </div>
@@ -350,38 +350,38 @@ export function PatientRegistrationPage() {
           </div>
 
           {/* Address */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-            <h3 className="mb-4 font-semibold text-white">Address Information</h3>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <h3 className="mb-4 font-semibold text-slate-900">Address Information</h3>
             <div className="space-y-4">
               <input
                 {...register('address')}
                 type="text"
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                 placeholder="Street Address"
               />
               <div className="grid gap-4 sm:grid-cols-3">
                 <input
                   {...register('city')}
                   type="text"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   placeholder="City"
                 />
                 <input
                   {...register('state')}
                   type="text"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   placeholder="State/Province"
                 />
                 <input
                   {...register('postal_code')}
                   type="text"
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   placeholder="Postal Code"
                 />
               </div>
               <select
                 {...register('country')}
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
               >
                 <option value="Bangladesh">Bangladesh</option>
                 <option value="India">India</option>
@@ -393,33 +393,33 @@ export function PatientRegistrationPage() {
           </div>
 
           {/* Emergency Contact */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-            <h3 className="mb-4 font-semibold text-white">Emergency Contact</h3>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <h3 className="mb-4 font-semibold text-slate-900">Emergency Contact</h3>
             <div className="grid gap-4 sm:grid-cols-3">
               <input
                 {...register('emergency_contact_name')}
                 type="text"
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                 placeholder="Full Name"
               />
               <input
                 {...register('emergency_contact_phone')}
                 type="tel"
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                 placeholder="Phone Number"
               />
               <input
                 {...register('emergency_contact_relation')}
                 type="text"
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                 placeholder="Relation (e.g., Spouse)"
               />
             </div>
           </div>
 
           {/* Photo Upload */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-            <h3 className="mb-4 font-semibold text-white">Patient Photo</h3>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <h3 className="mb-4 font-semibold text-slate-900">Patient Photo</h3>
             {photoPreview ? (
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <img
@@ -428,7 +428,7 @@ export function PatientRegistrationPage() {
                   className="h-24 w-24 rounded-lg object-cover"
                 />
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm text-slate-300">Photo captured</p>
+                  <p className="text-sm text-slate-600">Photo captured</p>
                   <button
                     type="button"
                     onClick={() => {
@@ -445,11 +445,11 @@ export function PatientRegistrationPage() {
               <button
                 type="button"
                 onClick={() => setShowPhotoModal(true)}
-                className="w-full rounded-lg border-2 border-dashed border-white/10 px-6 py-8 transition-all hover:border-emerald-500/30 hover:bg-white/[0.02]"
+                className="w-full rounded-lg border-2 border-dashed border-slate-200 px-6 py-8 transition-all hover:border-emerald-500/30 hover:bg-slate-50"
               >
                 <Upload className="mx-auto mb-2 h-8 w-8 text-slate-500" />
-                <p className="font-semibold text-white">Capture or upload photo</p>
-                <p className="mt-1 text-sm text-slate-400">Click to use webcam or upload from file</p>
+                <p className="font-semibold text-slate-900">Capture or upload photo</p>
+                <p className="mt-1 text-sm text-slate-500">Click to use webcam or upload from file</p>
               </button>
             )}
           </div>
@@ -459,7 +459,7 @@ export function PatientRegistrationPage() {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 rounded-xl border border-white/10 px-6 py-3 font-semibold text-white transition-all hover:bg-white/5"
+              className="flex items-center gap-2 rounded-xl border border-slate-200 px-6 py-3 font-semibold text-slate-900 transition-all hover:bg-slate-50"
             >
               <ArrowLeft className="h-4 w-4" />
               Cancel

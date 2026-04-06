@@ -70,7 +70,7 @@ export function PatientSearchPage() {
               placeholder="Search by name, UHID, phone, or ID number..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-white/5 py-3 pl-12 pr-4 text-white placeholder-slate-500 transition-all hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+              className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-12 pr-4 text-slate-900 placeholder-slate-500 transition-all hover:bg-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
             />
           </div>
           <button
@@ -101,8 +101,8 @@ export function PatientSearchPage() {
               className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-500/30 py-16 text-center"
             >
               <User className="mb-4 h-12 w-12 text-slate-600" />
-              <p className="mb-2 text-lg font-semibold text-white">No patients found</p>
-              <p className="mb-6 text-sm text-slate-400">Try refining your search or register a new patient</p>
+              <p className="mb-2 text-lg font-semibold text-slate-900">No patients found</p>
+              <p className="mb-6 text-sm text-slate-500">Try refining your search or register a new patient</p>
               <button
                 onClick={() => navigate('/clinical/patients/register')}
                 className="inline-flex items-center gap-2 rounded-xl bg-emerald-500/20 px-4 py-2 font-semibold text-emerald-400 transition-all hover:bg-emerald-500/30"
@@ -117,7 +117,7 @@ export function PatientSearchPage() {
               animate={{ opacity: 1 }}
               className="space-y-3"
             >
-              <p className="text-sm font-semibold text-slate-400">{patients.length} result(s) found</p>
+              <p className="text-sm font-semibold text-slate-500">{patients.length} result(s) found</p>
               {patients.map((patient, i) => (
                 <motion.div
                   key={patient.id}
@@ -125,7 +125,7 @@ export function PatientSearchPage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
                   onClick={() => handlePatientSelect(patient)}
-                  className="group cursor-pointer rounded-2xl border border-white/10 bg-white/[0.02] p-5 transition-all hover:border-emerald-500/30 hover:bg-white/5"
+                  className="group cursor-pointer rounded-2xl border border-slate-200 bg-slate-50 p-5 transition-all hover:border-emerald-500/30 hover:bg-slate-50"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
@@ -133,10 +133,10 @@ export function PatientSearchPage() {
                         <User className="h-6 w-6" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-semibold text-white">
+                        <p className="font-semibold text-slate-900">
                           {patient.first_name} {patient.last_name || ''}
                         </p>
-                        <div className="mt-1 flex flex-wrap gap-3 text-xs text-slate-400">
+                        <div className="mt-1 flex flex-wrap gap-3 text-xs text-slate-500">
                           <span className="inline-flex items-center gap-1">
                             <span className="font-mono text-emerald-500">{patient.uhid}</span>
                           </span>
@@ -173,23 +173,23 @@ export function PatientSearchPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-3xl border border-white/5 bg-white/[0.02] p-8"
+            className="rounded-3xl border border-slate-200 bg-slate-50 p-8"
           >
-            <h3 className="mb-6 font-semibold text-white">Quick Actions</h3>
+            <h3 className="mb-6 font-semibold text-slate-900">Quick Actions</h3>
             <div className="grid gap-4">
               <button
                 onClick={() => navigate('/clinical/patients/register?tab=walk-in')}
-                className="rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:border-emerald-500/30 hover:bg-white/10"
+                className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-left transition-all hover:border-emerald-500/30 hover:bg-slate-100"
               >
-                <p className="font-semibold text-white">Register Walk-in Patient</p>
-                <p className="mt-1 text-sm text-slate-400">Quick registration for new patients arriving without appointment</p>
+                <p className="font-semibold text-slate-900">Register Walk-in Patient</p>
+                <p className="mt-1 text-sm text-slate-500">Quick registration for new patients arriving without appointment</p>
               </button>
               <button
                 onClick={() => navigate('/clinical/patients/register?tab=pre-registered')}
-                className="rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:border-emerald-500/30 hover:bg-white/10"
+                className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-left transition-all hover:border-emerald-500/30 hover:bg-slate-100"
               >
-                <p className="font-semibold text-white">Register Pre-Registered Patient</p>
-                <p className="mt-1 text-sm text-slate-400">Complete registration for patients who signed up online</p>
+                <p className="font-semibold text-slate-900">Register Pre-Registered Patient</p>
+                <p className="mt-1 text-sm text-slate-500">Complete registration for patients who signed up online</p>
               </button>
             </div>
           </motion.div>

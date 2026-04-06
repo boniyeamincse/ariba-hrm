@@ -179,56 +179,56 @@ export function OpdQueuePage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <section className="rounded-3xl border border-white/10 bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-900/40 p-6">
+      <section className="rounded-3xl border border-slate-200 bg-gradient-to-r from-emerald-100 via-white to-cyan-100 p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="mb-2 text-xs uppercase tracking-[0.2em] text-cyan-400">OPD Live Operations</p>
-            <h1 className="text-3xl font-bold text-white">Queue Command Board</h1>
-            <p className="mt-2 text-slate-300">Real-time token monitoring and triage flow control.</p>
+            <h1 className="text-3xl font-bold text-slate-900">Queue Command Board</h1>
+            <p className="mt-2 text-slate-600">Real-time token monitoring and triage flow control.</p>
           </div>
           <div className="flex items-center gap-2">
             <Link
               to="/dashboard/opd/vitals"
-              className="inline-flex items-center gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/20"
+              className="inline-flex items-center gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-500/20"
             >
               <UserRound className="h-4 w-4" />
               Open Vitals Form
             </Link>
             <Link
               to="/dashboard/opd/consultations"
-              className="inline-flex items-center gap-2 rounded-2xl border border-teal-500/30 bg-teal-500/10 px-3 py-2 text-xs font-semibold text-teal-300 hover:bg-teal-500/20"
+              className="inline-flex items-center gap-2 rounded-2xl border border-teal-500/30 bg-teal-500/10 px-3 py-2 text-xs font-semibold text-teal-700 hover:bg-teal-500/20"
             >
               <Activity className="h-4 w-4" />
               Open SOAP Editor
             </Link>
-            <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.02] px-3 py-2 text-xs">
-              <Activity className="h-4 w-4 text-cyan-300" />
-              <span className="text-slate-300">Mode:</span>
-              <span className="font-semibold uppercase text-white">{liveStatus}</span>
+            <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs">
+              <Activity className="h-4 w-4 text-cyan-700" />
+              <span className="text-slate-600">Mode:</span>
+              <span className="font-semibold uppercase text-slate-900">{liveStatus}</span>
             </div>
           </div>
         </div>
       </section>
 
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-          <p className="text-xs uppercase tracking-wider text-slate-400">Current Token</p>
-          <p className="mt-2 text-4xl font-black text-white">{state.current ? `#${state.current.token_no}` : '--'}</p>
-          <p className="mt-2 text-sm text-slate-300">Patient ID: {state.current?.patient_id ?? 'N/A'}</p>
+        <article className="rounded-2xl border border-slate-200 bg-white p-5">
+          <p className="text-xs uppercase tracking-wider text-slate-500">Current Token</p>
+          <p className="mt-2 text-4xl font-black text-slate-900">{state.current ? `#${state.current.token_no}` : '--'}</p>
+          <p className="mt-2 text-sm text-slate-600">Patient ID: {state.current?.patient_id ?? 'N/A'}</p>
         </article>
 
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-          <p className="text-xs uppercase tracking-wider text-slate-400">Waiting Patients</p>
-          <p className="mt-2 text-4xl font-black text-white">{state.stats.waiting_count}</p>
-          <p className="mt-2 text-sm capitalize text-slate-300">Queue health: {queueHealth}</p>
+        <article className="rounded-2xl border border-slate-200 bg-white p-5">
+          <p className="text-xs uppercase tracking-wider text-slate-500">Waiting Patients</p>
+          <p className="mt-2 text-4xl font-black text-slate-900">{state.stats.waiting_count}</p>
+          <p className="mt-2 text-sm capitalize text-slate-600">Queue health: {queueHealth}</p>
         </article>
 
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-          <p className="text-xs uppercase tracking-wider text-slate-400">Served Today</p>
-          <p className="mt-2 text-4xl font-black text-white">{state.stats.served_today}</p>
+        <article className="rounded-2xl border border-slate-200 bg-white p-5">
+          <p className="text-xs uppercase tracking-wider text-slate-500">Served Today</p>
+          <p className="mt-2 text-4xl font-black text-slate-900">{state.stats.served_today}</p>
           <button
             onClick={loadState}
-            className="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 px-3 py-1.5 text-xs text-slate-300 hover:bg-white/5"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-50"
           >
             <RefreshCcw className="h-3.5 w-3.5" />
             Refresh
@@ -237,9 +237,9 @@ export function OpdQueuePage() {
       </section>
 
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 xl:col-span-2">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 xl:col-span-2">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">Waiting Queue</h2>
+            <h2 className="text-lg font-semibold text-slate-900">Waiting Queue</h2>
             <button
               onClick={callNext}
               disabled={Boolean(actionLoading) || state.waiting.length === 0}
@@ -251,20 +251,20 @@ export function OpdQueuePage() {
           </div>
 
           {loading ? (
-            <div className="rounded-xl border border-white/10 p-6 text-slate-400">Loading queue...</div>
+            <div className="rounded-xl border border-slate-200 p-6 text-slate-500">Loading queue...</div>
           ) : state.waiting.length === 0 ? (
-            <div className="rounded-xl border border-white/10 p-6 text-slate-400">No waiting tokens.</div>
+            <div className="rounded-xl border border-slate-200 p-6 text-slate-500">No waiting tokens.</div>
           ) : (
             <div className="space-y-3">
               {state.waiting.map((item) => (
-                <div key={item.id} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                <div key={item.id} className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-300">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-700">
                       <UserRound className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="font-semibold text-white">Token #{item.token_no}</p>
-                      <p className="text-xs text-slate-400">Patient ID: {item.patient_id} | Priority: {item.priority}</p>
+                      <p className="font-semibold text-slate-900">Token #{item.token_no}</p>
+                      <p className="text-xs text-slate-500">Patient ID: {item.patient_id} | Priority: {item.priority}</p>
                     </div>
                   </div>
 
@@ -282,30 +282,30 @@ export function OpdQueuePage() {
           )}
         </article>
 
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-          <h2 className="text-lg font-semibold text-white">Generate Token</h2>
-          <p className="mt-1 text-xs text-slate-400">Register patient into live OPD queue.</p>
+        <article className="rounded-2xl border border-slate-200 bg-white p-5">
+          <h2 className="text-lg font-semibold text-slate-900">Generate Token</h2>
+          <p className="mt-1 text-xs text-slate-500">Register patient into live OPD queue.</p>
 
           <div className="mt-4 space-y-3">
             <label className="block">
-              <span className="mb-1 block text-xs text-slate-300">Patient ID</span>
+              <span className="mb-1 block text-xs text-slate-600">Patient ID</span>
               <input
                 value={patientId}
                 onChange={(e) => setPatientId(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-cyan-400/50"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-cyan-400/50"
                 placeholder="e.g. 1024"
               />
             </label>
 
             <label className="block">
-              <span className="mb-1 block text-xs text-slate-300">Priority (0-9)</span>
+              <span className="mb-1 block text-xs text-slate-600">Priority (0-9)</span>
               <input
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
                 type="number"
                 min={0}
                 max={9}
-                className="w-full rounded-lg border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white outline-none focus:border-cyan-400/50"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-cyan-400/50"
               />
             </label>
 

@@ -115,8 +115,8 @@ export function PatientProfilePage() {
           <div className="flex gap-3">
             <AlertCircle className="h-6 w-6 flex-shrink-0 text-rose-500" />
             <div>
-              <h3 className="font-semibold text-white">Failed to Load Profile</h3>
-              <p className="mt-1 text-sm text-slate-300">{error}</p>
+              <h3 className="font-semibold text-slate-900">Failed to Load Profile</h3>
+              <p className="mt-1 text-sm text-slate-600">{error}</p>
               <button
                 onClick={() => navigate('/clinical/patients')}
                 className="mt-4 rounded-lg bg-rose-500/20 px-4 py-2 text-sm font-semibold text-rose-400 hover:bg-rose-500/30"
@@ -140,7 +140,7 @@ export function PatientProfilePage() {
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
           <button
             onClick={() => navigate('/clinical/patients')}
-            className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm font-semibold text-white hover:bg-white/5"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
@@ -158,7 +158,7 @@ export function PatientProfilePage() {
 
               <div className="flex-1">
                 <div className="mb-4 flex flex-wrap items-center gap-3">
-                  <h2 className="text-3xl font-bold text-white">
+                  <h2 className="text-3xl font-bold text-slate-900">
                     {patient.first_name} {patient.last_name || ''}
                   </h2>
                   {patient.blood_group && (
@@ -174,7 +174,7 @@ export function PatientProfilePage() {
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
                     <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                       UHID
                     </p>
@@ -183,22 +183,22 @@ export function PatientProfilePage() {
                     </p>
                   </div>
                   {patient.phone && (
-                    <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
                       <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                         Phone
                       </p>
-                      <p className="mt-1 text-lg font-semibold text-white">{patient.phone}</p>
+                      <p className="mt-1 text-lg font-semibold text-slate-900">{patient.phone}</p>
                     </div>
                   )}
                 </div>
               </div>
 
               <div className="flex flex-col gap-2 sm:w-fit">
-                <button className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 font-semibold text-white transition-all hover:bg-white/10">
+                <button className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 font-semibold text-slate-900 transition-all hover:bg-slate-100">
                   <Edit className="h-4 w-4" />
                   Edit
                 </button>
-                <button className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 font-semibold text-white transition-all hover:bg-white/10">
+                <button className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 font-semibold text-slate-900 transition-all hover:bg-slate-100">
                   <Download className="h-4 w-4" />
                   Export
                 </button>
@@ -208,15 +208,15 @@ export function PatientProfilePage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 border-b border-white/10">
+        <div className="flex gap-2 border-b border-slate-200">
           {(['demographics', 'history', 'visits'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`flex items-center gap-2 px-4 py-3 font-semibold transition-all ${
                 activeTab === tab
-                  ? 'border-b-2 border-emerald-500 text-white'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'border-b-2 border-emerald-500 text-slate-900'
+                  : 'text-slate-500 hover:text-slate-900'
               }`}
             >
               {tab === 'demographics' && <User className="h-4 w-4" />}
@@ -238,11 +238,11 @@ export function PatientProfilePage() {
               className="space-y-4"
             >
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4">
+                <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                   <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                     Date of Birth
                   </p>
-                  <p className="mt-2 text-lg font-semibold text-white">
+                  <p className="mt-2 text-lg font-semibold text-slate-900">
                     {patient.date_of_birth
                       ? new Date(patient.date_of_birth).toLocaleDateString()
                       : 'Not provided'}
@@ -250,61 +250,61 @@ export function PatientProfilePage() {
                 </div>
 
                 {patient.email && (
-                  <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4">
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                       Email
                     </p>
-                    <p className="mt-2 text-lg font-semibold text-white">{patient.email}</p>
+                    <p className="mt-2 text-lg font-semibold text-slate-900">{patient.email}</p>
                   </div>
                 )}
 
                 {patient.national_id_no && (
-                  <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4">
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                       National ID
                     </p>
-                    <p className="mt-2 font-mono text-lg font-semibold text-white">
+                    <p className="mt-2 font-mono text-lg font-semibold text-slate-900">
                       {patient.national_id_no}
                     </p>
                   </div>
                 )}
 
                 {patient.passport_no && (
-                  <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4">
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                       Passport
                     </p>
-                    <p className="mt-2 font-mono text-lg font-semibold text-white">
+                    <p className="mt-2 font-mono text-lg font-semibold text-slate-900">
                       {patient.passport_no}
                     </p>
                   </div>
                 )}
 
                 {patient.marital_status && (
-                  <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4">
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                       Marital Status
                     </p>
-                    <p className="mt-2 text-lg font-semibold text-white">{patient.marital_status}</p>
+                    <p className="mt-2 text-lg font-semibold text-slate-900">{patient.marital_status}</p>
                   </div>
                 )}
 
                 {patient.occupation && (
-                  <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4">
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                       Occupation
                     </p>
-                    <p className="mt-2 text-lg font-semibold text-white">{patient.occupation}</p>
+                    <p className="mt-2 text-lg font-semibold text-slate-900">{patient.occupation}</p>
                   </div>
                 )}
               </div>
 
               {patient.address && (
-                <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4">
+                <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                   <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                     Address
                   </p>
-                  <p className="mt-2 text-white">
+                  <p className="mt-2 text-slate-900">
                     {patient.address}
                     {patient.city && `, ${patient.city}`}
                     {patient.state && `, ${patient.state}`}
@@ -318,13 +318,13 @@ export function PatientProfilePage() {
                   <p className="text-xs font-semibold uppercase tracking-widest text-orange-500">
                     Emergency Contact
                   </p>
-                  <div className="mt-3 space-y-1 text-white">
+                  <div className="mt-3 space-y-1 text-slate-900">
                     <p className="font-semibold">{patient.emergency_contact_name}</p>
                     {patient.emergency_contact_phone && (
-                      <p className="text-sm text-slate-300">{patient.emergency_contact_phone}</p>
+                      <p className="text-sm text-slate-600">{patient.emergency_contact_phone}</p>
                     )}
                     {patient.emergency_contact_relation && (
-                      <p className="text-sm text-slate-400">{patient.emergency_contact_relation}</p>
+                      <p className="text-sm text-slate-500">{patient.emergency_contact_relation}</p>
                     )}
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export function PatientProfilePage() {
                       <p className="text-xs font-semibold uppercase tracking-widest text-rose-500">
                         Allergies
                       </p>
-                      <p className="mt-2 text-white">{history.allergies}</p>
+                      <p className="mt-2 text-slate-900">{history.allergies}</p>
                     </div>
                   )}
 
@@ -356,7 +356,7 @@ export function PatientProfilePage() {
                       <p className="text-xs font-semibold uppercase tracking-widest text-blue-500">
                         Chronic Conditions
                       </p>
-                      <p className="mt-2 text-white">{history.chronic_conditions}</p>
+                      <p className="mt-2 text-slate-900">{history.chronic_conditions}</p>
                     </div>
                   )}
 
@@ -365,7 +365,7 @@ export function PatientProfilePage() {
                       <p className="text-xs font-semibold uppercase tracking-widest text-purple-500">
                         Surgical History
                       </p>
-                      <p className="mt-2 text-white">{history.surgical_history}</p>
+                      <p className="mt-2 text-slate-900">{history.surgical_history}</p>
                     </div>
                   )}
 
@@ -374,7 +374,7 @@ export function PatientProfilePage() {
                       <p className="text-xs font-semibold uppercase tracking-widest text-amber-500">
                         Family History
                       </p>
-                      <p className="mt-2 text-white">{history.family_history}</p>
+                      <p className="mt-2 text-slate-900">{history.family_history}</p>
                     </div>
                   )}
 
@@ -383,7 +383,7 @@ export function PatientProfilePage() {
                       <p className="text-xs font-semibold uppercase tracking-widest text-green-500">
                         Immunization Records
                       </p>
-                      <p className="mt-2 text-white">{history.immunization_records}</p>
+                      <p className="mt-2 text-slate-900">{history.immunization_records}</p>
                     </div>
                   )}
 
@@ -392,14 +392,14 @@ export function PatientProfilePage() {
                     !history.surgical_history &&
                     !history.family_history &&
                     !history.immunization_records && (
-                      <div className="rounded-lg border border-dashed border-white/10 p-8 text-center">
-                        <p className="text-slate-400">No medical history recorded</p>
+                      <div className="rounded-lg border border-dashed border-slate-200 p-8 text-center">
+                        <p className="text-slate-500">No medical history recorded</p>
                       </div>
                     )}
                 </>
               ) : (
-                <div className="rounded-lg border border-dashed border-white/10 p-8 text-center">
-                  <p className="text-slate-400">No medical history available</p>
+                <div className="rounded-lg border border-dashed border-slate-200 p-8 text-center">
+                  <p className="text-slate-500">No medical history available</p>
                 </div>
               )}
             </motion.div>
@@ -417,7 +417,7 @@ export function PatientProfilePage() {
                 visits.map((visit) => (
                   <div
                     key={visit.id}
-                    className="rounded-lg border border-white/10 bg-white/[0.02] p-4"
+                    className="rounded-lg border border-slate-200 bg-slate-50 p-4"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1">
@@ -426,10 +426,10 @@ export function PatientProfilePage() {
                             {visit.visit_type.toUpperCase()}
                           </span>
                           {visit.reference_no && (
-                            <span className="text-sm font-mono text-slate-400">{visit.reference_no}</span>
+                            <span className="text-sm font-mono text-slate-500">{visit.reference_no}</span>
                           )}
                         </div>
-                        <p className="mt-2 text-white font-semibold">
+                        <p className="mt-2 text-slate-900 font-semibold">
                           {new Date(visit.visit_at).toLocaleDateString()} at{' '}
                           {new Date(visit.visit_at).toLocaleTimeString([], {
                             hour: '2-digit',
@@ -437,13 +437,13 @@ export function PatientProfilePage() {
                           })}
                         </p>
                         {visit.summary && (
-                          <p className="mt-2 text-sm text-slate-400">{visit.summary}</p>
+                          <p className="mt-2 text-sm text-slate-500">{visit.summary}</p>
                         )}
                       </div>
                       <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
                         visit.status === 'active'
                           ? 'bg-emerald-500/20 text-emerald-400'
-                          : 'bg-slate-500/20 text-slate-400'
+                          : 'bg-slate-500/20 text-slate-500'
                       }`}>
                         {visit.status}
                       </span>
@@ -451,8 +451,8 @@ export function PatientProfilePage() {
                   </div>
                 ))
               ) : (
-                <div className="rounded-lg border border-dashed border-white/10 p-8 text-center">
-                  <p className="text-slate-400">No visits recorded</p>
+                <div className="rounded-lg border border-dashed border-slate-200 p-8 text-center">
+                  <p className="text-slate-500">No visits recorded</p>
                 </div>
               )}
             </motion.div>
