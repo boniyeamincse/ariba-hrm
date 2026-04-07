@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\Clinical\VisitController;
 use App\Http\Controllers\Api\Clinical\OpdQueueController;
 use App\Http\Controllers\Api\Clinical\VitalsController;
 use App\Http\Controllers\Api\V1\Auth\AuthController as V1AuthController;
+use App\Http\Controllers\Api\V1\Staff\StaffController as StaffV1Controller;
 use App\Http\Controllers\Api\V1\Settings\SettingsController as SettingsV1Controller;
 use App\Http\Controllers\Api\V1\Rbac\RbacController;
 use App\Http\Controllers\Api\RoleDashboardController;
@@ -293,6 +294,60 @@ Route::middleware(['auth:sanctum', 'tenant', 'audit'])
 
         // Audit Logs
         Route::get('/audit-logs', [SettingsV1Controller::class, 'getAuditLogs'])->middleware('permission:settings.audit.read');
+    });
+
+// Staff Module Routes (v1)
+Route::middleware(['auth:sanctum', 'tenant', 'audit'])
+    ->prefix('v1/staff')
+    ->group(function (): void {
+        // Staff core
+        Route::get('/', [StaffV1Controller::class, 'index'])->middleware('permission:staff.view');
+        Route::post('/', [StaffV1Controller::class, 'store'])->middleware('permission:staff.create');
+        Route::get('/options', [StaffV1Controller::class, 'options'])->middleware('permission:staff.view');
+        Route::get('/{id}', [StaffV1Controller::class, 'show'])->middleware('permission:staff.view');
+        Route::put('/{id}', [StaffV1Controller::class, 'update'])->middleware('permission:staff.update');
+        Route::delete('/{id}', [StaffV1Controller::class, 'destroy'])->middleware('permission:staff.delete');
+        Route::patch('/{id}/status', [StaffV1Controller::class, 'updateStatus'])->middleware('permission:staff.status.update');
+        Route::get('/{id}/summary', [StaffV1Controller::class, 'summary'])->middleware('permission:staff.view');
+
+        // Assignments
+        Route::post('/{id}/assign-branch', [StaffV1Controller::class, 'assignBranch'])->middleware('permission:staff.assign.branch');
+        Route::post('/{id}/assign-facility', [StaffV1Controller::class, 'assignFacility'])->middleware('permission:staff.assign.facility');
+        Route::post('/{id}/assign-department', [StaffV1Controller::class, 'assignDepartment'])->middleware('permission:staff.assign.department');
+        Route::post('/{id}/assign-manager', [StaffV1Controller::class, 'assignManager'])->middleware('permission:staff.assign.manager');
+        Route::post('/{id}/assign-user-account', [StaffV1Controller::class, 'assignUserAccount'])->middleware('permission:staff.assign.user');
+
+        Route::get('/{id}/branch', [StaffV1Controller::class, 'branch'])->middleware('permission:staff.view');
+        Route::get('/{id}/facility', [StaffV1Controller::class, 'facility'])->middleware('permission:staff.view');
+        Route::get('/{id}/department', [StaffV1Controller::class, 'department'])->middleware('permission:staff.view');
+        Route::get('/{id}/manager', [StaffV1Controller::class, 'manager'])->middleware('permission:staff.view');
+        Route::get('/{id}/user-account', [StaffV1Controller::class, 'userAccount'])->middleware('permission:staff.view');
+
+        // Employment lifecycle
+        Route::post('/{id}/confirm', [StaffV1Controller::class, 'confirm'])->middleware('permission:staff.status.update');
+        Route::post('/{id}/probation', [StaffV1Controller::class, 'probation'])->middleware('permission:staff.status.update');
+        Route::post('/{id}/suspend', [StaffV1Controller::class, 'suspend'])->middleware('permission:staff.status.update');
+        Route::post('/{id}/terminate', [StaffV1Controller::class, 'terminate'])->middleware('permission:staff.status.update');
+        Route::post('/{id}/resign', [StaffV1Controller::class, 'resign'])->middleware('permission:staff.status.update');
+        Route::post('/{id}/reactivate', [StaffV1Controller::class, 'reactivate'])->middleware('permission:staff.status.update');
+        Route::get('/{id}/employment-history', [StaffV1Controller::class, 'employmentHistory'])->middleware('permission:staff.employment-history.view');
+
+        // Licenses
+        Route::get('/{id}/licenses', [StaffV1Controller::class, 'licenses'])->middleware('permission:staff.view');
+        Route::post('/{id}/licenses', [StaffV1Controller::class, 'storeLicense'])->middleware('permission:staff.license.manage');
+        Route::put('/{id}/licenses/{licenseId}', [StaffV1Controller::class, 'updateLicense'])->middleware('permission:staff.license.manage');
+        Route::delete('/{id}/licenses/{licenseId}', [StaffV1Controller::class, 'destroyLicense'])->middleware('permission:staff.license.manage');
+
+        // Emergency contacts
+        Route::get('/{id}/emergency-contacts', [StaffV1Controller::class, 'emergencyContacts'])->middleware('permission:staff.view');
+        Route::post('/{id}/emergency-contacts', [StaffV1Controller::class, 'storeEmergencyContact'])->middleware('permission:staff.emergency-contact.manage');
+        Route::put('/{id}/emergency-contacts/{contactId}', [StaffV1Controller::class, 'updateEmergencyContact'])->middleware('permission:staff.emergency-contact.manage');
+        Route::delete('/{id}/emergency-contacts/{contactId}', [StaffV1Controller::class, 'destroyEmergencyContact'])->middleware('permission:staff.emergency-contact.manage');
+
+        // Documents
+        Route::get('/{id}/documents', [StaffV1Controller::class, 'documents'])->middleware('permission:staff.view');
+        Route::post('/{id}/documents', [StaffV1Controller::class, 'storeDocument'])->middleware('permission:staff.document.manage');
+        Route::delete('/{id}/documents/{documentId}', [StaffV1Controller::class, 'destroyDocument'])->middleware('permission:staff.document.manage');
     });
 
 Route::prefix('v1/auth')->group(function (): void {
