@@ -302,30 +302,108 @@ Middleware: `auth:sanctum`, `tenant`, `audit`, RBAC.
 
 | Method | Endpoint | Permission |
 |---|---|---|
-| GET | `/v1/settings` | `settings.view` |
-| GET | `/v1/settings/{section}` | `settings.view` |
-| PUT | `/v1/settings/{section}` | `settings.manage` |
-| PATCH | `/v1/settings/{section}` | `settings.manage` |
+| GET | `/v1/settings/general` | `settings.read` |
+| PUT | `/v1/settings/general` | `settings.update` |
+| GET | `/v1/settings/branding` | `settings.read` |
+| PUT | `/v1/settings/branding` | `settings.branding.update` |
+| GET | `/v1/settings/localization` | `settings.read` |
+| PUT | `/v1/settings/localization` | `settings.update` |
+| GET | `/v1/settings/notifications` | `settings.read` |
+| PUT | `/v1/settings/notifications` | `settings.notification.update` |
+| GET | `/v1/settings/email-config` | `settings.read` |
+| PUT | `/v1/settings/email-config` | `settings.update` |
+| POST | `/v1/settings/email-config/test` | `settings.update` |
+| GET | `/v1/settings/sms-config` | `settings.read` |
+| PUT | `/v1/settings/sms-config` | `settings.update` |
+| POST | `/v1/settings/sms-config/test` | `settings.update` |
+| GET | `/v1/settings/billing` | `settings.read` |
+| PUT | `/v1/settings/billing` | `settings.billing.update` |
+| GET | `/v1/settings/clinical` | `settings.read` |
+| PUT | `/v1/settings/clinical` | `settings.clinical.update` |
+| GET | `/v1/settings/appointments` | `settings.read` |
+| PUT | `/v1/settings/appointments` | `settings.update` |
+| GET | `/v1/settings/ipd` | `settings.read` |
+| PUT | `/v1/settings/ipd` | `settings.update` |
+| GET | `/v1/settings/pharmacy` | `settings.read` |
+| PUT | `/v1/settings/pharmacy` | `settings.update` |
+| GET | `/v1/settings/lab` | `settings.read` |
+| PUT | `/v1/settings/lab` | `settings.update` |
+| GET | `/v1/settings/integrations` | `settings.read` |
+| PUT | `/v1/settings/integrations` | `settings.integration.update` |
+| GET | `/v1/settings/security` | `settings.read` |
+| PUT | `/v1/settings/security` | `settings.security.update` |
+| GET | `/v1/settings/templates` | `settings.read` |
+| PUT | `/v1/settings/templates` | `settings.update` |
+| GET | `/v1/settings/audit-logs` | `settings.audit.read` |
 
-Supported sections:
-- `general`
-- `branding`
-- `localization`
-- `notifications`
-- `email-config`
-- `sms-config`
-- `security`
-- `billing`
-- `clinical`
-- `integrations`
-- `audit-logs` (read-only)
+## 9) Branch / Facility Module (`/v1/branches`, `/v1/facilities`)
 
-## 9) Notes
+Middleware (planned): `auth:sanctum`, `tenant`, `audit`, RBAC.
+
+### 9.1 Branch Endpoints
+
+| Method | Endpoint | Permission |
+|---|---|---|
+| GET | `/v1/branches` | `branch.view` |
+| POST | `/v1/branches` | `branch.create` |
+| GET | `/v1/branches/{id}` | `branch.view` |
+| PUT | `/v1/branches/{id}` | `branch.update` |
+| DELETE | `/v1/branches/{id}` | `branch.delete` |
+| PATCH | `/v1/branches/{id}/status` | `branch.status.update` |
+| GET | `/v1/branches/{id}/facilities` | `branch.view` |
+| GET | `/v1/branches/{id}/summary` | `branch.view` |
+| GET | `/v1/branches/options` | `branch.view` |
+
+### 9.2 Facility Endpoints
+
+| Method | Endpoint | Permission |
+|---|---|---|
+| GET | `/v1/facilities` | `facility.view` |
+| POST | `/v1/facilities` | `facility.create` |
+| GET | `/v1/facilities/{id}` | `facility.view` |
+| PUT | `/v1/facilities/{id}` | `facility.update` |
+| DELETE | `/v1/facilities/{id}` | `facility.delete` |
+| PATCH | `/v1/facilities/{id}/status` | `facility.status.update` |
+| GET | `/v1/facilities/{id}/departments` | `facility.view` |
+| GET | `/v1/facilities/{id}/users` | `facility.view` |
+| GET | `/v1/facilities/options` | `facility.view` |
+
+### 9.3 Facility Type Endpoints
+
+| Method | Endpoint | Permission |
+|---|---|---|
+| GET | `/v1/facilities/types` | `facility.view` |
+| POST | `/v1/facilities/types` | `facility.create` |
+| GET | `/v1/facilities/types/{id}` | `facility.view` |
+| PUT | `/v1/facilities/types/{id}` | `facility.update` |
+| DELETE | `/v1/facilities/types/{id}` | `facility.delete` |
+
+### 9.4 Assignments and Utilities
+
+| Method | Endpoint | Permission |
+|---|---|---|
+| POST | `/v1/facilities/{id}/assign-departments` | `facility.assignment.manage` |
+| POST | `/v1/facilities/{id}/assign-users` | `facility.assignment.manage` |
+| GET | `/v1/facilities/{id}/operational-hours` | `facility.view` |
+| PUT | `/v1/facilities/{id}/operational-hours` | `facility.assignment.manage` |
+
+Status values:
+- Branch: `active`, `inactive`, `suspended`
+- Facility: `active`, `inactive`, `maintenance`
+
+Business constraints:
+- One main branch per tenant.
+- Branch code unique per tenant.
+- Facility code unique per branch (current schema).
+- Slug uniqueness in tenant scope.
+- Cross-tenant assignment is blocked at validation/service layer.
+
+## 10) Notes
 
 - Some appointment and OPD endpoints exist in both general and OPD-prefixed paths for compatibility.
 - For tenant-scoped APIs, send requests through tenant subdomain host to resolve tenant context.
 
-## 10) RBAC Module (`/v1/rbac`)
+## 11) RBAC Module (`/v1/rbac`)
 
 Middleware: `auth:sanctum`, `tenant`, `audit`, RBAC-permission-based access control.
 
