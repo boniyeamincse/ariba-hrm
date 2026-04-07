@@ -99,6 +99,12 @@ class User extends Authenticatable
         return $this->hasMany(PasswordHistory::class);
     }
 
+    public function facilities(): BelongsToMany
+    {
+        return $this->belongsToMany(Facility::class, 'facility_user')
+            ->withPivot('tenant_id');
+    }
+
     public function hasPermission(string $permission): bool
     {
         return $this->roles()

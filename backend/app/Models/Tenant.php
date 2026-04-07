@@ -26,4 +26,14 @@ class Tenant extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function branches(): HasMany
+    {
+        return $this->hasMany(Branch::class);
+    }
+
+    public function facilities(): HasMany
+    {
+        return $this->hasMany(Facility::class);
+    }
 }
