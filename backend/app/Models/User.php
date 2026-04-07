@@ -105,6 +105,11 @@ class User extends Authenticatable
             ->withPivot('tenant_id');
     }
 
+    public function staff(): HasMany
+    {
+        return $this->hasMany(Staff::class);
+    }
+
     public function hasPermission(string $permission): bool
     {
         return $this->roles()

@@ -36,4 +36,9 @@ class Tenant extends Model
     {
         return $this->hasMany(Facility::class);
     }
+
+    public function staff(): HasMany
+    {
+        return $this->hasMany(Staff::class);
+    }
 }
